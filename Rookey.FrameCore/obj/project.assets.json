@@ -13577,11 +13577,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
+      "projectUniqueName": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
       "projectName": "Rookey.FrameCore",
-      "projectPath": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
+      "projectPath": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore\\obj\\",
+      "outputPath": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

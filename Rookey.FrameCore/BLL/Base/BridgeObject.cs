@@ -218,8 +218,9 @@ namespace Rookey.Frame.Bridge
         /// 获取DLL的所有类型
         /// </summary>
         /// <param name="dllName">DLL名称</param>
+        /// <param name="nameSpace">所属命名空间</param>
         /// <returns></returns>
-        public static List<Type> GetTypesByDLL(string dllName)
+        public static List<Type> GetTypesByDLL(string dllName, string nameSpace = null)
         {
             List<Type> tempTypes = new List<Type>();
             if (string.IsNullOrEmpty(dllName))
@@ -228,6 +229,8 @@ namespace Rookey.Frame.Bridge
             {
                 var assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(dllName));
                 tempTypes = assembly.DefinedTypes.Select(x => x.AsType()).ToList();
+                if (!string.IsNullOrEmpty(nameSpace))
+                    tempTypes = tempTypes.Where(x => !string.IsNullOrEmpty(x.Namespace) && x.Namespace.StartsWith(nameSpace)).ToList();
             }
             catch
             { }
@@ -265,12 +268,10 @@ namespace Rookey.Frame.Bridge
                 string[] token = modelDll.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (string dllName in token)
                 {
-                    types.AddRange(GetTypesByDLL(dllName));
+                    string nameSpace = dllName == DEFAULT_MODEL_DLL ? "Rookey.Frame" : null;
+                    types.AddRange(GetTypesByDLL(dllName, nameSpace));
                 }
             }
-            //添加临时实体类型集合
-            List<Type> tempModelTypes = GetTempModelTypes();
-            types.AddRange(tempModelTypes);
             //取模块类型集合
             foreach (Type type in types)
             {
@@ -284,37 +285,6 @@ namespace Rookey.Frame.Bridge
                 cacheFactory.Set<List<Type>>(cache_modelType, tempTypes);
             }
             return tempTypes;
-        }
-
-        /// <summary>
-        /// 获取临时实体类型集合
-        /// </summary>
-        /// <returns></returns>
-        public static List<Type> GetTempModelTypes()
-        {
-            string basePath = Globals.GetBinPath();
-            string dllPath = string.Format(@"{0}TempModel", basePath);
-            if (!Directory.Exists(dllPath)) //临时实体dll目录不存在
-            {
-                return new List<Type>();
-            }
-            List<Type> list = new List<Type>();
-            string[] files = Directory.GetFiles(dllPath);
-            foreach (string file in files)
-            {
-                FileInfo fi = new FileInfo(file);
-                if (fi.Extension.ToLower() != ".dll")
-                    continue;
-                try
-                {
-                    Assembly dllAssembly = Assembly.LoadFrom(file);
-                    List<Type> tempTypes = dllAssembly.GetTypes().Where(x => x.Namespace == "Rookey.Frame.TempModel").ToList();
-                    list.AddRange(tempTypes);
-                }
-                catch
-                { }
-            }
-            return list;
         }
 
         /// <summary>
@@ -377,7 +347,8 @@ namespace Rookey.Frame.Bridge
                 string[] token = ibllDll.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (string dllName in token)
                 {
-                    tempTypes.AddRange(GetTypesByDLL(dllName));
+                    string nameSpace = dllName == DEFAULT_IBLL_DLL ? "Rookey.Frame.IBLL" : null;
+                    tempTypes.AddRange(GetTypesByDLL(dllName, nameSpace));
                 }
             }
             //过滤
@@ -435,7 +406,8 @@ namespace Rookey.Frame.Bridge
                 string[] token = bllDll.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (string dllName in token)
                 {
-                    tempTypes.AddRange(GetTypesByDLL(dllName));
+                    string nameSpace = dllName == DEFAULT_BLL_DLL ? "Rookey.Frame.BLL" : null;
+                    tempTypes.AddRange(GetTypesByDLL(dllName, nameSpace));
                 }
             }
             //过滤
@@ -493,7 +465,8 @@ namespace Rookey.Frame.Bridge
                 string[] token = idalDll.Split(",".ToCharArray());
                 foreach (string dllName in token)
                 {
-                    tempTypes.AddRange(GetTypesByDLL(dllName));
+                    string nameSpace = dllName == DEFAULT_IDAL_DLL ? "Rookey.Frame.IDAL" : null;
+                    tempTypes.AddRange(GetTypesByDLL(dllName, nameSpace));
                 }
             }
             //过滤
@@ -559,7 +532,8 @@ namespace Rookey.Frame.Bridge
                 string[] token = dalDll.Split(",".ToCharArray());
                 foreach (string dllName in token)
                 {
-                    tempTypes.AddRange(GetTypesByDLL(dllName));
+                    string nameSpace = dllName == DEFAULT_DAL_DLL ? "Rookey.Frame.DAL" : null;
+                    tempTypes.AddRange(GetTypesByDLL(dllName, nameSpace));
                 }
             }
             //过滤
@@ -647,7 +621,8 @@ namespace Rookey.Frame.Bridge
             {
                 foreach (string str in token)
                 {
-                    list.AddRange(BridgeObject.GetTypesByDLL(str));
+                    string nameSpace = str == DEFAULT_OPERATE_DLL ? "Rookey.Frame.Operate.Base.OperateHandle.Implement" : null;
+                    list.AddRange(BridgeObject.GetTypesByDLL(str, nameSpace));
                 }
             }
             list = list.Where(x => x.Name.EndsWith("OperateHandle") || x.Name.StartsWith("OperateHandleFactory") || (x.BaseType != null && x.BaseType.Name == "InitFactory")).ToList();

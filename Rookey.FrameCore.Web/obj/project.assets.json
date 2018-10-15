@@ -13596,11 +13596,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
+      "projectUniqueName": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
       "projectName": "Rookey.FrameCore.Web",
-      "projectPath": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
+      "projectPath": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore.Web\\obj\\",
+      "outputPath": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13619,8 +13619,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj": {
-              "projectPath": "D:\\.NET CORE\\MyCode\\OneDll\\Rookey.FrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj"
+            "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj": {
+              "projectPath": "D:\\.NET CORE\\MyCode\\OneDll\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj"
             }
           }
         }
