@@ -1294,3 +1294,33 @@ span.textarea-span,.textarea-span textarea{height: auto !important;}
     line-height: 20px!important;
 }
 .html-content td{line-height: 25px!important;}
+/*滚动条*/
+::-webkit-scrollbar { width: 10px; height: 10px;}
+::-webkit-scrollbar-thumb { border-radius: 5px;background-color: rgb(190, 190, 190);border: 2px solid #fff;}
+::-webkit-scrollbar-thumb:hover {background-color: rgb(160, 160, 160);}
+
+/*重构表单样式*/
+#mainform .panel { 
+    border-radius:5px 5px 0px 0px;
+}
+#mainform .panel .panel-header {
+    border-bottom:1px solid silver;
+    background: -webkit-linear-gradient(60deg,#EEF5FF 9%,#0173c736 ,#7cbcf51c 69%, #0173c757 )!important;
+    background: -o-linear-gradient(60deg,#EEF5FF 9%,#0173c736 ,#7cbcf51c 69%, #0173c757 )!important; 
+    background: -moz-linear-gradient(60deg,#EEF5FF 9%,#0173c736 ,#7cbcf51c 69%, #0173c757 )!important;
+    background: linear-gradient(60deg,#EEF5FF 9%,#0173c736 ,#7cbcf51c 69%, #0173c757 )!important; 
+    box-shadow:0px 0px 5px silver;
+}
+#mainform .panel .panel-header .panel-tool {
+    background: -webkit-linear-gradient(#7dbbe836);
+    background: -o-linear-gradient(#7dbbe836);
+    background: -moz-linear-gradient(#7dbbe836);
+    background: linear-gradient(#7dbbe836);
+}
+#mainform .panel .panel-body {
+    border:1px solid #dfe6ea !important;
+    border-top:none!important;
+    border-radius:3px!important;
+}
+/*附件信息模块,附件上传按钮微调*/
+#attachPanel #btnAddAttach{ margin: 2px}

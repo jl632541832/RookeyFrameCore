@@ -414,17 +414,42 @@ function LoadFlowChart(mId, recoredId, todoId, row, gridId) {
                 }
             }
             if (data.AppInfos && data.AppInfos.length) { //审批信息
-                $('#tb_approvalList').datagrid('loadData', { total: data.AppInfos.length, rows: data.AppInfos });
-                $('#div_ApprovalList').attr('recordId', recoredId);
+                var gridDom = $('#tb_approvalList');
+                var options = gridDom.datagrid('options');
+                if (options.columns && options.columns.length > 0 && options.columns[0].length > 0) {
+                    for (var i = 0; i < options.columns[0].length; i++) {
+                        if (options.columns[0][i].field == 'ApprovalOpinions') {
+                            options.columns[0][i].formatter = function (value, row, index) {
+                                if (value) {
+                                    return "<a href='javascript:void(0)' title='" + value + "' onclick='ShowOpinions(this)'>" + value + "</a>";
+                                }
+                                return value;
+                            };
+                        }
+                    }
+                }
+                options.onLoadSuccess = function (dts) {
+                    var rows = gridDom.datagrid('getRows');
+                    if (rows && rows.length > 0) {
+                        var row = rows[rows.length - 1];
+                        if (row.NextHandler) {
+                            var tempStr = row.NextHandler.replace(/<\/?.+?>/g, "");
+                            if (tempStr && tempStr.indexOf('待批') == -1) {
+                                var rowIndex = gridDom.datagrid("getRowIndex", row);
+                                row.NextHandler = '<span style="font-weight: bold;color: red;">' + row.NextHandler + '（待批）</span>';
+                                gridDom.datagrid('updateRow', {
+                                    index: rowIndex,
+                                    row: row
+                                });
+                            }
+                        }
+                    }
+                    AutoMergeAppInfoCell(); //合并审批信息单元格
+                };
+                gridDom.datagrid(options);
+                gridDom.datagrid('loadData', { total: data.AppInfos.length, rows: data.AppInfos });
+                gridDom.attr('recordId', recoredId);
                 AutoMergeAppInfoCell(); //合并审批信息单元格
-                setTimeout(function () {
-                    var dataBody = $('#tb_approvalList').data().datagrid.dc.body2;
-                    dataBody.find("td[field='ApprovalOpinions'] div").each(function (i, item) {
-                        var text = $(item).text();
-                        text = "<a href='javascript:void(0)' title='" + text + "' onclick='ShowOpinions(this)'>" + text + "</a>";
-                        $(item).html(text);
-                    });
-                }, 1000);
             }
             else { //没有审批信息时调用自定义加载审批信息
                 if (typeof (AppInfoLoadOver) == 'function') {

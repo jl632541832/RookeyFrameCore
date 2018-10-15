@@ -1,7 +1,7 @@
-﻿@using Rookey.Frame.Common;
-@using Rookey.Frame.UIOperate;
+﻿@using Cecport.Frame.Common;
+@using Cecport.Frame.UIOperate;
 @{
-    bool isShowFullPath = UIOperate.IsJsShowFullPath(this.Context.Request);
+    bool isShowFullPath = UIOperate.IsJsShowFullPath(Request);
     string domainPath = isShowFullPath ? Globals.GetBaseUrl() : "~/";
 }
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/jquery/jquery-1.8.0.min.js", domainPath))"></script>
@@ -16,10 +16,12 @@
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/easyui-extension/combotree-filter.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/easyui-extension/dateranges.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/easyui-extension/dialog-moveEvent.js", domainPath))"></script>
+<script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/base/md5.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/base/Guid.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/base/Base.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/base/messenger.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/extension/StringExtension.js", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/extension/DateFormat.js", domainPath))"></script>
-<script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/common/Common.js", domainPath))"></script>
+<script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/common/Common.js?r=123456", domainPath))"></script>
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/common/FieldsLinkage.js", domainPath))"></script>
+<script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/extension/WaterMark.js", domainPath))"></script>

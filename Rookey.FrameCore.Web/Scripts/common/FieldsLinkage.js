@@ -68,9 +68,9 @@ function OverOnLinkFieldLoadSuccess(fieldName, valueField, textField) {
                     $('#' + lf2).combobox('setValue', v);
                 }
             }
-            else {
-                $('#' + lf2).combobox('clear').combobox('loadData', [{ Id: '', Name: '请选择' }]);
-            }
+            //else {
+            //    $('#' + lf2).combobox('clear').combobox('loadData', [{ Id: '', Name: '请选择' }]);
+            //}
         }
     }
     else if (fieldName == lf3) {
@@ -91,9 +91,9 @@ function OverOnLinkFieldLoadSuccess(fieldName, valueField, textField) {
                     $('#' + lf3).combobox('setValue', v);
                 }
             }
-            else {
-                $('#' + lf3).combobox('clear').combobox('loadData', [{ Id: '', Name: '请选择' }]);
-            }
+            //else {
+            //    $('#' + lf3).combobox('clear').combobox('loadData', [{ Id: '', Name: '请选择' }]);
+            //}
         }
     }
 }

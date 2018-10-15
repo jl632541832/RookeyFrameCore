@@ -4,10 +4,15 @@ var id = GetLocalQueryString("id"); //记录Id
 $(function () {
     try{
         var attachPlDom = $('#attachPanel');
+        if (attachPlDom.length > 0) {
+            attachPlDom.css('padding', '5px');
+        }
         if (attachPlDom.length > 0 && attachPlDom.parent().length > 0 && attachPlDom.parent().parent().length > 0) {
-            if (!attachPlDom.parent().parent().hasClass('attach-panel')) {
-                attachPlDom.parent().parent().addClass('attach-panel');
+            var dom = attachPlDom.parent().parent();
+            if (!dom.hasClass('attach-panel')) {
+                dom.addClass('attach-panel');
             }
+            dom.find('.panel-title').append('<span style="margin-left:110px;color:red;font-size:13px;">注：附件名称请删除空格及其他特殊符号，仅限下划线及中划线</span>');
         }
     } catch (e) { }
 });
@@ -210,8 +215,6 @@ function UploadFile(obj, backFun) {
     var moduleName = $(obj).attr("moduleName"); //模块名称
     var attachType = $(obj).attr("attachType"); //附件类型
     var attachDisplayStyle = $(obj).attr("attachDisplayStyle"); //附件显示方式
-    var num = $(obj).attr('num');
-    if (!num) num = 0;
     var toolbar = [{
         id: 'btnOk',
         text: '确 定',
@@ -235,59 +238,44 @@ function UploadFile(obj, backFun) {
                             if (attachDisplayStyle == 0) { //简单显示附件
                                 var guid = Guid.NewGuid();
                                 var tempId = guid.ToString();
-                                if ($("#attachPanel").length > 0) {
-                                    $("#attachPanel").append("<a id='btn_file_" + tempId + "'>" + item.FileName + "</a>");
-                                    $("#attachPanel").append("<a id='btn_remove_" + tempId + "' style='margin-right:10px;' class='easyui-linkbutton' data-options=\"iconCls:'eu-p2-icon-delete2',plain:true\" onclick='DelAttach(this)' AttachId='-1' BtnId='" + tempId + "' FileName='" + item.FileName + "'></a>");
-                                }
+                                $("#attachPanel").append("<a id='btn_file_" + tempId + "'>" + item.FileName + "</a>");
+                                $("#attachPanel").append("<a id='btn_remove_" + tempId + "' style='margin-right:10px;' class='easyui-linkbutton' data-options=\"iconCls:'eu-icon-del',plain:true\" onclick='DelAttach(this)' AttachId='-1' BtnId='" + tempId + "' FileName='" + item.FileName + "'></a>");
                             }
                             else { //列表方式时将附件信息添加到列表
-                                if (attachGrid.length > 0) {
-                                    attachGrid.datagrid('appendRow', item);
-                                }
+                                attachGrid.datagrid('appendRow', item);
                             }
                         });
-                        if ($("#attachPanel").length > 0)
-                            $.parser.parse("#attachPanel");
-                        if ($("#attachFile").length > 0) {
-                            var oldAttachStr = decodeURIComponent($("#attachFile").val()); //旧的附件
-                            if (oldAttachStr && oldAttachStr.length > 0) {
-                                var oldAttachObj = eval("(" + oldAttachStr + ")");
-                                if (oldAttachObj && oldAttachObj.length > 0) {
-                                    $.each(oldAttachObj, function (i, oldItem) {
-                                        attachObj.push(oldItem);
-                                    });
-                                }
+                        $.parser.parse("#attachPanel");
+                        var oldAttachStr = decodeURIComponent($("#attachFile").val()); //旧的附件
+                        if (oldAttachStr && oldAttachStr.length > 0) {
+                            var oldAttachObj = eval("(" + oldAttachStr + ")");
+                            if (oldAttachObj && oldAttachObj.length > 0) {
+                                $.each(oldAttachObj, function (i, oldItem) {
+                                    attachObj.push(oldItem);
+                                });
                             }
-                            $("#attachFile").val(JSON.stringify(attachObj));
                         }
+                        $("#attachFile").val(JSON.stringify(attachObj));
                         if (typeof (OverAfterUploadFile) == "function") {
                             OverAfterUploadFile(obj, attachStr);
                         }
                     }
-                    else if (page == "view") {
-                        if (result.AddAttachs && result.AddAttachs.length > 0) {
+                    else if (page == "view" && result.AddAttachs) {
+                        if (result.AddAttachs.length > 0) {
                             var attachObj = result.AddAttachs;
                             var attachGrid = $("#attachGrid");
                             $.each(attachObj, function (i, item) {
                                 if (attachDisplayStyle == 0) { //简单显示附件
                                     var tempId = item.Id;
-                                    if ($("#attachPanel").length > 0) {
-                                        $("#attachPanel").append("<a id='btn_file_" + tempId + "' target='_blank' href='" + item.AttachFile + "'>" + item.FileName + "</a>");
-                                        $("#attachPanel").append("<a id='btn_remove_" + tempId + "' style='margin-right:10px;' class='easyui-linkbutton' data-options=\"iconCls:'eu-p2-icon-delete2',plain:true\" onclick='DelAttach(this)' AttachId='" + tempId + "' FileName='" + item.FileName + "'></a>");
-                                        $("#attachPanel").append("<a id='btn_download_" + tempId + "' style='margin-right:10px;' class='easyui-linkbutton' data-options=\"iconCls:'eu-icon-arrow_down',plain:true\" onclick=\"window.open( '/Annex/DownloadAttachment.html?attachId=" + tempId + "')\"></a>");
-                                    }
+                                    $("#attachPanel").append("<a id='btn_file_" + tempId + "' target='_blank' href='" + item.AttachFile + "'>" + item.FileName + "</a>");
+                                    $("#attachPanel").append("<a id='btn_remove_" + tempId + "' style='margin-right:10px;' class='easyui-linkbutton' data-options=\"iconCls:'eu-icon-del',plain:true\" onclick='DelAttach(this)' AttachId='" + tempId + "' FileName='" + item.FileName + "'></a>");
+                                    $("#attachPanel").append("<a id='btn_download_" + tempId + "' style='margin-right:10px;' class='easyui-linkbutton' data-options=\"iconCls:'eu-icon-arrow_down',plain:true\" onclick=\"window.open( '/Annex/DownloadAttachment.html?attachId=" + tempId + "')\"></a>");
                                 }
                                 else { //列表方式时将附件信息添加到列表
-                                    if (attachGrid.length > 0) {
-                                        attachGrid.datagrid('appendRow', item);
-                                    }
+                                    attachGrid.datagrid('appendRow', item);
                                 }
                             });
-                            if ($("#attachPanel").length > 0)
-                                $.parser.parse("#attachPanel");
-                        }
-                        if (typeof (OverAfterUploadFile) == "function") {
-                            OverAfterUploadFile(obj, result.FileMsg);
+                            $.parser.parse("#attachPanel");
                         }
                     }
                     topWin.CloseDialog();
@@ -297,44 +285,30 @@ function UploadFile(obj, backFun) {
                 }
             }, attachType);
         }
-    }];
-    if (num != 1) { //多个附件时添加清除按钮
-        toolbar.push(
-            {
-                id: 'btnClear',
-                text: '清除所有',
-                iconCls: 'eu-p2-icon-delete2',
-                handler: function (e) {
-                    topWin.GetCurrentDialogFrame()[0].contentWindow.ClearUpFile();
-                }
-            });
-    }
-    toolbar.push({
+    }, {
+        id: 'btnClear',
+        text: '清除所有',
+        iconCls: 'eu-icon-del',
+        handler: function (e) {
+            topWin.GetCurrentDialogFrame()[0].contentWindow.ClearUpFile();
+        }
+    }, {
         id: 'btnClose',
         text: '关 闭',
         iconCls: 'eu-icon-close',
         handler: function (e) {
             topWin.CloseDialog();
         }
-    });
-    var url = '/Page/UploadForm.html?page=' + page + '&id=' + id + '&num=' + num
-    if (moduleId && moduleId.length > 0)
-        url += '&moduleId=' + moduleId;
-    if (moduleName && moduleName.length > 0)
-        url += '&moduleName=' + moduleName;
+    }];
+    var url = "/Page/UploadForm.html?moduleId=" + moduleId + "&page=" + page + "&id=" + id + "&r=" + Math.random();
     if (isNfm) {
         url += '&nfm=1';
     }
-    url += '&r=' + Math.random();
-    topWin.OpenDialog('上传附件', url, toolbar, 450, 300, 'eu-p2-icon-upload');
+    topWin.OpenDialog('上传附件', url, toolbar, 450, 300, 'eu-icon-calendar');
 }
 
 //保存表单附件
 function SaveFormAttach(moduleId, id, backFun) {
-    if (typeof (OverSaveFormAttach) == "function") {
-        OverSaveFormAttach(moduleId, id, backFun);
-        return;
-    }
     var fileMsg = $("#attachFile").val();
     if (!fileMsg || fileMsg.length == 0) {
         if (typeof (backFun) == "function") {

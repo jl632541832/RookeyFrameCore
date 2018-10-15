@@ -1,6 +1,6 @@
 ﻿var page = GetLocalQueryString("page");
 var searchParams = null; //当前搜索条件
-var downHost = "http://192.168.0.81:8004";
+var downHost = null; //"http://192.168.0.81:8004";
 
 $(function () {
     $('#div_sampleSearch span.textbox-addon').attr('title', '点击搜索');
@@ -3442,6 +3442,10 @@ function RowEditSave(moduleId, moduleName, recordId, gridId, backFun) {
         }
     }
     if (row != null) {
+        if (typeof (OverRowEditSave) == 'function') {
+            OverRowEditSave(row, updateFields, moduleName, recordId, gridId);
+            return;
+        }
         var fieldIsOk = false;
         for (var f in row) {
             var column = GetGridColumn(gridId, f);

@@ -1,7 +1,7 @@
 ﻿var id = GetLocalQueryString("id"); //记录Id
 var page = GetLocalQueryString("page"); //页面类型标识
 var toDoTaskId = GetLocalQueryString("todoId"); //待办任务ID
-var moduleName = GetLocalQueryString("moduleName"); //模块名称
+var moduleName = decodeURI(GetLocalQueryString("moduleName")); //模块名称
 
 //初始化
 $(function () {
@@ -149,9 +149,15 @@ $(function () {
                 }
             });
             if (focusFieldName) {
-                try {
-                    $('#' + focusFieldName).parent().find("input.textbox-value[name='" + focusFieldName + "']").parent().find('input.textbox-text').focus();
-                } catch (e) { }
+                var isAllowFocus = true; //是否允许focus字段
+                if (typeof (OverIsAllowFocusField) == 'function') {
+                    isAllowFocus = OverIsAllowFocusField();
+                }
+                if (isAllowFocus) {
+                    try {
+                        $('#' + focusFieldName).parent().find("input.textbox-value[name='" + focusFieldName + "']").parent().find('input.textbox-text').focus();
+                    } catch (e) { }
+                }
             }
         }
         //自定义表单加载完成事件
@@ -481,7 +487,11 @@ function Save(obj, backFun, isAddNew, isDraft) {
                                             }
                                         }
                                         else { //嵌入其他系统时
-                                            CloseTab(null, false, true);
+                                            var freshGrid = true;
+                                            var nfg = GetLocalQueryString("nfg");
+                                            if (nfg == "1") //不刷新网格标识
+                                                freshGrid = false;
+                                            CloseTab(null, false, freshGrid);
                                         }
                                     }
                                     else { //流程审批表单页面
@@ -818,6 +828,11 @@ function BackFlow(obj) {
                             backFun(true);
                     }
                 });
+            }, null, function (dialogTagId, iframe) {
+                var returnValue = topWin.$("input[name='backNodes']").val();
+                if (returnValue) {
+                    topWin.OnBackNodeSelect({ value: returnValue });
+                }
             });
         }
     }, false, true);
