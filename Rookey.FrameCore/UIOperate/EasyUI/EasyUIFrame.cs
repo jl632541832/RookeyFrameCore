@@ -4310,56 +4310,6 @@ namespace Rookey.Frame.UIOperate
         #region 角色权限
 
         /// <summary>
-        /// 获取设置角色模块权限页面
-        /// </summary>
-        /// <returns></returns>
-        public override string GetSetRoleModulePermissionHTML()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<script type=\"text/javascript\" src=\"/Scripts/easyui-extension/datagrid-groupview.js\"></script>");
-            sb.Append("<div data-options=\"region:'west',title:'角色',split:true,border:false\" style=\"width:200px;\">");
-            sb.Append("<ul class=\"tree\" style=\"line-height:30px;\">");
-            sb.Append("<li style=\"margin:10px 0 0 10px \">");
-            sb.Append("<label style=\"color: #607d8b; \">&nbsp;检索：</label>");
-            sb.Append("<input type=\"text\" id=\"roleTxt\" class=\"ipt \" style=\"width: 90px;\" />");
-            sb.Append("&nbsp;<a href=\"javascript:void(0);\" style=\"padding: 2px 0;\" title=\"搜索\" onclick=\"SearchRole()\" class=\"easyui-linkbutton btnwhite\" data-options=\"iconCls:'eu-icon-search'\"></a>");
-            sb.Append("</li>");
-            sb.Append("</ul>");
-            sb.Append("<ul id=\"roleTree\"></ul>");
-            sb.Append("</div>");
-            sb.Append("<div data-options=\"region:'center',border:false\" class=\"bgwhite \"  style=\" border-top: 1px solid #ebebeb; \">");
-            sb.AppendFormat("<div id=\"tabs_permission\" class=\"easyui-tabs subOATabs\" data-options=\"fit:true,border:false,tabHeight:{0}\" style=\"height:100%;\">", ConstDefine.TAB_HEAD_HEIGHT);
-            sb.Append("<div title=\"角色权限\">");
-            sb.Append("<div class=\"easyui-layout\" style=\"width:100%;height:100%;\">");
-            sb.Append("<div data-options=\"region:'west',title:'功能菜单',split:true,border:false\" style=\"width: 200px;\">");
-            sb.Append("<ul id=\"menuTree\"></ul>");
-            sb.Append("</div>");
-            sb.Append("<div id=\"permisson_center\" data-options=\"region:'center',title:'',border:false\" class=\"bgwhite \"  style=\" border-top: 1px solid #ebebeb; \">");
-
-            sb.Append("<div class=\"easyui-panel\" title=\"操作权限\" style=\"width:98%;height:200px;margin-bottom:0px;\" data-options=\"collapsible:true\">");
-
-            sb.Append("</div>");
-
-            sb.Append("<div class=\"easyui-panel\" title=\"字段权限\" style=\"width:98%;height:200px;margin-bottom:0px;\" data-options=\"collapsible:true\">");
-
-            sb.Append("</div>");
-
-            sb.Append("<div class=\"easyui-panel\" title=\"数据权限\" style=\"width:98%;height:200px;margin-bottom:0px;\" data-options=\"collapsible:true\">");
-
-            sb.Append("</div>");
-
-            sb.Append("</div>");
-            sb.Append("</div>");
-            sb.Append("</div>");
-            sb.Append("<div title=\"包含用户\"></div>");
-            sb.Append("</div>");
-            sb.Append("</div>");
-            sb.Append("<script type=\"text/javascript\" src=\"/Scripts/permission/SetRoleModulePermission.js\"></script>");
-
-            return sb.ToString();
-        }
-
-        /// <summary>
         /// 获取设置角色权限页面
         /// </summary>
         /// <param name="roleId">角色Id</param>
@@ -4369,7 +4319,7 @@ namespace Rookey.Frame.UIOperate
             StringBuilder sb = new StringBuilder();
             //列表高
             int h = CurrUser.ClientBrowserHeight - ConstDefine.TOP_NORTH_REGION_HEIGHT - ConstDefine.TAB_HEAD_HEIGHT * 2 - ConstDefine.BOTTOM_STATUS_REGON_HEIGHT - 48 - 28;
-            if (!roleId.HasValue) //从角色权限设置菜单进入
+            if (!roleId.HasValue || roleId.Value == Guid.Empty) //从角色权限设置菜单进入
             {
                 sb.Append("<div data-options=\"region:'west',title:'角色',split:true,border:false\" style=\"width:200px;\">");
                 sb.Append("<ul class=\"tree\" style=\"line-height:30px;\">");
@@ -4387,7 +4337,7 @@ namespace Rookey.Frame.UIOperate
             sb.Append("<div title=\"权限设置\">");
             //权限设置内容--start
             sb.Append("<div class=\"content qxContent\">");
-            if (roleId.HasValue) //从角色列表点击进入
+            if (roleId.HasValue && roleId.Value != Guid.Empty) //从角色列表点击进入
                 h = 520 - ConstDefine.PANEL_HEAD_HEIGHT - ConstDefine.TAB_HEAD_HEIGHT - ConstDefine.DIALOG_TOOLBAR_HEIGHT - 48 - 20 - ConstDefine.DIALOG_BORDER_WIDTH;
             sb.Append("<table class=\"qxContentTable\"><tr>");
             sb.Append("<td style=\"width:300px;\">");
@@ -4406,7 +4356,7 @@ namespace Rookey.Frame.UIOperate
             sb.Append("</select>");
             sb.Append("</td>");
             sb.Append("<td class=\" ml10\">");
-            if (!roleId.HasValue) //从角色权限设置菜单点击进入
+            if (!roleId.HasValue || roleId.Value == Guid.Empty) //从角色权限设置菜单点击进入
             {
                 sb.Append("<a id=\"btnSave\" style=\"margin-right:10px;\" href=\"#\" class=\"easyui-linkbutton btnwhite\" data-options=\"iconCls:'eu-icon-save'\" onclick=\"SaveRolePermission()\">保 存</a>");
                 sb.Append("<a id=\"btnCancel\" style=\"margin-right:10px;\" href=\"#\" class=\"easyui-linkbutton btnwhite\" data-options=\"iconCls:'eu-icon-cancel'\" onclick=\"CloseTab()\">关 闭</a>");
@@ -4665,7 +4615,7 @@ namespace Rookey.Frame.UIOperate
             StringBuilder sb = new StringBuilder();
             //列表高
             int h = CurrUser.ClientBrowserHeight - ConstDefine.TOP_NORTH_REGION_HEIGHT - ConstDefine.TAB_HEAD_HEIGHT - ConstDefine.BOTTOM_STATUS_REGON_HEIGHT - 50 - 28;
-            if (!userId.HasValue) //从用户列表点击进入
+            if (!userId.HasValue || userId.Value == Guid.Empty) //从用户列表点击进入
             {
                 sb.Append("<div data-options=\"region:'west',title:'用户',split:true,border:false\" style=\"width:200px;\">");
                 sb.Append("<ul class=\"tree\" style=\"line-height:30px;\">");
@@ -4681,7 +4631,7 @@ namespace Rookey.Frame.UIOperate
             sb.Append("<div id=\"region_center\" data-options=\"region:'center',border:false\" class=\"bgwhite \"  style=\" border-top: 1px solid #ebebeb; \">");
             //权限设置内容--start
             sb.Append("<div class=\"content qxContent pt10\">");
-            if (userId.HasValue) //从用户列表点击进入
+            if (userId.HasValue && userId.Value != Guid.Empty) //从用户列表点击进入
                 h = 520 - ConstDefine.PANEL_HEAD_HEIGHT - ConstDefine.DIALOG_TOOLBAR_HEIGHT - ConstDefine.DIALOG_BORDER_WIDTH - 50 - 20;
             sb.Append("<table class=\"qxContentTable \"><tr>");
             sb.Append("<td style=\"width:300px;\">");
@@ -4700,7 +4650,7 @@ namespace Rookey.Frame.UIOperate
             sb.Append("</select>");
             sb.Append("</td>");
             sb.Append("<td style=\"\">");
-            if (!userId.HasValue) //从用户权限菜单中点击进入
+            if (!userId.HasValue || userId.Value == Guid.Empty) //从用户权限菜单中点击进入
             {
                 sb.Append("<a id=\"btnSave\" style=\"margin-right:10px;\" href=\"#\" class=\"easyui-linkbutton btnwhite\" data-options=\"iconCls:'eu-icon-save'\" onclick=\"SaveUserPermission()\">保 存</a>");
                 sb.Append("<a id=\"btnCancel\" style=\"margin-right:10px;\" href=\"#\" class=\"easyui-linkbutton btnwhite\" data-options=\"iconCls:'eu-icon-cancel'\" onclick=\"CloseTab()\">关 闭</a>");

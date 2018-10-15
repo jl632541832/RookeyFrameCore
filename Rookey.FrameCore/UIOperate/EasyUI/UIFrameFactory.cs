@@ -317,12 +317,6 @@ namespace Rookey.Frame.UIOperate
         #region 角色权限
 
         /// <summary>
-        /// 获取设置角色模块权限页面
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetSetRoleModulePermissionHTML();
-
-        /// <summary>
         /// 获取设置角色权限页面
         /// </summary>
         /// <param name="roleId">角色Id</param>

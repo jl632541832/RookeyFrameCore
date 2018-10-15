@@ -55,7 +55,7 @@ using Rookey.Frame.Common;
             WriteLiteral("<!DOCTYPE html>\r\n<html>\r\n");
             EndContext();
             BeginContext(137, 203, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "20fb8c32bfd7449aaeaaf77f22ddc8a5", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1205ce4c37954e6c8e3df3c891a2ce81", async() => {
                 BeginContext(143, 95, true);
                 WriteLiteral("\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n\r\n    <title>忘记密码 | ");
                 EndContext();
@@ -85,7 +85,7 @@ using Rookey.Frame.Common;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(342, 2490, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "22540d8d926b4f2ab6abb6bd7c621847", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f4d5efd84a944dac9e81a7d954d2217a", async() => {
                 BeginContext(348, 128, true);
                 WriteLiteral("\r\n    <canvas id=\"bg-canvas\" width=\"1366\" height=\"605\"></canvas>\r\n    <div class=\"page-con\">\r\n        <div><span id=\"logo-text\">");
                 EndContext();

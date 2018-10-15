@@ -1,7 +1,7 @@
-﻿@using Cecport.Frame.Common;
-@using Cecport.Frame.UIOperate;
+﻿@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
 @{
-    bool isShowFullPath = UIOperate.IsJsShowFullPath(Request);
+    bool isShowFullPath = UIOperate.IsJsShowFullPath(this.Context.Request);
     string domainPath = isShowFullPath ? Globals.GetBaseUrl() : "~/";
 }
 <script type="text/javascript" src="@Url.Content(string.Format("{0}Scripts/jquery/jquery-1.8.0.min.js", domainPath))"></script>

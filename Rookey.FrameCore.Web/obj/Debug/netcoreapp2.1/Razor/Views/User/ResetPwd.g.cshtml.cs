@@ -55,7 +55,7 @@ using Rookey.Frame.Common;
             WriteLiteral("<!DOCTYPE html>\r\n<html>\r\n");
             EndContext();
             BeginContext(137, 2335, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "5156b1bdcc3e4f1b98909d014edc0ea3", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "af07b2b7b7ac4a8c9e835275ec3527b0", async() => {
                 BeginContext(143, 97, true);
                 WriteLiteral("\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n\r\n    <title>重置您的密码 | ");
                 EndContext();
@@ -141,7 +141,7 @@ using Rookey.Frame.Common;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(2474, 2676, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "5e62d6e6e26247f7ad5c7fc9dc8a42c5", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "130a775e29414b12bebec947aa1e45ba", async() => {
                 BeginContext(2480, 132, true);
                 WriteLiteral("\r\n    <header>\r\n        <a href=\"/Page/Main.html\">\r\n            <img style=\"width: 117px; position: absolute; left: 18px; top: 9px;\"");
                 EndContext();

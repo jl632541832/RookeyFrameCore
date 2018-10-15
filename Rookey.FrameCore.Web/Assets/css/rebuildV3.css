@@ -868,9 +868,6 @@ img.img80_80{width:80px;height:80px}
 .panelheaderblue .panel-header{ border-width: 0 0 1px 0;border-bottom: 1px solid #8ec0e3;
     background: #d9ebf7;}
 
-
-
-
 .viewContentOld .panel .panel-body,
 .editContentOld .panel .panel-body,
 .viewContentNew .panel .panel-body,
@@ -1202,10 +1199,17 @@ table.thinBorder td,.lowformdetail td{ border-color: #cccccc;padding: 0 5px!impo
     white-space: normal;
     line-height: 20px;
 }
-
 table.thinBorder.seeThinBorder td{ line-height: 36px;}
 
-table.thinBorder .dspan{display:inline-block;}
+table.thinBorder .dspan {
+    display: inline-block;
+    word-break: normal;
+    width: auto;
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+}
 .divImg img{ width: 16px; height: 16px !important; margin-top: 5px;}
 
 table.thinBorder.editThinBorder td{ line-height: 18px;}
