@@ -1,0 +1,19 @@
+﻿.noprint {
+    display: none;
+}
+
+.printhide {
+    display: block;
+}
+
+@media print {
+    body {
+        color: #000;
+        background: #fff;
+        display: inherit;
+    }
+
+    table, span, div, a, th, td {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,11 @@
+﻿@using System.Web;
+@{
+    ViewBag.Title = "RoleFieldPermissionSet";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   string moduleName = HttpUtility.UrlDecode(this.Context.Request.Query["moduleName"].ObjToStr());
+   string roleName = HttpUtility.UrlDecode(this.Context.Request.Query["roleName"].ObjToStr());
+   int type = this.Context.Request.Query["type"].ObjToInt();}
+@Html.Raw(frameFactory.GetRoleFieldPermissionSetHTML(moduleName, roleName, type))

@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "UploadForm";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);
+}
+@Html.Raw(frameFactory.GetUploadMitiFileHTML(moduleId))

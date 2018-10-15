@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "EditField";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);
+   string fieldName = this.Context.Request.Query["fieldName"].ObjToStr();
+   Guid recordId = this.Context.Request.Query["recordId"].ObjToGuid();}
+@Html.Raw(frameFactory.GetEditFieldHTML(moduleId, fieldName, recordId))

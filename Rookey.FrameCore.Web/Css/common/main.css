@@ -1,0 +1,76 @@
+﻿
+.header {
+    height: 60px;
+    overflow: hidden;
+    min-width: 990px;
+    background-color: #1976d2;
+    line-height: 60px;
+    color: #3C3C3C;
+    font-family: Verdana, 微软雅黑,黑体;
+    border:0
+}
+
+.header-right {
+    float: right;
+    padding-right: 10px;
+    padding-top: 2px;
+}
+
+    .header-right a {
+        color: #ffffff;
+        margin-top: 14px;
+    }
+
+
+    .header-right .l-btn-plain .l-btn-text {
+         color: #ffffff;
+    }
+.header-a {
+    float: left;
+    padding-right: 10px;
+    padding-top: 5px;
+}
+
+.head-left {
+    margin-left: 0px;
+    width: 198px;
+    float: left;
+    padding-left: 0px;
+    background-color:#2586e6;-webkit-box-shadow:5px 0 5px rgba(0,0,0,.05);
+    -moz-box-shadow:5px 0 5px rgba(0,0,0,.05);box-shadow:5px 0 5px rgba(0,0,0,.05);-ms-filter:"progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=90, Color='#1871c9')";
+    filter:progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=90, Color='#1871c9')
+}
+
+    .head-left span {
+        font-size: 16px;
+        font-weight: bolder;
+        font-family: 'Microsoft YaHei' !important;
+    }
+
+.head-title-left {
+    margin-left: 20px;
+    width: 250px;
+    float: left;
+    padding-left: 0px;
+}
+
+    .head-title-left span {
+        font-size: 18px;
+        color:white;
+        font-family: 'Microsoft YaHei' !important;
+    }
+
+.head-search {
+    width: 260px;
+    float: right;
+    padding-right: 10px;
+}
+
+.bottom-south {
+    width: 100%;
+    text-align: left;
+    padding-left: 10px;
+    height: 25px;
+    line-height: 25px;
+    overflow: hidden;
+}

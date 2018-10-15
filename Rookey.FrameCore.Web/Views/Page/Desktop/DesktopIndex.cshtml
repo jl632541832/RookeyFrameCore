@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "DesktopIndex";
+}
+@using Rookey.Frame.Common;
+@{bool isUiMark = WebConfigHelper.GetAppSettingValue("UIMarkStyle") == "true";}
+@section styles{
+    @if (isUiMark)
+    { 
+        <style type="text/css">
+            .tabs-header {
+                background-color: #e3e3e3;
+                border-width: 1px;
+                border-style: solid;
+                border-bottom-width: 0;
+                position: relative;
+            }
+        </style>
+    }
+}
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);}
+@Html.Raw(frameFactory.GetDesktopIndexHTML())

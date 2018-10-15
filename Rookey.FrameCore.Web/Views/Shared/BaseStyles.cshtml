@@ -1,0 +1,33 @@
+﻿@using Rookey.Frame.UIOperate;
+@using Rookey.Frame.Common;
+@{
+    bool isShowFullPath = UIOperate.IsJsShowFullPath(this.Context.Request);
+    string domainPath = isShowFullPath ? Globals.GetBaseUrl() : "~/";
+}
+<link class="easyuiTheme" type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Scripts/jquery-easyui/themes/default/easyui.css", domainPath))" />
+<link type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Scripts/jquery-easyui/themes/icon.css", domainPath))" />
+<link type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Scripts/jquery-easyui/themes/color.css", domainPath))" />
+<link type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Scripts/jquery-plug/jquery.autocomplete.css", domainPath))" />
+<link type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Css/global.css?r=12345", domainPath))" />
+<link type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Css/icon.css", domainPath))" />
+<style type="text/css">
+    /*-------datagrid网格换行显示--------*/
+    /*.datagrid-header-row td span:first-child {
+        word-break:normal;width:auto;display:block;white-space:pre-wrap;word-wrap:break-word;overflow:hidden;
+    }*/
+    /*-------datagrid网格超出宽度时显示省略号-----------*/
+    .datagrid-cell, .datagrid-cell-group, .datagrid-header-rownumber, .datagrid-cell-rownumber {
+        text-overflow: ellipsis;
+    }
+    /*::-webkit-scrollbar-track{border-radius: 10px;-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);}
+    ::-webkit-scrollbar-thumb{background-color: rgba(0,0,0,0.05);border-radius: 10px;-webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);}
+    ::-webkit-scrollbar-thumb{background-color: rgba(0,0,0,0.2);border-radius: 10px;-webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);}
+    ::-webkit-scrollbar{width: 16px;height: 16px;}
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-thumb{border-radius: 999px;border: 5px solid transparent;}
+    ::-webkit-scrollbar-track{box-shadow: 1px 1px 5px rgba(0,0,0,.2) inset;}
+    ::-webkit-scrollbar-thumb{min-height: 20px;background-clip: content-box;box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;}
+    ::-webkit-scrollbar-corner{background: transparent;}*/
+</style>
+<link type="text/css" rel="Stylesheet" href="@Url.Content(string.Format("{0}Css/common/print.css", domainPath))" media="print" />
+<link type="text/css" rel="stylesheet" href="/Assets/css/rebuildV3.css?r=1211113" />

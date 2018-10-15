@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "AdvanceSearch";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);
+   Guid? viewId = this.Context.Request.Query["viewId"].ObjToGuidNull();}
+@Html.Raw(frameFactory.GetAdvanceSearchHTML(moduleId, viewId))

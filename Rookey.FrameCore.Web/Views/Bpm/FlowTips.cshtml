@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "FlowTips";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);
+   Guid id = this.Context.Request.QueryEx("id").ObjToGuid();
+}
+@Html.Raw(frameFactory.GetFlowTipsHTML(moduleId, id))

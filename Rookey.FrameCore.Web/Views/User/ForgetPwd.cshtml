@@ -1,0 +1,69 @@
+﻿@using Rookey.Frame.Common;
+@{
+    Layout = null;
+    string webName = WebConfigHelper.GetCurrWebName();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>忘记密码 | @webName</title>
+    <link rel="stylesheet" href="/Scripts/login/login.css" type="text/css">
+</head>
+<body>
+    <canvas id="bg-canvas" width="1366" height="605"></canvas>
+    <div class="page-con">
+        <div><span id="logo-text">@webName<label>v1.0<span class="logo-dot rotate"></span></label></span></div>
+        <div>
+            <div style="margin-top: 25px; position: relative;">
+                <input name="username" id="username" value="" class="txt" type="text" placeholder="用户名">
+                <div class="success-tip"></div>
+                <div class="error-tip" id="error-tip"></div>
+                <input type="hidden" id="forget_input">
+            </div>
+            <div style="margin-top: 20px;">
+                <span id="resetpwd_btn" onclick="ForgetPwd();" class="button">重置密码</span>
+            </div>
+        </div>
+        <div class="signup"><a href="/User/Reg.html">注册</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/User/Login.html">登录</a></div>
+    </div>
+    <script src="/Scripts/jquery/jquery-1.8.0.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script type="text/javascript">
+        //重置密码后向用户发送修改密码链接
+        function ForgetPwd() {
+            var username = $('#username').val();
+            if (username == "") {
+                $('.error-tip').text("用户不能为空！");
+                setTimeout(function () { $(".error-tip").html("") }, 3000);
+                return;
+            }
+            $('.success-tip').hide();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/User/UserForgetPwd.html',
+                data: { username: username },
+                success: function (result) {
+                    if (!result) {
+                        $('.error-tip').text('服务器无响应，请重试！');
+                        setTimeout(function () { $(".error-tip").html("") }, 3000);
+                        return;
+                    }
+                    if (!result.Success) {
+                        $('.error-tip').text(result.Message);
+                        setTimeout(function () { $(".error-tip").html("") }, 3000);
+                    } else {
+                        $('.success-tip').show();
+                        $('.success-tip').text('已经发送重置密码邮件 请查收');
+                    }
+                },
+                error: function (err) {
+                    $('.error-tip').text('服务器无响应，请重试！');
+                    setTimeout(function () { $(".error-tip").html("") }, 3000);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "QuickEditForm";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);
+   Guid roleId = this.Context.Request.Query["roleId"].ObjToGuid();
+   Guid? formId = this.Context.Request.Query["formId"].ObjToGuidNull();}
+@Html.Raw(frameFactory.GetQuickEditFormHTML(moduleId, roleId, formId))

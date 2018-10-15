@@ -1,0 +1,11 @@
+﻿@using System.Web;
+@{
+    ViewBag.Title = "UserDataPermissionSet";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   string moduleName = HttpUtility.UrlDecode(this.Context.Request.Query["moduleName"].ObjToStr());
+   Guid userId = this.Context.Request.Query["userId"].ObjToGuid();
+   int type = this.Context.Request.Query["type"].ObjToInt();}
+@Html.Raw(frameFactory.GetUserDataPermissionSetHTML(moduleName, userId, type))

@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "BatchEdit";
+}
+@using Rookey.Frame.Common;
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);
+   int selectRecords = this.Context.Request.Query["selectRecords"].ObjToInt();
+   int pageRecords = this.Context.Request.Query["pageRecords"].ObjToInt();}
+@Html.Raw(frameFactory.GetBatchEditHTML(moduleId,selectRecords,pageRecords))

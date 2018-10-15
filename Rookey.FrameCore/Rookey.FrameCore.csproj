@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\System\**" />
+    <EmbeddedResource Remove="Common\System\**" />
+    <None Remove="Common\System\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Orm\ServiceStackText\Properties\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+  </ItemGroup>
+
+</Project>

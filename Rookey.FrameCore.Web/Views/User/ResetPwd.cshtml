@@ -1,0 +1,115 @@
+﻿@using Rookey.Frame.Common;
+@{
+    Layout = null;
+    string webName = WebConfigHelper.GetCurrWebName();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>重置您的密码 | @webName</title>
+    <link rel="stylesheet" href="/Scripts/login/global.css" type="text/css">
+    <script src="/Scripts/jquery/jquery-1.8.0.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script type="text/javascript">
+        //重置密码
+        function ResetPwd() {
+            $('#success-tip').hide();
+            var uid = GetLocalQueryString('uid');
+            var pwd1 = $('#pwd1').val();
+            var pwd2 = $('#pwd2').val();
+            if (pwd1 == '' || pwd2 == '') {
+                $('#error_tip').show().html('密码不能为空！');
+                return;
+            }
+            if (pwd1.length < 5 || pwd1.length > 20) {
+                $('#error_tip').show().html('密码长度为5-20个字符！');
+                return;
+            }
+            if (pwd1 != pwd2) {
+                $('#error_tip').show().html('两次密码输入不一致！');
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/User/ChangePwdNoLogin.html',
+                data: { uid: uid, pwd1: pwd1, pwd2: pwd2 },
+                success: function (result) {
+                    if (!result) {
+                        $('#error_tip').show().html('服务器无响应，请重试！');
+                        return;
+                    }
+                    if (!result.Success) {
+                        $('#error_tip').show().html(result.Message);
+                    } else {
+                        $('#error_tip').hide();
+                        $('#success-tip').show();
+                    }
+                },
+                error: function (err) {
+                    $('#error_tip').show().html('服务器无响应，请重试！');
+                }
+            });
+        }
+
+        //获取url里的参数值 name:参数名称
+        function GetQueryStringByUrl(source, name) {
+            var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+            if (reg.test(source))
+                return RegExp.$2;
+            return "";
+        };
+
+        //获取本地url里的参数值
+        function GetLocalQueryString(name) {
+            var _url = "http://" + document.location;
+            return GetQueryStringByUrl(_url, name);
+        }
+
+    </script>
+</head>
+<body>
+    <header>
+        <a href="/Page/Main.html">
+            <img style="width: 117px; position: absolute; left: 18px; top: 9px;" src="@WebConfigHelper.GetCurrWebLogo()">
+        </a>
+    </header>
+    <div class="center main" style="min-height: 400px;">
+        <div class="content-r" style="margin: 50px auto; padding: 0; width: 500px; border: none;">
+            <h1 style="font-size: 20px; color: #555; font-weight: normal; text-align: center;">重置您的密码
+            </h1>
+            <div class="resetpwd-module" style="background-color: #fff; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; margin-top: 8px; padding: 20px 28px 30px 29px">
+                <div style="padding: 20px 0px; color: #111;">
+                    <p style="margin: 0px 0px 10px;">为了验证您的新密码，请认真填写以下每一项：</p>
+                    <p style="margin: 0px;">密码区分大小写，为6-24个字符，最好由大小写字母、数字和特殊字符构成。</p>
+                </div>
+                <div id="error_tip" style="width: 385px; display: none; color: red; text-align: center;"></div>
+                <form id="passwordform" method="post">
+                    <ul style="line-height: 40px;">
+                        <li>
+                            <span class="label" style="display: inline-block; width: 120px; text-align: right;">新密码：</span>
+                            <input id="pwd1" name="pwd1" type="password" class="txt" style="width: 240px;">
+                        </li>
+                        <li>
+                            <span class="label" style="display: inline-block; width: 120px; text-align: right;">确认密码：</span>
+                            <input id="pwd2" name="pwd2" type="password" class="txt" style="width: 240px;">
+                        </li>
+                        <li style="text-align: right; width: 376px;">
+                            <span class="label"></span>
+                            <a href="javascript:void(0);" style="padding: 5px 16px; line-height: 25px;" class="button" onclick="ResetPwd()">确定
+                            </a>&nbsp;&nbsp;
+                            <a href="/User/Login.html" class="button" style="background: #f0f0f0; color: #333; padding: 5px 16px; line-height: 25px;">取消
+                            </a>
+                        </li>
+                        <li id="success-tip" style="display: none;">
+                            <div style="text-align: center; color: #468847; font-size: 13px;">您的密码修改成功，去 <a href="/User/Login.html">登录</a></div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>

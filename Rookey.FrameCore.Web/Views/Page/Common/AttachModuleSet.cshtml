@@ -1,0 +1,7 @@
+﻿@{
+    ViewBag.Title = "AttachModuleSet";
+}
+@using Rookey.Frame.UIOperate;
+@{ UIFrameFactory frameFactory = UIFrameFactory.GetInstance(this.Context.Request);
+   Guid moduleId = UIOperate.GetModuleIdByRequest(this.Context.Request);}
+@Html.Raw(frameFactory.GetAttachModuleSetHTML(moduleId))
