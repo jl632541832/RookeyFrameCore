@@ -1302,24 +1302,13 @@ namespace Rookey.Frame.Operate.Base
         /// <summary>
         /// 根据待办任务ID获取审批表单流程操作按钮集合
         /// </summary>
-        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="todo">待办对象</param>
         /// <param name="currUser">当前用户</param>
         /// <returns></returns>
-        public static List<FormButton> GetNodeFlowBtns(Guid todoTaskId, UserInfo currUser = null)
+        public static List<FormButton> GetNodeFlowBtns(Bpm_WorkToDoList todo, UserInfo currUser = null)
         {
             string errMsg = string.Empty;
-            bool isParentTodo = false;
-            Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(todoTaskId, out errMsg);
-            if (todo == null)
-            {
-                Bpm_WorkToDoListHistory todoHistory = CommonOperate.GetEntityById<Bpm_WorkToDoListHistory>(todoTaskId, out errMsg);
-                if (todoHistory != null)
-                    isParentTodo = todoHistory.IsParentTodo == true;
-            }
-            else
-            {
-                isParentTodo = todo.IsParentTodo == true;
-            }
+            bool isParentTodo = todo != null ? todo.IsParentTodo == true : false;
             if (!isParentTodo) //非父待办
             {
                 if (todo == null) return new List<FormButton>();
@@ -1333,7 +1322,10 @@ namespace Rookey.Frame.Operate.Base
                         {
                             Bpm_WorkNode launchNode = BpmOperate.GetLaunchNode(workflowInst.Bpm_WorkFlowId.Value);
                             if (launchNode != null && launchNode.Id == workNodeInst.Bpm_WorkNodeId.Value)
+                            {
+                                Guid? todoTaskId = todo != null ? todo.Id : (Guid?)null;
                                 return GetLaunchNodeFlowBtns(todoTaskId);
+                            }
                             return GetWorkNodeFormBtns(workflowInst.Bpm_WorkFlowId.Value, workNodeInst.Bpm_WorkNodeId.Value);
                         }
                     }
@@ -1345,7 +1337,7 @@ namespace Rookey.Frame.Operate.Base
                 if (tempCurrUser == null || !tempCurrUser.EmpId.HasValue)
                     return new List<FormButton>();
                 int noAction = (int)WorkActionEnum.NoAction;
-                Bpm_WorkToDoList childTodo = CommonOperate.GetEntity<Bpm_WorkToDoList>(x => x.ParentId == todoTaskId && x.OrgM_EmpId == currUser.EmpId.Value && x.WorkAction == noAction && x.IsDeleted == false, null, out errMsg);
+                Bpm_WorkToDoList childTodo = CommonOperate.GetEntity<Bpm_WorkToDoList>(x => x.ParentId == todo.Id && x.OrgM_EmpId == currUser.EmpId.Value && x.WorkAction == noAction && x.IsDeleted == false, null, out errMsg);
                 if (childTodo.Bpm_WorkNodeInstanceId.HasValue && childTodo.Bpm_WorkFlowInstanceId.HasValue)
                 {
                     Bpm_WorkFlowInstance workflowInst = CommonOperate.GetEntityById<Bpm_WorkFlowInstance>(childTodo.Bpm_WorkFlowInstanceId.Value, out errMsg);
@@ -1360,7 +1352,7 @@ namespace Rookey.Frame.Operate.Base
                             {
                                 btns.Add(new FormButton() { TagId = string.Format("flowBtn_{0}", Guid.Empty), DisplayText = "作废", IconType = ButtonIconType.FlowObsoleted, ClickMethod = "ApprovalFlow(this)", Icon = "eu-p2-icon-exclamation", Sort = 5 });
                             }
-                            btns.ForEach(x => { x.ParentToDoId = todoTaskId.ToString(); });
+                            btns.ForEach(x => { x.ParentToDoId = todo.Id.ToString(); });
                             return btns;
                         }
                     }
@@ -1369,6 +1361,17 @@ namespace Rookey.Frame.Operate.Base
             return new List<FormButton>();
         }
 
+        /// <summary>
+        /// 根据待办任务ID获取审批表单流程操作按钮集合
+        /// </summary>
+        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="currUser">当前用户</param>
+        /// <returns></returns>
+        public static List<FormButton> GetNodeFlowBtns(Guid todoTaskId, UserInfo currUser = null)
+        {
+            Bpm_WorkToDoList todo = GetFinalTodo(todoTaskId);
+            return GetNodeFlowBtns(todo, currUser);
+        }
         #endregion
 
         #region 流程操作
@@ -1671,6 +1674,11 @@ namespace Rookey.Frame.Operate.Base
             #endregion
             lock (lockObj)
             {
+                //获取分布式锁
+                string lockMsg = OtherOperate.DistributeDbLock("Bpm_WorkToDoList", "HandleProcess");
+                //分布式锁获取失败
+                if (!string.IsNullOrEmpty(lockMsg))
+                    return lockMsg;
                 #region 事务处理
                 //启用事务
                 CommonOperate.TransactionHandle((conn) =>
@@ -2491,6 +2499,8 @@ namespace Rookey.Frame.Operate.Base
                         LogOperate.AddOperateLog(currUser, workflow.Sys_ModuleId.Value, errPrex, string.Format("【{0}】失败，流程【{1}】，待办【{2}】，处理人【{3}】", errPrex, workflow.Name, workTodo != null ? workTodo.Id.ToString() : string.Empty, currUser.UserName), false, errMsg);
                     });
                 }
+                //释放分布式锁
+                OtherOperate.ReleaseDistDbLock("Bpm_WorkToDoList", "HandleProcess");
             }
             return errMsg;
         }
@@ -3028,12 +3038,11 @@ namespace Rookey.Frame.Operate.Base
         /// <summary>
         /// 根据待办任务ID获取审批信息
         /// </summary>
-        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="todo">待办对象</param>
         /// <returns></returns>
-        public static List<ApprovalInfo> GetRecordApprovalInfosByTodoId(Guid todoTaskId)
+        public static List<ApprovalInfo> GetRecordApprovalInfosByTodo(Bpm_WorkToDoList todo)
         {
             string errMsg = string.Empty;
-            Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(todoTaskId, out errMsg);
             if (todo != null && todo.Bpm_WorkFlowInstanceId.HasValue)
             {
                 Bpm_WorkFlowInstance workFlowInst = CommonOperate.GetEntityById<Bpm_WorkFlowInstance>(todo.Bpm_WorkFlowInstanceId.Value, out errMsg);
@@ -3050,6 +3059,18 @@ namespace Rookey.Frame.Operate.Base
                     return GetRecordApprovalInfos(workFlowInst);
             }
             return new List<ApprovalInfo>();
+        }
+
+        /// <summary>
+        /// 根据待办任务ID获取审批信息
+        /// </summary>
+        /// <param name="todoTaskId">待办任务ID</param>
+        /// <returns></returns>
+        public static List<ApprovalInfo> GetRecordApprovalInfosByTodoId(Guid todoTaskId)
+        {
+            string errMsg = string.Empty;
+            Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(todoTaskId, out errMsg);
+            return GetRecordApprovalInfosByTodo(todo);
         }
 
         /// <summary>
@@ -3086,19 +3107,30 @@ namespace Rookey.Frame.Operate.Base
         /// <summary>
         /// 获取当前审批节点
         /// </summary>
+        /// <param name="todo">待办对象</param>
+        /// <returns></returns>
+        public static Bpm_WorkNode GetCurrentApprovalNode(Bpm_WorkToDoList todo)
+        {
+            if (todo != null && todo.Bpm_WorkNodeInstanceId.HasValue)
+            {
+                string errMsg = string.Empty;
+                Bpm_WorkNodeInstance workNodeInst = CommonOperate.GetEntityById<Bpm_WorkNodeInstance>(todo.Bpm_WorkNodeInstanceId.Value, out errMsg);
+                if (workNodeInst != null && workNodeInst.Bpm_WorkNodeId.HasValue)
+                    return GetWorkNode(workNodeInst.Bpm_WorkNodeId.Value);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 获取当前审批节点
+        /// </summary>
         /// <param name="todoTaskId">待办任务ID</param>
         /// <returns></returns>
         public static Bpm_WorkNode GetCurrentApprovalNode(Guid todoTaskId)
         {
             string errMsg = string.Empty;
             Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(todoTaskId, out errMsg);
-            if (todo != null && todo.Bpm_WorkNodeInstanceId.HasValue)
-            {
-                Bpm_WorkNodeInstance workNodeInst = CommonOperate.GetEntityById<Bpm_WorkNodeInstance>(todo.Bpm_WorkNodeInstanceId.Value, out errMsg);
-                if (workNodeInst != null && workNodeInst.Bpm_WorkNodeId.HasValue)
-                    return GetWorkNode(workNodeInst.Bpm_WorkNodeId.Value);
-            }
-            return null;
+            return GetCurrentApprovalNode(todo);
         }
 
         /// <summary>
@@ -3164,13 +3196,11 @@ namespace Rookey.Frame.Operate.Base
         /// <summary>
         /// 根据流程待办任务获取流程结点ID，不包含历史
         /// </summary>
-        /// <param name="workTodoId">待办任务ID</param>
+        /// <param name="todo">待办对象</param>
         /// <returns></returns>
-        public static Guid GetWorkNodeIdByTodoId(Guid workTodoId)
+        public static Guid GetWorkNodeIdByTodoId(Bpm_WorkToDoList todo)
         {
             string errMsg = string.Empty;
-            Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(workTodoId, out errMsg);
-
             if (todo != null && todo.Bpm_WorkNodeInstanceId.HasValue)
             {
                 Bpm_WorkNodeInstance workNodeInst = CommonOperate.GetEntityById<Bpm_WorkNodeInstance>(todo.Bpm_WorkNodeInstanceId.Value, out errMsg);
@@ -3178,6 +3208,18 @@ namespace Rookey.Frame.Operate.Base
                     return workNodeInst.Bpm_WorkNodeId.Value;
             }
             return Guid.Empty;
+        }
+
+        /// <summary>
+        /// 根据流程待办任务获取流程结点ID，不包含历史
+        /// </summary>
+        /// <param name="workTodoId">待办任务ID</param>
+        /// <returns></returns>
+        public static Guid GetWorkNodeIdByTodoId(Guid workTodoId)
+        {
+            string errMsg = string.Empty;
+            Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(workTodoId, out errMsg);
+            return GetWorkNodeIdByTodoId(todo);
         }
 
         /// <summary>
@@ -3205,29 +3247,38 @@ namespace Rookey.Frame.Operate.Base
         #region 处理人判断
 
         /// <summary>
-        /// 是否是当前待办任务的处理者
+        /// 获取最终待办对象
         /// </summary>
-        /// <param name="todoTaskId">当前待办任务ID</param>
-        /// <param name="currUser">用户信息</param>
+        /// <param name="todoTaskId">待办ID</param>
         /// <returns></returns>
-        public static bool IsCurrentToDoTaskHandler(Guid todoTaskId, UserInfo currUser)
+        public static Bpm_WorkToDoList GetFinalTodo(Guid todoTaskId)
         {
-            if (currUser == null) return false;
-            //if (currUser.UserName == "admin") return true;
-            if (!currUser.EmpId.HasValue) return false;
             string errMsg = string.Empty;
-            bool isParentTodo = false;
             Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(todoTaskId, out errMsg);
             if (todo == null)
             {
                 Bpm_WorkToDoListHistory todoHistory = CommonOperate.GetEntityById<Bpm_WorkToDoListHistory>(todoTaskId, out errMsg);
                 if (todoHistory != null)
-                    isParentTodo = todoHistory.IsParentTodo == true;
+                {
+                    todo = new Bpm_WorkToDoList();
+                    ObjectHelper.CopyValue(todoHistory, todo);
+                }
             }
-            else
-            {
-                isParentTodo = todo.IsParentTodo == true;
-            }
+            return todo;
+        }
+
+        /// <summary>
+        /// 是否是当前待办任务的处理者
+        /// </summary>
+        /// <param name="todo">当前待办任务</param>
+        /// <param name="currUser">用户信息</param>
+        /// <returns></returns>
+        public static bool IsCurrentToDoTaskHandler(Bpm_WorkToDoList todo, UserInfo currUser)
+        {
+            if (todo == null || currUser == null || !currUser.EmpId.HasValue)
+                return false;
+            string errMsg = string.Empty;
+            bool isParentTodo = todo.IsParentTodo == true;
             if (!isParentTodo) //非父待办
             {
                 if (todo == null) return false;
@@ -3247,9 +3298,24 @@ namespace Rookey.Frame.Operate.Base
             else //当前为父待办，子流程
             {
                 int noAction = (int)WorkActionEnum.NoAction;
-                long count = CommonOperate.Count<Bpm_WorkToDoList>(out errMsg, false, x => x.ParentId == todoTaskId && x.OrgM_EmpId == currUser.EmpId.Value && x.WorkAction == noAction && x.IsDeleted == false);
+                long count = CommonOperate.Count<Bpm_WorkToDoList>(out errMsg, false, x => x.ParentId == todo.Id && x.OrgM_EmpId == currUser.EmpId.Value && x.WorkAction == noAction && x.IsDeleted == false);
                 return count > 0;
             }
+        }
+
+        /// <summary>
+        /// 是否是当前待办任务的处理者
+        /// </summary>
+        /// <param name="todoTaskId">当前待办任务ID</param>
+        /// <param name="currUser">用户信息</param>
+        /// <returns></returns>
+        public static bool IsCurrentToDoTaskHandler(Guid todoTaskId, UserInfo currUser)
+        {
+            if (currUser == null) return false;
+            if (!currUser.EmpId.HasValue) return false;
+            string errMsg = string.Empty;
+            Bpm_WorkToDoList todo = GetFinalTodo(todoTaskId);
+            return IsCurrentToDoTaskHandler(todo, currUser);
         }
 
         /// <summary>
@@ -3295,21 +3361,22 @@ namespace Rookey.Frame.Operate.Base
         /// <summary>
         /// 当前待办是否为子流程的父待办
         /// </summary>
+        /// <param name="todo">待办对象</param>
+        /// <returns></returns>
+        public static bool IsChildFlowParentTodo(Bpm_WorkToDoList todo)
+        {
+            return todo != null ? todo.IsParentTodo == true : false;
+        }
+
+        /// <summary>
+        /// 当前待办是否为子流程的父待办
+        /// </summary>
         /// <param name="todoTaskId">待办ID</param>
         /// <returns></returns>
         public static bool IsChildFlowParentTodo(Guid todoTaskId)
         {
-            string errMsg = string.Empty;
-            Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(todoTaskId, out errMsg);
-            if (todo == null)
-            {
-                Bpm_WorkToDoListHistory todoHistory = CommonOperate.GetEntityById<Bpm_WorkToDoListHistory>(todoTaskId, out errMsg);
-                if (todoHistory != null)
-                    return todoHistory.IsParentTodo == true;
-                else
-                    return false;
-            }
-            return todo.IsParentTodo == true;
+            Bpm_WorkToDoList todo = GetFinalTodo(todoTaskId);
+            return todo != null ? todo.IsParentTodo == true : false;
         }
 
         #endregion

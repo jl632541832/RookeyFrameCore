@@ -2678,15 +2678,16 @@ namespace Rookey.Frame.UIOperate
             bool isRestartFlow = request != null && request.QueryEx("rsf").ObjToInt() == 1;
             #endregion
             #region 前置参数
+            Bpm_WorkToDoList todo = todoTaskId.HasValue && todoTaskId.Value != Guid.Empty ? BpmOperate.GetFinalTodo(todoTaskId.Value) : null;
             #region 表单按钮
-            bool isParentTodo = todoTaskId.HasValue && BpmOperate.IsChildFlowParentTodo(todoTaskId.Value); //是否为父待办ID
-            Sys_Form form = formId.HasValue && formId.Value != Guid.Empty ? SystemOperate.GetForm(formId.Value) : SystemOperate.GetUserFinalForm(currUser, moduleId, todoTaskId);
+            bool isParentTodo = todo != null && BpmOperate.IsChildFlowParentTodo(todo); //是否为父待办ID
+            Sys_Form form = formId.HasValue && formId.Value != Guid.Empty ? SystemOperate.GetForm(formId.Value) : SystemOperate.GetUserFinalFormTwo(currUser, moduleId, todo);
             if (form == null) return string.Empty;
             bool isDraft = false;
             int formWidth = 0; //表单宽度
             int formHeight = 0; //表单高度
-            int editMode = todoTaskId.HasValue && todoTaskId.Value != Guid.Empty ? (int)ModuleEditModeEnum.TabFormEdit : GetEditMode(module, form, out formWidth, out formHeight, currUser.UserId);
-            List<FormButton> buttons = SystemOperate.GetFormButtons(module, FormTypeEnum.EditForm, !id.HasValue, isDraft, id, todoTaskId, currUser);
+            int editMode = todo != null ? (int)ModuleEditModeEnum.TabFormEdit : GetEditMode(module, form, out formWidth, out formHeight, currUser.UserId);
+            List<FormButton> buttons = SystemOperate.GetFormButtonsTwo(module, FormTypeEnum.EditForm, !id.HasValue, isDraft, id, todo, currUser);
             string btnsHtml = GetFormButtonHTML(module, buttons, editMode, gridId, currUser);
             string topBtnsHtml = string.Empty; //顶部按钮
             string bottomBtnsHtml = string.Empty;
@@ -2810,7 +2811,7 @@ namespace Rookey.Frame.UIOperate
             bool isEnabledFlow = BpmOperate.IsEnabledWorkflow(moduleId); //是否启用流程
             if (isEnabledFlow)
             {
-                approvalInfoHtml = GetApprovalInfoAndOpinionsHtml(moduleId, id, todoTaskId, currUser, isParentTodo, domainPath);
+                approvalInfoHtml = GetApprovalInfoAndOpinionsHtmlTwo(moduleId, id, todo, currUser, isParentTodo, domainPath);
             }
             #endregion
             #region 实体对象

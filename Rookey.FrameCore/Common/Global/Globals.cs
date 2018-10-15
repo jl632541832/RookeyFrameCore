@@ -275,5 +275,17 @@ namespace Rookey.Frame.Common
         }
 
         #endregion
+        #region 其他
+        /// <summary>
+        /// 获取时间戳
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static double GetTimestamp(DateTime d)
+        {
+            TimeSpan ts = d.ToUniversalTime() - new DateTime(1970, 1, 1);
+            return ts.TotalMilliseconds;     //精确到毫秒
+        }
+        #endregion
     }
 }

@@ -36,7 +36,7 @@ namespace Rookey.Frame.Controllers.AutoHandle
                 //在当前数据库中自动注册外部链接数据库服务器
                 SystemOperate.RegCrossDbServer();
             }
-            catch(Exception ex) { }
+            catch { }
             try
             {
                 //加载所有启用缓存的模块数据
@@ -45,7 +45,7 @@ namespace Rookey.Frame.Controllers.AutoHandle
                     SystemOperate.LoadAllModuleCache();
                 }
             }
-            catch(Exception ex) { }
+            catch { }
             //调用自定义应用程序启动方法
             try
             {

@@ -67,7 +67,7 @@ namespace Rookey.Frame.DALFactory
             switch (factoryType)
             {
                 case DatabaseType.MySql:
-                    dialectProvider = SqlServerDialect.Provider;
+                    dialectProvider = MySqlDialect.Provider;
                     break;
                 default:
                     dialectProvider = SqlServerDialect.Provider;

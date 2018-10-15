@@ -159,7 +159,7 @@ namespace ServiceStack.OrmLite.SqlServer
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 

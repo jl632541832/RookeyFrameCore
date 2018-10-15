@@ -5251,27 +5251,48 @@ namespace Rookey.Frame.Operate.Base
                 //开始执行事务
                 lock (lockObj)
                 {
-                    TransactionHandle(tranAction, out errMsg, connStr, dbType);
+                    string lockMsg = OtherOperate.DistributeDbLock(module.TableName, "FastSave");
+                    if (string.IsNullOrEmpty(lockMsg)) //获取分布式锁成功
+                    {
+                        //执行保存
+                        TransactionHandle(tranAction, out errMsg, connStr, dbType);
+                        //释放分布式锁
+                        OtherOperate.ReleaseDistDbLock(module.TableName, "FastSave");
+                        //返回值
+                        return string.IsNullOrEmpty(errMsg) ? mainObj.Id : Guid.Empty;
+                    }
+                    else //获取分布式锁超时
+                    {
+                        errMsg = lockMsg;
+                        return Guid.Empty;
+                    }
                 }
-                if (string.IsNullOrEmpty(errMsg)) //事务执行成功
-                    return mainObj.Id;
-                else
-                    return Guid.Empty;
             }
             else //非事务方式保存
             {
-                try
+                lock (lockObj)
                 {
-                    lock (lockObj)
+                    string lockMsg = OtherOperate.DistributeDbLock(module.TableName, "FastSave");
+                    if (string.IsNullOrEmpty(lockMsg)) //获取分布式锁成功
                     {
-                        tranAction(null);
+                        try
+                        {
+                            tranAction(null); //执行保存
+                        }
+                        catch (Exception ex)
+                        {
+                            errMsg = ex.Message;
+                        }
+                        //释放分布式锁
+                        OtherOperate.ReleaseDistDbLock(module.TableName, "FastSave");
+                        //返回值
+                        return string.IsNullOrEmpty(errMsg) ? mainObj.Id : Guid.Empty;
                     }
-                    return mainObj.Id;
-                }
-                catch (Exception ex)
-                {
-                    errMsg = ex.Message;
-                    return Guid.Empty;
+                    else //获取分布式锁超时
+                    {
+                        errMsg = lockMsg;
+                        return Guid.Empty;
+                    }
                 }
             }
             #endregion

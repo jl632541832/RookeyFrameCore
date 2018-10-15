@@ -3273,10 +3273,10 @@ namespace Rookey.Frame.Operate.Base
         /// </summary>
         /// <param name="currUser">当前用户</param>
         /// <param name="moduleId">模块ID</param>
-        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="todo">待办对象</param>
         /// <param name="formId">指定表单ID</param>
         /// <returns></returns>
-        public static Sys_Form GetUserFinalForm(UserInfo currUser, Guid moduleId, Guid? todoTaskId = null, Guid? formId = null)
+        public static Sys_Form GetUserFinalFormTwo(UserInfo currUser, Guid moduleId, Bpm_WorkToDoList todo, Guid? formId = null)
         {
             if (currUser == null)
                 return GetDefaultForm(moduleId);
@@ -3284,17 +3284,18 @@ namespace Rookey.Frame.Operate.Base
             if (formId.HasValue && formId.Value != Guid.Empty)
             {
                 form = GetForm(formId.Value);
-                if (form != null)
+                //指定表单不为默认表单时返回表单，否则继续往下走
+                if (form != null && form.Id != SystemOperate.GetDefaultForm(moduleId).Id)
                     return form;
             }
             bool isEnabledFlow = BpmOperate.IsEnabledWorkflow(moduleId); //是否启用流程
             if (isEnabledFlow) //启用流程后
             {
-                if (todoTaskId.HasValue && todoTaskId.Value != Guid.Empty) //有待办
+                if (todo != null) //有待办
                 {
-                    if (BpmOperate.IsCurrentToDoTaskHandler(todoTaskId.Value, currUser))
+                    if (BpmOperate.IsCurrentToDoTaskHandler(todo, currUser))
                     {
-                        form = BpmOperate.GetWorkNodeForm(BpmOperate.GetWorkNodeIdByTodoId(todoTaskId.Value)); //取流程节点表单
+                        form = BpmOperate.GetWorkNodeForm(BpmOperate.GetWorkNodeIdByTodoId(todo)); //取流程节点表单
                     }
                 }
                 else //无待办时
@@ -3308,6 +3309,20 @@ namespace Rookey.Frame.Operate.Base
             if (form == null || form.Id == SystemOperate.GetDefaultForm(moduleId).Id)
                 form = SystemOperate.GetUserForm(currUser.UserId, moduleId);
             return form;
+        }
+
+        /// <summary>
+        /// 获取用户最终表单
+        /// </summary>
+        /// <param name="currUser">当前用户</param>
+        /// <param name="moduleId">模块ID</param>
+        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="formId">指定表单ID</param>
+        /// <returns></returns>
+        public static Sys_Form GetUserFinalForm(UserInfo currUser, Guid moduleId, Guid? todoTaskId = null, Guid? formId = null)
+        {
+            Bpm_WorkToDoList todo = todoTaskId.HasValue && todoTaskId.Value != Guid.Empty ? BpmOperate.GetFinalTodo(todoTaskId.Value) : null;
+            return GetUserFinalFormTwo(currUser, moduleId, todo, formId);
         }
 
         #endregion
@@ -3344,6 +3359,23 @@ namespace Rookey.Frame.Operate.Base
         /// <returns></returns>
         public static List<FormButton> GetFormButtons(Sys_Module module, FormTypeEnum formType, bool isAdd = false, bool isDraft = false, Guid? recordId = null, Guid? toDoTaskId = null, UserInfo currUser = null)
         {
+            Bpm_WorkToDoList tempTodo = toDoTaskId.HasValue && toDoTaskId.Value != Guid.Empty ? BpmOperate.GetWorkTodo(toDoTaskId.Value) : null;
+            return GetFormButtonsTwo(module, formType, isAdd, isDraft, recordId, tempTodo, currUser);
+        }
+
+        /// <summary>
+        /// 获取表单按钮
+        /// </summary>
+        /// <param name="module">模块</param>
+        /// <param name="formType">表单类型</param>
+        /// <param name="isAdd">是否新增表单</param>
+        /// <param name="isDraft">是否是草稿</param>
+        /// <param name="recordId">表单记录ID</param>
+        /// <param name="todo">待办对象,针对流程表单</param>
+        /// <param name="currUser">当前用户</param>
+        /// <returns></returns>
+        public static List<FormButton> GetFormButtonsTwo(Sys_Module module, FormTypeEnum formType, bool isAdd = false, bool isDraft = false, Guid? recordId = null, Bpm_WorkToDoList todo = null, UserInfo currUser = null)
+        {
             if (currUser == null) return new List<FormButton>();
             List<FormButton> btns = new List<FormButton>();
             bool isEnabledFlow = BpmOperate.IsEnabledWorkflow(module.Id); //是否启用流程
@@ -3351,7 +3383,7 @@ namespace Rookey.Frame.Operate.Base
             {
                 case FormTypeEnum.EditForm: //新增、编辑页面
                     {
-                        if (!isEnabledFlow || (isEnabledFlow && (!toDoTaskId.HasValue || toDoTaskId.Value == Guid.Empty))) //未启用流程或启用流程并且是发起
+                        if (!isEnabledFlow || (isEnabledFlow && todo == null)) //未启用流程或启用流程并且是发起
                         {
                             bool canAdd = PermissionOperate.HasButtonPermission(currUser, module.Id, "新增");
                             bool canEdit = PermissionOperate.HasButtonPermission(currUser, module.Id, "编辑");
@@ -3412,28 +3444,17 @@ namespace Rookey.Frame.Operate.Base
                         {
                             if ((!module.ParentId.HasValue || module.ParentId.Value == Guid.Empty))
                             {
-                                if (BpmOperate.IsCurrentToDoTaskHandler(toDoTaskId.Value, currUser)) //为当前审批人时
+                                if (BpmOperate.IsCurrentToDoTaskHandler(todo, currUser)) //为当前审批人时
                                 {
-                                    btns.AddRange(BpmOperate.GetNodeFlowBtns(toDoTaskId.Value, currUser));
+                                    btns.AddRange(BpmOperate.GetNodeFlowBtns(todo, currUser));
                                 }
                                 else if (currUser != null && currUser.UserName == "admin") //管理员添加指派功能
                                 {
                                     string errMsg = string.Empty;
-                                    bool isParentTodo = false;
-                                    Bpm_WorkToDoList todo = CommonOperate.GetEntityById<Bpm_WorkToDoList>(toDoTaskId.Value, out errMsg);
-                                    if (todo == null)
-                                    {
-                                        Bpm_WorkToDoListHistory todoHistory = CommonOperate.GetEntityById<Bpm_WorkToDoListHistory>(toDoTaskId.Value, out errMsg);
-                                        if (todoHistory != null)
-                                            isParentTodo = todoHistory.IsParentTodo == true;
-                                    }
-                                    else
-                                    {
-                                        isParentTodo = todo.IsParentTodo == true;
-                                    }
+                                    bool isParentTodo = todo != null ? todo.IsParentTodo == true : false;
                                     FormButton tempBtn = new FormButton() { TagId = string.Format("flowBtn_{0}", Guid.NewGuid().ToString()), IconType = ButtonIconType.FlowDirect, Icon = "eu-icon-user", DisplayText = "指派", ClickMethod = "DirectFlow(this)", Sort = 7 };
                                     if (isParentTodo)
-                                        tempBtn.ParentToDoId = toDoTaskId.Value.ToString();
+                                        tempBtn.ParentToDoId = todo.Id.ToString();
                                     btns.Add(tempBtn);
                                 }
                             }

@@ -23,7 +23,7 @@ namespace Cecport.Frame.Common
                 response = req.GetResponse();
                 result = response == null ? false : true;
             }
-            catch (Exception ex)
+            catch
             {
                 result = false;
             }

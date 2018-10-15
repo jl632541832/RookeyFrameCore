@@ -17,10 +17,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using Orm.System.Runtime.CompilerServices;
 using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Security;
+using System.Threading;
 using System.Threading.Tasks;
 
 // This is a minimal implementation of the stuff needed by the C# 5 Beta
@@ -36,7 +37,7 @@ using System.Threading.Tasks;
 //  --> do not use this in security critical code (APTCA)
 //  - The code is not optimized. Tasks are always created, repeated boxing may occur.
 
-namespace System.Threading.Tasks
+namespace Orm.System.Threading.Tasks
 {
     internal static class TaskEx
     {
@@ -135,7 +136,7 @@ namespace System.Threading.Tasks
     }
 }
 
-namespace System.Runtime.CompilerServices
+namespace Orm.System.Runtime.CompilerServices
 {
     internal interface INotifyCompletion
     {

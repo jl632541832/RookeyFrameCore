@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -35,6 +36,24 @@ namespace Rookey.Frame.Common
                 return request.HttpContext;
             }
             return null;
+        }
+
+        /// <summary>
+        /// 获取当前程序进程ID
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCurrentProcessId()
+        {
+            return Process.GetCurrentProcess().Id.ToString();
+        }
+
+        /// <summary>
+        /// 获取当前线程ID
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCurrentThreadId()
+        {
+            return System.Threading.Thread.CurrentThread.ManagedThreadId.ToString();
         }
     }
 }

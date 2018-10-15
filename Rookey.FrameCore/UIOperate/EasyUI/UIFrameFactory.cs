@@ -1882,23 +1882,23 @@ namespace Rookey.Frame.UIOperate
         /// </summary>
         /// <param name="moduleId">模块ID</param>
         /// <param name="id">记录ID</param>
-        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="todo">待办对象</param>
         /// <param name="currUser">当前用户</param>
         /// <param name="isParentTodo">是否为子流程的父待办</param>
         /// <param name="domainPath">域路径</param>
         /// <returns></returns>
-        public static string GetApprovalInfoAndOpinionsHtml(Guid moduleId, Guid? id, Guid? todoTaskId, UserInfo currUser, bool isParentTodo = false, string domainPath = null)
+        public static string GetApprovalInfoAndOpinionsHtmlTwo(Guid moduleId, Guid? id, Bpm_WorkToDoList todo, UserInfo currUser, bool isParentTodo = false, string domainPath = null)
         {
             string path = string.IsNullOrEmpty(domainPath) ? "/" : domainPath;
             StringBuilder sb = new StringBuilder();
-            bool isDisplayOpinionPanel = todoTaskId.HasValue && todoTaskId.Value != Guid.Empty && BpmOperate.IsCurrentToDoTaskHandler(todoTaskId.Value, currUser);
+            bool isDisplayOpinionPanel = todo != null && BpmOperate.IsCurrentToDoTaskHandler(todo, currUser);
             List<ApprovalInfo> approvalInfos = new List<ApprovalInfo>();
             string childFlowFlag = string.Empty; //子流程标识
-            if (todoTaskId.HasValue && todoTaskId.Value != Guid.Empty)
+            if (todo != null)
             {
-                if (!BpmOperate.IsChildFlowParentTodo(todoTaskId.Value)) //当前非子流程父待办
+                if (!BpmOperate.IsChildFlowParentTodo(todo)) //当前非子流程父待办
                 {
-                    approvalInfos = BpmOperate.GetRecordApprovalInfosByTodoId(todoTaskId.Value);
+                    approvalInfos = BpmOperate.GetRecordApprovalInfosByTodo(todo);
                     if (approvalInfos.Count == 0) return sb.ToString();
                 }
             }
@@ -1984,7 +1984,7 @@ namespace Rookey.Frame.UIOperate
             }
             if (isDisplayOpinionPanel)
             {
-                Bpm_WorkNode currNode = BpmOperate.GetCurrentApprovalNode(todoTaskId.Value);
+                Bpm_WorkNode currNode = BpmOperate.GetCurrentApprovalNode(todo);
                 sb.Append("<div style=\"padding-bottom:2px;\">");
                 sb.Append("<div class=\"easyui-panel\" title=\"处理及意见\" style=\"padding-bottom:5px;\" data-options=\"iconCls:'eu-icon-edit',collapsible:true\">");
                 sb.Append("<table style=\"line-height:36px;\">");
@@ -2023,6 +2023,22 @@ namespace Rookey.Frame.UIOperate
             string flowCanvasr = WebHelper.GetJsModifyTimeStr("/Scripts/Bpm/FlowCanvas.js");
             sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}Scripts/Bpm/FlowCanvas.js?r={1}\"></script>", path, flowCanvasr);
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 获取审批信息和审批意见页面HTML
+        /// </summary>
+        /// <param name="moduleId">模块ID</param>
+        /// <param name="id">记录ID</param>
+        /// <param name="todoTaskId">待办任务ID</param>
+        /// <param name="currUser">当前用户</param>
+        /// <param name="isParentTodo">是否为子流程的父待办</param>
+        /// <param name="domainPath">域路径</param>
+        /// <returns></returns>
+        public static string GetApprovalInfoAndOpinionsHtml(Guid moduleId, Guid? id, Guid? todoTaskId, UserInfo currUser, bool isParentTodo = false, string domainPath = null)
+        {
+            Bpm_WorkToDoList todo = todoTaskId.HasValue && todoTaskId.Value != Guid.Empty ? BpmOperate.GetWorkTodo(todoTaskId.Value) : null;
+            return GetApprovalInfoAndOpinionsHtmlTwo(moduleId, id, todo, currUser, isParentTodo, domainPath);
         }
 
         /// <summary>
