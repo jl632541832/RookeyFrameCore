@@ -22,7 +22,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
     /// </summary>
     class Sys_ModuleOperateHandle : IModelOperateHandle<Sys_Module>, IGridOperateHandle<Sys_Module>
     {
-        #region 模块操作接口
+        #region 操作接口
         /// <summary>
         /// 模块操作完成后
         /// </summary>
@@ -171,7 +171,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
         /// <param name="data">数据</param>
         /// <param name="otherParams">其他参数</param>
         /// <param name="currUser">当前用户</param>
-        public void PageGridDataHandle(List<Sys_Module> data, object[] otherParams = null, UserInfo currUser = null)
+        public bool PageGridDataHandle(List<Sys_Module> data, object[] otherParams = null, UserInfo currUser = null)
         {
             if (data != null && data.Count > 0)
             {
@@ -181,6 +181,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                         x.Display = x.Name;
                 });
             }
+            return false;
         }
 
         /// <summary>

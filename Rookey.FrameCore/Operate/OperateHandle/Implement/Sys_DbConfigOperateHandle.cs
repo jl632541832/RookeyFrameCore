@@ -29,7 +29,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
         {
         }
 
-        public void PageGridDataHandle(List<Sys_DbConfig> data, object[] otherParams = null, UserInfo currUser = null)
+        public bool PageGridDataHandle(List<Sys_DbConfig> data, object[] otherParams = null, UserInfo currUser = null)
         {
             if (data != null && data.Count > 0)
             {
@@ -40,6 +40,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                         t.CurrPageDensity = tbIndexInfo.FragmentationPercent;
                 }
             }
+            return false;
         }
 
         public System.Linq.Expressions.Expression<Func<Sys_DbConfig, bool>> GetGridFilterCondition(out string where, EnumDef.DataGridType gridType, Dictionary<string, string> condition = null, string initModule = null, string initField = null, Dictionary<string, string> otherParams = null, UserInfo currUser = null)

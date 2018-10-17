@@ -3443,7 +3443,7 @@ function RowEditSave(moduleId, moduleName, recordId, gridId, backFun) {
     }
     if (row != null) {
         if (typeof (OverRowEditSave) == 'function') {
-            OverRowEditSave(row, updateFields, moduleName, recordId, gridId);
+            OverRowEditSave(row, updateFields, moduleName, recordId, gridId, moduleId, rowIndex, backFun);
             return;
         }
         var fieldIsOk = false;

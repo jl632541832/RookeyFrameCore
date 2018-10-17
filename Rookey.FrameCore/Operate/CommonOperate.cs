@@ -434,10 +434,13 @@ namespace Rookey.Frame.Operate.Base
                     errMsg = args[1].ObjToStr();
                     pageInfo.totalCount = args[0].ObjToLong();
                     List<T> list = obj as List<T>;
-                    //导航属性处理
-                    SetModelListForeignNameFieldValue(list, fieldNames, references);
                     //网格数据处理
-                    new OperateHandleFactory<T>().PageGridDataHandle(list, null, currUser);
+                    bool isLoadNavNameValue = new OperateHandleFactory<T>().PageGridDataHandle(list, new object[] { fieldNames }, currUser);
+                    if (!isLoadNavNameValue)
+                    {
+                        //导航属性处理
+                        SetModelListForeignNameFieldValue(list, fieldNames, references);
+                    }
                     return list;
                 }
                 else
@@ -445,10 +448,13 @@ namespace Rookey.Frame.Operate.Base
                     IBaseBLL<T> bll = BridgeObject.Resolve<IBaseBLL<T>>(currUser, dbType);
                     List<T> list = bll.GetPageEntities(out totalCount, out errMsg, permissionFilter, pageInfo.page, pageInfo.pagesize, orderFields, isDescs, expression, whereSql, fieldNames, references, connString);
                     pageInfo.totalCount = totalCount;
-                    //导航属性处理
-                    SetModelListForeignNameFieldValue(list, fieldNames, references);
                     //网格数据处理
-                    new OperateHandleFactory<T>().PageGridDataHandle(list, null, currUser);
+                    bool isLoadNavNameValue = new OperateHandleFactory<T>().PageGridDataHandle(list, new object[] { fieldNames }, currUser);
+                    if (!isLoadNavNameValue)
+                    {
+                        //导航属性处理
+                        SetModelListForeignNameFieldValue(list, fieldNames, references);
+                    }
                     return list;
                 }
             }

@@ -75,7 +75,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
         /// <param name="data"></param>
         /// <param name="otherParams"></param>
         /// <param name="currUser"></param>
-        public void PageGridDataHandle(List<Bpm_WorkToDoList> data, object[] otherParams = null, UserInfo currUser = null)
+        public bool PageGridDataHandle(List<Bpm_WorkToDoList> data, object[] otherParams = null, UserInfo currUser = null)
         {
             if (data != null && data.Count > 0)
             {
@@ -99,6 +99,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                     }
                 }
             }
+            return false;
         }
 
         /// <summary>

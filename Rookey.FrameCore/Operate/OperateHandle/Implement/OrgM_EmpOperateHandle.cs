@@ -179,7 +179,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
         /// <param name="data">数据</param>
         /// <param name="otherParams">其他参数</param>
         /// <param name="currUser">当前用户</param>
-        public void PageGridDataHandle(List<OrgM_Emp> data, object[] otherParams = null, UserInfo currUser = null)
+        public bool PageGridDataHandle(List<OrgM_Emp> data, object[] otherParams = null, UserInfo currUser = null)
         {
             if (data != null && data.Count > 0)
             {
@@ -207,6 +207,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                     }
                 }
             }
+            return false;
         }
         /// <summary>
         /// 网格条件过滤

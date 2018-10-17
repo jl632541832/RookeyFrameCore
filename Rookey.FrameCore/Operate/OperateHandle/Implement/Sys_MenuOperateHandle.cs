@@ -51,7 +51,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
         /// <param name="data"></param>
         /// <param name="otherParams"></param>
         /// <param name="currUser"></param>
-        public void PageGridDataHandle(List<Sys_Menu> data, object[] otherParams = null, UserInfo currUser = null)
+        public bool PageGridDataHandle(List<Sys_Menu> data, object[] otherParams = null, UserInfo currUser = null)
         {
             if (data != null)
             {
@@ -69,6 +69,7 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                 }
                 data = list;
             }
+            return false;
         }
 
         public Expression<Func<Sys_Menu, bool>> GetGridFilterCondition(out string where, DataGridType gridType, Dictionary<string, string> condition = null, string initModule = null, string initField = null, Dictionary<string, string> otherParams = null, UserInfo currUser = null)

@@ -162,7 +162,8 @@ namespace Rookey.Frame.Operate.Base.OperateHandle
         /// <param name="data">处理前的网格数据</param>
         /// <param name="otherParams">其他参数</param>
         /// <param name="currUser">当前用户</param>
-        void PageGridDataHandle(List<T> data, object[] otherParams = null, UserInfo currUser = null);
+        /// <returns>是否自定义加载了外键Name字段数据</returns>
+        bool PageGridDataHandle(List<T> data, object[] otherParams = null, UserInfo currUser = null);
 
         /// <summary>
         /// 返回网格过滤条件
@@ -874,13 +875,15 @@ namespace Rookey.Frame.Operate.Base.OperateHandle
         /// <param name="data">处理前的网格数据</param>
         /// <param name="otherParams">其他参数</param>
         /// <param name="currUser">当前用户</param>
-        internal void PageGridDataHandle(List<T> data, object[] otherParams = null, UserInfo currUser = null)
+        /// <returns>是否自定义加载了外键Name字段数据</returns>
+        internal bool PageGridDataHandle(List<T> data, object[] otherParams = null, UserInfo currUser = null)
         {
             object instance = GetOperateHandleInstance(OperateInterfaceType.GridOperate);
             if (instance != null)
             {
-                ((IGridOperateHandle<T>)instance).PageGridDataHandle(data, otherParams, currUser);
+                return ((IGridOperateHandle<T>)instance).PageGridDataHandle(data, otherParams, currUser);
             }
+            return false;
         }
 
         /// <summary>
