@@ -142,7 +142,7 @@ namespace Rookey.Frame.DAL.Sys
             if (currUser == null || !currUser.EmpId.HasValue)
                 return new List<Guid>();
             object instance = null;
-            object objs = Globals.ExecuteReflectMethod("Cecport.Frame.Operate.Base", "OrgMOperate", "GetEmpChildsEmpIds", new object[] { currUser.EmpId.Value, false, null, null }, ref instance, true);
+            object objs = Globals.ExecuteReflectMethod("Rookey.Frame.Operate.Base", "OrgMOperate", "GetEmpChildsEmpIds", new object[] { currUser.EmpId.Value, false, null, null }, ref instance, true);
             if (objs == null)
                 return new List<Guid>();
             List<Guid> tempList = objs as List<Guid>;
@@ -165,7 +165,7 @@ namespace Rookey.Frame.DAL.Sys
             if (string.IsNullOrEmpty(powerSql))
                 return string.Empty;
             object instance = null;
-            object obj = Globals.ExecuteReflectMethod("Cecport.Frame.Operate.Base", "PermissionOperate", "ReplaceRoleDataPowerCustomerParams", new object[] { moduleId, powerSql, currUser }, ref instance, true);
+            object obj = Globals.ExecuteReflectMethod("Rookey.Frame.Operate.Base", "PermissionOperate", "ReplaceRoleDataPowerCustomerParams", new object[] { moduleId, powerSql, currUser }, ref instance, true);
             if (obj == null)
                 return powerSql;
             return obj.ObjToStr();
@@ -222,33 +222,6 @@ namespace Rookey.Frame.DAL.Sys
                 foreach (string orgId in token)
                 {
                     dic.Add(orgId, false);
-                }
-            }
-            //取父角色的数据权限
-            List<Guid> parentsRoleIds = ObjectReferenceClass.GetParentsRoleId(roleId); //获取所有父角色
-            foreach (Guid tempRoleId in parentsRoleIds)
-            {
-                Sys_PermissionData tempPermission = this.GetEntity(out errMsg, x => x.Sys_RoleId == tempRoleId && x.Sys_ModuleId == moduleId && !x.IsDeleted);
-                string tempOrgIdsStr = string.Empty;
-                if (tempPermission != null)
-                {
-                    tempOrgIdsStr = dataPermissionType == 0 ? tempPermission.CanViewOrgIds :
-                        (dataPermissionType == 1 ? tempPermission.CanEditOrgIds : tempPermission.CanDelOrgIds);
-                }
-                if (!string.IsNullOrWhiteSpace(tempOrgIdsStr))
-                {
-                    string[] token = tempOrgIdsStr.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    if (read && token.Contains("-1"))
-                    {
-                        dic.Add("-1", false);
-                        return dic;
-                    }
-                    foreach (string orgId in token)
-                    {
-                        if (dic.ContainsKey(orgId))
-                            continue;
-                        dic.Add(orgId, true);
-                    }
                 }
             }
             return dic;

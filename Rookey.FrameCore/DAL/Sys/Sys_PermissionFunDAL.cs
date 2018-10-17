@@ -52,22 +52,6 @@ namespace Rookey.Frame.DAL.Sys
                 List<Guid> funIds = permissionFuns.Select(x => x.FunId).Distinct().ToList();
                 dic = funIds.ToDictionary(x => x, y => false);
             }
-            //取所有父角色的功能权限
-            List<Guid> parentsRoleIds = ObjectReferenceClass.GetParentsRoleId(roleId); //获取所有父角色
-            foreach (Guid tempRoleId in parentsRoleIds)
-            {
-                List<Sys_PermissionFun> tempFuns = this.GetEntities(out errMsg, x => x.Sys_RoleId == tempRoleId && x.FunType == functionType && !x.IsDeleted, null, false);
-                if (tempFuns != null && tempFuns.Count > 0)
-                {
-                    List<Guid> funIds = tempFuns.Select(x => x.FunId).ToList();
-                    foreach (Guid funId in funIds)
-                    {
-                        if (dic.Keys.Contains(funId))
-                            continue;
-                        dic.Add(funId, true);
-                    }
-                }
-            }
             return dic;
         }
 

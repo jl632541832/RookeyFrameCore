@@ -33,6 +33,7 @@ using Rookey.Frame.EntityBase;
 using ServiceStack.DataAnnotations;
 using Rookey.Frame.Base.User;
 using Microsoft.AspNetCore.Http;
+using Rookey.Frame.Office;
 
 namespace Rookey.Frame.Operate.Base
 {
@@ -5025,7 +5026,7 @@ namespace Rookey.Frame.Operate.Base
                             {
                                 //先找出主模块记录下该明细模块所有明细记录，将当前明细记录中不存在的明细记录删除
                                 Sys_Field sysField = SystemOperate.GetAllSysFields(x => x.Sys_ModuleId == detailModule.Id && x.ForeignModuleName == module.Name && x.Name == string.Format("{0}Id", module.TableName)).FirstOrDefault();
-                                object allDetailRecords = GetEntitiesByField(detailModule.Id, sysField.Name, mainId, out errMsg,false);
+                                object allDetailRecords = GetEntitiesByField(detailModule.Id, sysField.Name, mainId, out errMsg, false);
                                 if (allDetailRecords != null)
                                     delDetailsDc.Add(detailModule, allDetailRecords);
                             }
@@ -5327,7 +5328,7 @@ namespace Rookey.Frame.Operate.Base
             try
             {
                 var fs = new FileStream(importFile, System.IO.FileMode.Open);
-                DataTable dt = null; //NPOI_ExcelHelper.RenderFromExcel(fs, Path.GetExtension(importFile).ToLower() == ".xlsx");
+                DataTable dt = NPOI_ExcelHelper.RenderFromExcel(fs, Path.GetExtension(importFile).ToLower() == ".xlsx");
                 if (dt == null || dt.Rows.Count == 0)
                     return "无可用数据";
                 if (dt.Rows.Count > 1000)
@@ -5479,20 +5480,20 @@ namespace Rookey.Frame.Operate.Base
             if (dt == null) return "数据加载异常";
             try
             {
-                //NPOI_ExcelBatchExport.ExportExcel(dt, fileName);
-                //int pageNum = 0; //总页数
-                //if (total % gridParams.PagingInfo.pagesize == 0)
-                //    pageNum = (int)(total / gridParams.PagingInfo.pagesize);
-                //else
-                //    pageNum = (int)(total / gridParams.PagingInfo.pagesize) + 1;
-                //for (int i = PageInfo.pageIndexStartNo + 1; i <= pageNum; i++)
-                //{
-                //    gridParams.PagingInfo.page = i;
-                //    data = GetTempGridData(gridParams, out total, currUser, null, true, true);
-                //    dt = data as DataTable;
-                //    if (dt == null) return "数据加载异常";
-                //    NPOI_ExcelBatchExport.ExportExcel(dt, fileName);
-                //}
+                NPOI_ExcelBatchExport.ExportExcel(dt, fileName);
+                int pageNum = 0; //总页数
+                if (total % gridParams.PagingInfo.pagesize == 0)
+                    pageNum = (int)(total / gridParams.PagingInfo.pagesize);
+                else
+                    pageNum = (int)(total / gridParams.PagingInfo.pagesize) + 1;
+                for (int i = PageInfo.pageIndexStartNo + 1; i <= pageNum; i++)
+                {
+                    gridParams.PagingInfo.page = i;
+                    data = GetTempGridData(gridParams, out total, currUser, null, true, true);
+                    dt = data as DataTable;
+                    if (dt == null) return "数据加载异常";
+                    NPOI_ExcelBatchExport.ExportExcel(dt, fileName);
+                }
             }
             catch (Exception ex)
             {

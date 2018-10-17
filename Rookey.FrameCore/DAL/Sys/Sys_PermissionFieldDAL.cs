@@ -58,28 +58,6 @@ namespace Rookey.Frame.DAL.Sys
                     dic.Add(field, false);
                 }
             }
-            //取父角色的字段权限
-            List<Guid> parentsRoleIds = ObjectReferenceClass.GetParentsRoleId(roleId); //获取所有父角色
-            foreach (Guid tempRoleId in parentsRoleIds)
-            {
-                Sys_PermissionField tempPermission = this.GetEntity(out errMsg, x => x.Sys_RoleId == tempRoleId && x.Sys_ModuleId == moduleId && !x.IsDeleted);
-                string tempFields = string.Empty;
-                if (tempPermission != null)
-                {
-                    tempFields = fieldPermissionType == 0 ? tempPermission.CanViewFields :
-                        (fieldPermissionType == 1 ? tempPermission.CanAddFields : tempPermission.CanEditFields);
-                }
-                if (!string.IsNullOrWhiteSpace(tempFields))
-                {
-                    string[] token = tempFields.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string field in token)
-                    {
-                        if (dic.ContainsKey(field))
-                            continue;
-                        dic.Add(field, true);
-                    }
-                }
-            }
             return dic;
         }
 

@@ -656,11 +656,11 @@ namespace Rookey.Frame.DAL.Base
             try
             {
                 object instance = null;
-                object typesObj = Globals.ExecuteReflectMethod("Cecport.Frame.Bridge", "BridgeObject", "GetCustomerOperateHandleTypes", null, ref instance, true);
+                object typesObj = Globals.ExecuteReflectMethod("Rookey.Frame.Bridge", "BridgeObject", "GetCustomerOperateHandleTypes", null, ref instance, true);
                 if (typesObj != null)
                 {
                     List<Type> types = typesObj as List<Type>;
-                    Type operateHandleType = types.Where(x => x.Namespace == "Cecport.Frame.Operate.Base.OperateHandle" && x.Name.StartsWith("OperateHandleFactory")).FirstOrDefault();
+                    Type operateHandleType = types.Where(x => x.Namespace == "Rookey.Frame.Operate.Base.OperateHandle" && x.Name.StartsWith("OperateHandleFactory")).FirstOrDefault();
                     if (operateHandleType != null)
                     {
                         Type[] argsType = new Type[] { typeof(T) };
@@ -728,7 +728,7 @@ namespace Rookey.Frame.DAL.Base
             try
             {
                 object instance = null;
-                object typesObj = Globals.ExecuteReflectMethod("Cecport.Frame.Bridge", "BridgeObject", "GetCustomerOperateHandleTypes", null, ref instance, true);
+                object typesObj = Globals.ExecuteReflectMethod("Rookey.Frame.Bridge", "BridgeObject", "GetCustomerOperateHandleTypes", null, ref instance, true);
                 if (typesObj != null)
                 {
                     List<Type> types = typesObj as List<Type>;
@@ -739,7 +739,7 @@ namespace Rookey.Frame.DAL.Base
                         Type[] modelOpInterfaceTypes = modelOpType.GetInterfaces();
                         if (types != null && types.Count > 0 && modelOpType != null && modelOpInterfaceTypes != null && modelOpInterfaceTypes.Where(x => x.Name.StartsWith("IPermissionHandle")).FirstOrDefault() != null)
                         {
-                            Type operateHandleType = types.Where(x => x.Namespace == "Cecport.Frame.Operate.Base.OperateHandle" && x.Name.StartsWith("OperateHandleFactory")).FirstOrDefault();
+                            Type operateHandleType = types.Where(x => x.Namespace == "Rookey.Frame.Operate.Base.OperateHandle" && x.Name.StartsWith("OperateHandleFactory")).FirstOrDefault();
                             if (operateHandleType != null)
                             {
                                 Type[] argsType = new Type[] { modelType };

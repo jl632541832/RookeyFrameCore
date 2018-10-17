@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Cecport.Frame.Common
+namespace Rookey.Frame.Common
 {
     /// <summary>
     /// 图片工具帮助类
