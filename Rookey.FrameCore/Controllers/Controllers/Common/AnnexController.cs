@@ -984,10 +984,6 @@ namespace Rookey.Frame.Controllers
                 {
                     string ext = FileOperateHelper.GetFileExt(fileName);
                     string tempfn = Path.GetFileName(fileName);
-                    if (Request.Headers["http_user_agent"].ObjToStr().ToLower().IndexOf("firefox") == -1)
-                        tempfn = HttpUtility.UrlEncode(tempfn, Encoding.UTF8);
-                    else
-                        tempfn = string.Format("\"{0}\"{1}", Path.GetFileNameWithoutExtension(tempfn), Path.GetExtension(tempfn));
                     return File(fs, FileOperateHelper.GetHttpMIMEContentType(ext), tempfn);
                 }
                 else

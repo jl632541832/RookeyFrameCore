@@ -12,6 +12,7 @@ using Rookey.Frame.Base;
 using Rookey.Frame.Common;
 using Rookey.Frame.Common.Model;
 using Rookey.Frame.Common.PubDefine;
+using Rookey.Frame.Controllers.Attr;
 using Rookey.Frame.Controllers.Other;
 using Rookey.Frame.Model.Bpm;
 using Rookey.Frame.Model.EnumSpace;
@@ -28,6 +29,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -1144,5 +1146,93 @@ namespace Rookey.Frame.Controllers
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// api控制器
+    /// </summary>
+    [Route("api/[controller]/[action].html")]
+    public class BpmApiController : BaseApiController
+    {
+        /// <summary>
+        /// 发起流程
+        /// </summary>
+        /// <param name="userId">当前用户ID</param>
+        /// <param name="moduleId">模块ID</param>
+        /// <param name="id">记录ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        [HttpPost]
+        public IActionResult StartProcess(Guid userId, Guid moduleId, Guid id)
+        {
+            UserInfo userInfo = UserOperate.GetUserInfo(userId);
+            if (userInfo != null)
+            {
+                FormsPrincipal.Login(userInfo.UserName, userInfo, 10, Request.HttpContext);
+                Thread.Sleep(50); //等待一会儿
+                BpmController controller = new BpmController();
+                controller.RequestSet = Request;
+                JsonResult result = controller.StartProcess(moduleId, id) as JsonResult;
+                return result;
+            }
+            return Json(new SaveDataReturnResult() { Success = false, Message = "当前用户不存在", RecordId = id });
+        }
+
+        /// <summary>
+        /// 审批流程
+        /// </summary>
+        /// <param name="userId">当前用户ID</param>
+        /// <param name="todoId">待办任务ID，子流程审批时为父待办ID</param>
+        /// <param name="workAction">动作</param>
+        /// <returns></returns>
+        [HttpGet]
+        [HttpPost]
+        public IActionResult ApprovalProcess(Guid userId, Guid todoId, WorkActionEnum workAction)
+        {
+            UserInfo userInfo = UserOperate.GetUserInfo(userId);
+            if (userInfo != null)
+            {
+                FormsPrincipal.Login(userInfo.UserName, userInfo, 10, Request.HttpContext);
+                #region 其他流程参数
+                string approvalOpinions = Request.QueryEx("approvalOpinions").ObjToStr(); //处理意见
+                Guid? returnNodeId = Request.QueryEx("returnNodeId").ObjToGuidNull(); //回退结点ID
+                bool isReturnBack = Request.QueryEx("isReturnBack").ObjToInt() == 1; //退回节点审批后直接回到当前审批节点
+                ReturnNodeInfo returnNode = returnNodeId.HasValue && returnNodeId.Value != Guid.Empty ? new ReturnNodeInfo() { ReturnNode = BpmOperate.GetWorkNode(returnNodeId.Value), IsReturnBack = isReturnBack } : null;
+                Guid? directHandler = Request.QueryEx("directHandler").ObjToGuidNull(); //被指派人
+                string childTodoIds = Request.QueryEx("childTodoIds").ObjToStr(); //子流程待办ID集合，针对子流程审批用到
+                #endregion
+                Thread.Sleep(50); //等待一会儿
+                BpmController controller = new BpmController();
+                controller.RequestSet = Request;
+                JsonResult result = controller.ApprovalProcess(todoId, approvalOpinions, workAction, returnNode, directHandler, childTodoIds) as JsonResult;
+                return result;
+            }
+            return Json(new ReturnResult() { Success = false, Message = "当前用户不存在" });
+        }
+
+        /// <summary>
+        /// 加载审批信息
+        /// </summary>
+        /// <param name="todoId">待办ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        [HttpPost]
+        public IActionResult LoadApprovalInfos(Guid todoId)
+        {
+            return Json(BpmOperate.GetRecordApprovalInfosByTodoId(todoId));
+        }
+
+        /// <summary>
+        /// 加载审批信息
+        /// </summary>
+        /// <param name="moduleId">模块ID</param>
+        /// <param name="id">记录ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        [HttpPost]
+        public IActionResult LoadApprovalInfosById(Guid moduleId, Guid id)
+        {
+            return Json(BpmOperate.GetModuleRecordApprovalInfos(moduleId, id));
+        }
     }
 }

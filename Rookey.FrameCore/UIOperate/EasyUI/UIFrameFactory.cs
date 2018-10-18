@@ -453,40 +453,6 @@ namespace Rookey.Frame.UIOperate
 
         #endregion
 
-        #region 调度页面
-
-        /// <summary>
-        /// 获取调度中心页面HTML
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetQuartzCenterHTML();
-
-        /// <summary>
-        /// 获取任务管理页面HTML
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetJobManageHTML();
-
-        /// <summary>
-        /// 获取添加任务页面HTML
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetAddJobHTML();
-
-        /// <summary>
-        /// 获取添加任务计划页面HTML
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetAddJobPlanHTML();
-
-        /// <summary>
-        /// 获取查看执行日志页面HTML
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetQuartzLogHTML();
-
-        #endregion
-
         #endregion
 
         #region 静态方法

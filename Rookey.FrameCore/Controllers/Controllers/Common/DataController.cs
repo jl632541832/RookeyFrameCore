@@ -1571,7 +1571,7 @@ namespace Rookey.Frame.Controllers
     /// 公共通用数据控制器（API）
     /// </summary>
     [Route("api/[controller]/[action].html")]
-    public class DataApiController : BaseController
+    public class DataApiController : BaseApiController
     {
         #region 通用树
 
@@ -1581,12 +1581,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic GetTreeByNode()
+        public IActionResult GetTreeByNode()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.GetTreeByNode() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         #endregion
@@ -1599,12 +1599,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic LoadGridData()
+        public IActionResult LoadGridData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.LoadGridData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1613,12 +1613,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public ExportReturnResult ExportModelData()
+        public IActionResult ExportModelData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.ExportModelData() as JsonResult;
-            return result.Value as ExportReturnResult;
+            return result;
         }
 
         /// <summary>
@@ -1627,12 +1627,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public ReturnResult GridOperateVerify()
+        public IActionResult GridOperateVerify()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.GridOperateVerify() as JsonResult;
-            return result.Value as ReturnResult;
+            return result;
         }
 
         #endregion
@@ -1645,12 +1645,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public SaveDataReturnResult SaveData()
+        public IActionResult SaveData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.SaveData() as JsonResult;
-            return result.Value as SaveDataReturnResult;
+            return result;
         }
 
         #endregion
@@ -1663,12 +1663,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public ReturnResult Delete()
+        public IActionResult Delete()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.Delete() as JsonResult;
-            return result.Value as ReturnResult;
+            return result;
         }
 
         /// <summary>
@@ -1677,12 +1677,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public ReturnResult Restore()
+        public IActionResult Restore()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.Restore() as JsonResult;
-            return result.Value as ReturnResult;
+            return result;
         }
 
         #endregion
@@ -1695,12 +1695,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic LoadFormData()
+        public IActionResult LoadFormData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.LoadFormData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1709,12 +1709,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic LoadModuleDatas()
+        public IActionResult LoadModuleDatas()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.LoadModuleDatas() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1723,12 +1723,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public UpdateFieldReturnResult UpdateField()
+        public IActionResult UpdateField()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.UpdateField() as JsonResult;
-            return result.Value as UpdateFieldReturnResult;
+            return result;
         }
 
         /// <summary>
@@ -1737,12 +1737,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public ReturnResult BatchUpdate()
+        public IActionResult BatchUpdate()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BatchUpdate() as JsonResult;
-            return result.Value as ReturnResult;
+            return result;
         }
 
         /// <summary>
@@ -1751,12 +1751,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic DownImportTemplate()
+        public IActionResult DownImportTemplate()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.DownImportTemplate() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1765,12 +1765,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public ReturnResult ImportModelData()
+        public IActionResult ImportModelData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.ImportModelData() as JsonResult;
-            return result.Value as ReturnResult;
+            return result;
         }
 
         #endregion
@@ -1783,12 +1783,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic BindEnumFieldData()
+        public IActionResult BindEnumFieldData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BindEnumFieldData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1797,12 +1797,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic BindForeignFieldComboData()
+        public IActionResult BindForeignFieldComboData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BindForeignFieldComboData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1811,12 +1811,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic BindDictionaryData()
+        public IActionResult BindDictionaryData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BindDictionaryData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1825,12 +1825,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic BindChildDictionary()
+        public IActionResult BindChildDictionary()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BindChildDictionary() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1839,12 +1839,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic BindExistsFieldValueData()
+        public IActionResult BindExistsFieldValueData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BindExistsFieldValueData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         /// <summary>
@@ -1853,12 +1853,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic BindModuleComboData()
+        public IActionResult BindModuleComboData()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.BindModuleComboData() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         #endregion
@@ -1871,12 +1871,12 @@ namespace Rookey.Frame.Controllers
         /// <returns></returns>
         [HttpGet]
         [HttpPost]
-        public dynamic AutoComplete()
+        public IActionResult AutoComplete()
         {
             DataController c = new DataController();
             c.RequestSet = Request;
             JsonResult result = c.AutoComplete() as JsonResult;
-            return JsonHelper.Serialize(result.Value);
+            return result;
         }
 
         #endregion

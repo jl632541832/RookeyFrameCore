@@ -1275,8 +1275,9 @@ namespace Rookey.Frame.Operate.Base
         /// </summary>
         /// <param name="moduleId"></param>
         /// <param name="fieldName"></param>
+        /// <param name="currUser"></param>
         /// <returns></returns>
-        public static object GetFieldCommonInfo(Guid moduleId, string fieldName)
+        public static object GetFieldCommonInfo(Guid moduleId, string fieldName, UserInfo currUser = null)
         {
             string foreignModuleName = null;
             object dicData = null;
@@ -1295,8 +1296,11 @@ namespace Rookey.Frame.Operate.Base
             if (formField != null)
             {
                 controlType = formField.ControlType;
-                dicData = SystemOperate.DictionaryDataJson(moduleId, tempFieldName);
-                enumData = SystemOperate.EnumFieldDataJson(moduleId, tempFieldName);
+                if (formField.ControlTypeOfEnum == ControlTypeEnum.ComboBox)
+                {
+                    dicData = foreignModule != null ? SystemOperate.ForeignFieldComboDataJson(moduleId, tempFieldName, currUser) : SystemOperate.DictionaryDataJson(moduleId, tempFieldName);
+                    enumData = SystemOperate.EnumFieldDataJson(moduleId, tempFieldName);
+                }
             }
             else if (CommonDefine.BaseEntityFields.Contains(tempFieldName))
             {
@@ -4799,7 +4803,7 @@ namespace Rookey.Frame.Operate.Base
                     }
                     catch { }
                 }
-                    #endregion
+                #endregion
                 #endregion
                 #region 获取单据编码
                 count = CommonOperate.ExecuteScale(out errMsg, "select COUNT(1) from sysobjects where id=object_id(N'GetBillCode') and OBJECTPROPERTY(id,N'IsProcedure')=1", null, dbLinkArgs.ConnString, dbLinkArgs.DbType);

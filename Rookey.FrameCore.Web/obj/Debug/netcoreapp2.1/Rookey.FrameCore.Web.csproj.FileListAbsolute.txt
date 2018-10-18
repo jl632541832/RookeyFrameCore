@@ -145,11 +145,6 @@ D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Page\System\SetUserRole.g.cshtml.cs
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Page\System\WebConfig.g.cshtml.cs
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Page\Test.g.cshtml.cs
-D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Quartz\AddJob.g.cshtml.cs
-D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Quartz\AddJobPlan.g.cshtml.cs
-D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Quartz\JobManage.g.cshtml.cs
-D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Quartz\QuartzCenter.g.cshtml.cs
-D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Quartz\QuartzLog.g.cshtml.cs
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\BaseScripts.g.cshtml.cs
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\BaseStyles.g.cshtml.cs
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_IndexLayout.g.cshtml.cs

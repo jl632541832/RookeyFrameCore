@@ -581,7 +581,7 @@ namespace Rookey.Frame.Controllers
     /// 用户API控制器
     /// </summary>
     [Route("api/[controller]/[action].html")]
-    public class UserApiController : BaseController
+    public class UserApiController : BaseApiController
     {
         #region 公共方法
 
