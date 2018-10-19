@@ -90,7 +90,8 @@ namespace Rookey.Frame.Operate.Base
             /// <param name="ts">实体对象集合</param>
             /// <param name="fieldNames">要查询的字段集合</param>
             /// <param name="references">是否加载关联对象数据（导航属性）</param>
-            private void SetModelListForeignNameFieldValue(List<T> ts, List<string> fieldNames = null, bool references = false)
+            /// <param name="excludeFns">排除的字段集合</param>
+            private void SetModelListForeignNameFieldValue(List<T> ts, List<string> fieldNames = null, bool references = false, List<string> excludeFns = null)
             {
                 #region 预处理
                 if (ts == null || ts.Count == 0)
@@ -105,6 +106,8 @@ namespace Rookey.Frame.Operate.Base
                 PropertyInfo[] ps = modelType.GetProperties().Where(x => !CommonDefine.BaseEntityFields.Contains(x.Name) && (x.PropertyType == typeof(Guid?) || (x.Name.StartsWith("Other") && x.PropertyType == typeof(String)))).ToArray();
                 if (fieldNames != null && fieldNames.Count > 0)
                     ps = ps.Where(x => fieldNames.Contains(x.Name)).ToArray();
+                if (excludeFns != null && excludeFns.Count > 0)
+                    ps = ps.Where(x => !excludeFns.Contains(x.Name)).ToArray();
                 //单选外键字段值字典集合
                 Dictionary<PropertyInfo, Dictionary<Guid, object>> foreignNavList = new Dictionary<PropertyInfo, Dictionary<Guid, object>>();
                 //多选外键字段值字典集合
@@ -428,36 +431,36 @@ namespace Rookey.Frame.Operate.Base
                 List<string> orderFields = string.IsNullOrEmpty(pageInfo.sortname) ? null : pageInfo.sortname.Split(",".ToCharArray()).ToList();
                 List<bool> isDescs = string.IsNullOrEmpty(pageInfo.sortorder) ? null : pageInfo.sortorder.Split(",".ToCharArray()).Select(x => x == "desc").ToList();
                 MethodCallTypeEnum methodCallType = BridgeObject.GetBLLMethodType(typeof(T), "GetPageEntities");
+                List<T> list = new List<T>();
                 if (methodCallType != MethodCallTypeEnum.CommonMethod)
                 {
                     object[] args = new object[] { totalCount, errMsg, permissionFilter, pageInfo.page, pageInfo.pagesize, orderFields, isDescs, expression, whereSql, fieldNames, references, connString };
                     object obj = ReflectExecuteBLLMethod(typeof(T), "GetPageEntities", args, dbType, currUser);
                     errMsg = args[1].ObjToStr();
                     pageInfo.totalCount = args[0].ObjToLong();
-                    List<T> list = obj as List<T>;
-                    //网格数据处理
-                    bool isLoadNavNameValue = new OperateHandleFactory<T>().PageGridDataHandle(list, new object[] { fieldNames }, currUser);
-                    if (!isLoadNavNameValue)
-                    {
-                        //导航属性处理
-                        SetModelListForeignNameFieldValue(list, fieldNames, references);
-                    }
-                    return list;
+                    list = obj as List<T>;
                 }
                 else
                 {
                     IBaseBLL<T> bll = BridgeObject.Resolve<IBaseBLL<T>>(currUser, dbType);
-                    List<T> list = bll.GetPageEntities(out totalCount, out errMsg, permissionFilter, pageInfo.page, pageInfo.pagesize, orderFields, isDescs, expression, whereSql, fieldNames, references, connString);
+                    list = bll.GetPageEntities(out totalCount, out errMsg, permissionFilter, pageInfo.page, pageInfo.pagesize, orderFields, isDescs, expression, whereSql, fieldNames, references, connString);
                     pageInfo.totalCount = totalCount;
-                    //网格数据处理
-                    bool isLoadNavNameValue = new OperateHandleFactory<T>().PageGridDataHandle(list, new object[] { fieldNames }, currUser);
-                    if (!isLoadNavNameValue)
-                    {
-                        //导航属性处理
-                        SetModelListForeignNameFieldValue(list, fieldNames, references);
-                    }
-                    return list;
                 }
+                //网格数据处理
+                object[] argsObjs = new object[] { fieldNames };
+                bool isLoadNavNameValue = new OperateHandleFactory<T>().PageGridDataHandle(list, argsObjs, currUser);
+                if (!isLoadNavNameValue)
+                {
+                    //外键字段或导航属性处理，objs数组第一个参数为排除更新外键name字段集合
+                    List<string> excludeFieldNames = null;
+                    try
+                    {
+                        excludeFieldNames = argsObjs != null && argsObjs.Length > 0 ? argsObjs.FirstOrDefault() as List<string> : null;
+                    }
+                    catch { }
+                    SetModelListForeignNameFieldValue(list, fieldNames, references, excludeFieldNames);
+                }
+                return list;
             }
 
             /// <summary>
