@@ -9,7 +9,6 @@
 using Rookey.Frame.EntityBase;
 using Rookey.Frame.EntityBase.Attr;
 using ServiceStack.DataAnnotations;
-using System;
 
 namespace Rookey.Frame.Model.Other
 {

@@ -36,6 +36,7 @@ using Rookey.Frame.Email;
 using Rookey.Frame.Model.Bpm;
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace Rookey.Frame.Operate.Base
 {
@@ -4218,6 +4219,154 @@ namespace Rookey.Frame.Operate.Base
             return errMsg;
         }
 
+        /// <summary>
+        /// 获取文件路径,如果路径不存在就创建
+        /// </summary>
+        /// <param name="pdfSavePath"></param>
+        /// <param name="swfSavePath"></param>
+        public static void GetSwfFilePath(out string pdfSavePath, out string swfSavePath)
+        {
+            //yyyyMM
+            string dateFolder = DateTime.Now.ToString("yyyyMM", DateTimeFormatInfo.InvariantInfo);
+            //pdf保存文件夹路径
+            string pdfTempFolder = "~/Upload/PdfFile/";
+            //pdf GUID
+            string pdfGid = Guid.NewGuid().ToString("N");
+            //生成pdf文件名
+            string pdfName = pdfGid + ".pdf";
+            //生成pdf相对路径
+            string pdfTempPath = pdfTempFolder + pdfName;
+
+            pdfSavePath = pdfTempPath;
+
+            //swf GUID
+            string swfGuid = Guid.NewGuid().ToString("N");
+            //swf保存文件夹路径
+            string swfFolder = "~/Upload/SwfFile/" + dateFolder + "/";
+            //文件名
+            string swfName = swfGuid + ".swf";
+            //swf保存相对路径
+            string swfPath = swfFolder + swfName;
+            swfSavePath = swfPath;
+            //保存路径
+            if (!Directory.Exists(WebHelper.MapPath(pdfTempFolder)))
+            {
+                string tempPath = WebHelper.MapPath(pdfTempFolder);
+                Directory.CreateDirectory(tempPath);
+            }
+            if (!Directory.Exists(WebHelper.MapPath(swfFolder)))
+            {
+                string strpath = WebHelper.MapPath(swfFolder);
+                Directory.CreateDirectory(strpath);
+            }
+        }
+
+        /// <summary>
+        /// 生成SWF文件
+        /// </summary>
+        /// <param name="obj">对象</param>
+        /// <param name="isAsync">是否异步方式</param>
+        /// <returns></returns>
+        public static bool CreateSwfFile(object obj, bool isAsync = true)
+        {
+            Func<bool> action = () =>
+            {
+                bool flag = false;
+                try
+                {
+                    string[] aa = obj as string[];
+                    string ext = aa[0];
+                    string sourcePath = aa[1];
+                    string pdfSavePath = aa[2];
+                    string swfSavePath = aa[3];
+                    string exePath = aa[4];
+                    string binPath = aa[5];
+                    if (ext.Equals(".doc") || ext.Equals(".docx"))
+                    {
+                        if (OfficeToPdfHelper.Doc2Pdf(sourcePath, pdfSavePath))
+                        {
+                            flag = SwfToolHelper.PDF2SWF(pdfSavePath, swfSavePath, exePath, binPath);
+                        }
+                    }
+                    else if (ext.Equals(".xls") || ext.Equals(".xlsx"))
+                    {
+                        if (OfficeToPdfHelper.Xls2Pdf(sourcePath, pdfSavePath))
+                        {
+                            flag = SwfToolHelper.PDF2SWF(pdfSavePath, swfSavePath, exePath, binPath);
+                        }
+                    }
+                    else if (ext.Equals(".ppt") || ext.Equals(".pptx"))
+                    {
+                        if (OfficeToPdfHelper.PPt2Pdf(sourcePath, pdfSavePath))
+                        {
+                            flag = SwfToolHelper.PDF2SWF(pdfSavePath, swfSavePath, exePath, binPath);
+                        }
+                    }
+                    else if (ext.Equals(".pdf"))
+                    {
+                        flag = SwfToolHelper.PDF2SWF(sourcePath, swfSavePath, exePath, binPath);
+                    }
+                }
+                catch { }
+                return flag;
+            };
+            if (isAsync) //异步方式
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    action();
+                });
+                return true;
+            }
+            else //同步方式
+            {
+                return action();
+            }
+        }
+
+        /// <summary>
+        /// 执行创建SWF文件的任务
+        /// </summary>
+        public static void ExecCreateSwfTask()
+        {
+            try
+            {
+                string errMsg = string.Empty;
+                DateTime yesterDay = DateTime.Now.AddDays(-1);
+                DateTime startTime = new DateTime(yesterDay.Year, yesterDay.Month, yesterDay.Day, 0, 0, 0);
+                DateTime endTime = new DateTime(yesterDay.Year, yesterDay.Month, yesterDay.Day, 23, 59, 59);
+                List<Sys_Attachment> attachs = CommonOperate.GetEntities<Sys_Attachment>(out errMsg, x => x.CreateDate >= startTime && x.CreateDate <= endTime && x.FileUrl != null && x.FileUrl != string.Empty && x.FileUrl.StartsWith("~/Upload") && x.PdfUrl != null && x.PdfUrl != string.Empty && x.SwfUrl != null && x.SwfUrl != string.Empty, null, false);
+                if (attachs != null && attachs.Count > 0)
+                {
+                    foreach (Sys_Attachment attachment in attachs)
+                    {
+                        try
+                        {
+                            //文件类型
+                            string fileType = attachment.FileType.ToLower();
+                            //原文件绝对路径
+                            string fileUrl = string.IsNullOrEmpty(attachment.FileUrl) ? string.Empty : WebHelper.MapPath(attachment.FileUrl);
+                            //pdf文件绝对路径
+                            string pdfUrl = string.IsNullOrEmpty(attachment.PdfUrl) ? string.Empty : WebHelper.MapPath(attachment.PdfUrl);
+                            //swf文件绝对路径
+                            string swfUrl = string.IsNullOrEmpty(attachment.SwfUrl) ? string.Empty : WebHelper.MapPath(attachment.SwfUrl);
+                            //exe路径
+                            string exePath = WebHelper.MapPath("~/bin/SWFTools/pdf2swf.exe");
+                            //bin路径
+                            string binPath = WebHelper.MapPath("~/bin/");
+                            string[] obj = new string[] { attachment.Id.ToString(), fileType, fileUrl, pdfUrl, swfUrl, exePath, binPath };
+                            if (!System.IO.File.Exists(swfUrl)) //如果swf文件不存在
+                            {
+                                CreateSwfFile(obj);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+            catch { }
+        }
+
         #endregion
 
         #region UI处理
@@ -4977,59 +5126,108 @@ namespace Rookey.Frame.Operate.Base
         /// <param name="moduleName">模块名称</param>
         public static TbIndexInfo GetTableIndexInfo(string moduleName)
         {
+            string tableName = string.Empty;
             Sys_Module module = GetModuleByName(moduleName);
-            if (module == null || module.DataSourceTypeOfEnum != ModuleDataSourceType.DbTable ||
-               string.IsNullOrEmpty(module.TableName))
-                return null;
             string errMsg = string.Empty;
             string connString = string.Empty;
-            DatabaseType dbTypeEnum = GetModuleDbType(module, out connString);
-            if (dbTypeEnum == DatabaseType.MsSqlServer)
+            DatabaseType dbTypeEnum = DatabaseType.MsSqlServer;
+            Type modelType = null;
+            if (module != null) //有生成模块
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT '[' + DB_NAME() + '].[' + OBJECT_SCHEMA_NAME(ddips.[object_id],");
-                sb.Append(" DB_ID())+ '].['");
-                sb.Append("+ OBJECT_NAME(ddips.[object_id], DB_ID()) + ']' AS [TableName] ,");
-                sb.Append("i.[name] AS [IndexName] ,");
-                sb.Append("ddips.[index_type_desc] AS [IndexTypeDes],");
-                sb.Append("ddips.[partition_number] AS [PartitionNum],");
-                sb.Append("ddips.[alloc_unit_type_desc],");
-                sb.Append("ddips.[index_depth] ,");
-                sb.Append("ddips.[index_level] ,");
-                sb.Append("CAST(ddips.[avg_fragmentation_in_percent]AS SMALLINT) AS [FragmentationPercent] ,");
-                sb.Append("CAST(ddips.[avg_fragment_size_in_pages]AS SMALLINT) AS [avg_frag_size_in_pages] ,");
-                sb.Append("ddips.[fragment_count] ,");
-                sb.Append("ddips.[page_count] ");
-                sb.Append("FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'limited') ddips ");
-                sb.Append("INNER JOIN sys.[indexes] i ON ddips.[object_id] = i.[object_id] ");
-                sb.Append("AND ddips.[index_id] = i.[index_id] ");
-                sb.AppendFormat("WHERE OBJECT_NAME(ddips.[object_id])='{0}' AND ddips.[alloc_unit_type_desc]='IN_ROW_DATA'", module.TableName);
-                DataTable dt = CommonOperate.ExecuteQuery(out errMsg, sb.ToString(), null, connString, dbTypeEnum);
-                TbIndexInfo tbIndex = ObjectHelper.FillModel<TbIndexInfo>(dt).FirstOrDefault();
-                return tbIndex;
+                if (module.DataSourceTypeOfEnum != ModuleDataSourceType.DbTable ||
+                   string.IsNullOrEmpty(module.TableName))
+                    return null;
+                tableName = module.TableName;
+                modelType = CommonOperate.GetModelType(tableName);
+                dbTypeEnum = GetModuleDbType(module, out connString);
             }
+            else //没有生成模块
+            {
+                tableName = moduleName;
+                modelType = CommonOperate.GetModelType(tableName);
+                connString = ModelConfigHelper.GetModelConnStr(modelType, out dbTypeEnum);
+            }
+            try
+            {
+                if (modelType == null)
+                    return null;
+                if (ModelConfigHelper.ModelIsViewMode(modelType)) //视图模式退出
+                    return null;
+                if (dbTypeEnum == DatabaseType.MsSqlServer)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("SELECT '[' + DB_NAME() + '].[' + OBJECT_SCHEMA_NAME(ddips.[object_id],");
+                    sb.Append(" DB_ID())+ '].['");
+                    sb.Append("+ OBJECT_NAME(ddips.[object_id], DB_ID()) + ']' AS [TableName] ,");
+                    sb.Append("i.[name] AS [IndexName] ,");
+                    sb.Append("ddips.[index_type_desc] AS [IndexTypeDes],");
+                    sb.Append("ddips.[partition_number] AS [PartitionNum],");
+                    sb.Append("ddips.[alloc_unit_type_desc],");
+                    sb.Append("ddips.[index_depth] ,");
+                    sb.Append("ddips.[index_level] ,");
+                    sb.Append("CAST(ddips.[avg_fragmentation_in_percent]AS SMALLINT) AS [FragmentationPercent] ,");
+                    sb.Append("CAST(ddips.[avg_fragment_size_in_pages]AS SMALLINT) AS [avg_frag_size_in_pages] ,");
+                    sb.Append("ddips.[fragment_count] ,");
+                    sb.Append("ddips.[page_count] ");
+                    sb.Append("FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'limited') ddips ");
+                    sb.Append("INNER JOIN sys.[indexes] i ON ddips.[object_id] = i.[object_id] ");
+                    sb.Append("AND ddips.[index_id] = i.[index_id] ");
+                    sb.AppendFormat("WHERE OBJECT_NAME(ddips.[object_id])='{0}' AND ddips.[alloc_unit_type_desc]='IN_ROW_DATA'", tableName);
+                    DataTable dt = CommonOperate.ExecuteQuery(out errMsg, sb.ToString(), null, connString, dbTypeEnum);
+                    TbIndexInfo tbIndex = ObjectHelper.FillModel<TbIndexInfo>(dt).FirstOrDefault();
+                    return tbIndex;
+                }
+            }
+            catch { }
             return null;
         }
 
         /// <summary>
         /// 重建数据表索引
         /// </summary>
-        /// <param name="moduleName"></param>
-        public static void RebuildTableIndex(string moduleName)
+        /// <param name="moduleName">模块名称或表名</param>
+        public static string RebuildTableIndex(string moduleName)
         {
-            Sys_Module module = GetModuleByName(moduleName);
-            if (module == null || module.DataSourceTypeOfEnum != ModuleDataSourceType.DbTable ||
-                string.IsNullOrEmpty(module.TableName))
-                return;
-            Type modelType = CommonOperate.GetModelType(module.Id);
-            if (ModelConfigHelper.ModelIsViewMode(modelType)) //视图模式退出
-                return;
-            string errMsg = string.Empty;
-            string connString = string.Empty;
-            DatabaseType dbTypeEnum = GetModuleDbType(module, out connString);
-            if (dbTypeEnum == DatabaseType.MsSqlServer)
+            try
             {
-                CommonOperate.ExecuteNonQuery(out errMsg, string.Format("DBCC DBREINDEX('{0}')", module.TableName), null, connString, dbTypeEnum);
+                Sys_Module module = GetModuleByName(moduleName);
+                string tableName = string.Empty;
+                string errMsg = string.Empty;
+                string connString = string.Empty;
+                DatabaseType dbTypeEnum = DatabaseType.MsSqlServer;
+                Type modelType = null;
+                if (module != null)
+                {
+                    if (module.DataSourceTypeOfEnum != ModuleDataSourceType.DbTable || string.IsNullOrEmpty(module.TableName))
+                        return string.Format("【{0}】非数据库表", moduleName);
+                    tableName = module.TableName;
+                    modelType = CommonOperate.GetModelType(tableName);
+                    dbTypeEnum = GetModuleDbType(module, out connString);
+                }
+                else
+                {
+                    tableName = moduleName;
+                    modelType = CommonOperate.GetModelType(tableName);
+                    connString = ModelConfigHelper.GetModelConnStr(modelType, out dbTypeEnum);
+                }
+                if (string.IsNullOrEmpty(tableName))
+                    return string.Format("【{0}】数据库表为空", moduleName);
+                if (modelType == null)
+                    return string.Format("【{0}】实体类型为空", moduleName);
+                if (ModelConfigHelper.ModelIsViewMode(modelType)) //视图模式退出
+                    return string.Format("【{0}】当前实体为视图模式，不需要重置索引", moduleName);
+                if (dbTypeEnum == DatabaseType.MsSqlServer)
+                {
+                    int rs = CommonOperate.ExecuteNonQuery(out errMsg, string.Format("DBCC DBREINDEX('{0}')", tableName), null, connString, dbTypeEnum);
+                    if (!string.IsNullOrEmpty(errMsg))
+                        return string.Format("【{0}】{1}", moduleName, errMsg);
+                    return string.Empty;
+                }
+                return string.Format("【{0}】目前只支持MsSqlServer数据库", moduleName);
+            }
+            catch (Exception ex)
+            {
+                return string.Format("【{0}】{1}", moduleName, ex.Message);
             }
         }
 
@@ -5039,7 +5237,7 @@ namespace Rookey.Frame.Operate.Base
         public static void RebuildAllTableIndex()
         {
             string errMsg = string.Empty;
-            List<Sys_DbConfig> list = CommonOperate.GetEntities<Sys_DbConfig>(out errMsg, null, null, false);
+            List<Sys_DbConfig> list = CommonOperate.GetEntities<Sys_DbConfig>(out errMsg, x => x.AutoReCreateIndex == true, null, false);
             if (list.Count > 0)
             {
                 foreach (Sys_DbConfig dbConfig in list)

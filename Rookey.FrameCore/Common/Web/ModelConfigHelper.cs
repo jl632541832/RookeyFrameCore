@@ -126,33 +126,39 @@ namespace Rookey.Frame.Common
             dbType = string.Empty;
             if (null == modelType)
                 return string.Empty;
+            string tempConnStr = string.Empty;
             string modelConfigPath = GetModelConfigXml();
             string node = GetModelNode(modelType);
-            if (string.IsNullOrEmpty(node)) return string.Empty;
-            string tempConnStr = string.Empty;
-            if (export) //导出
+            if (!string.IsNullOrEmpty(node)) //有配置节点
             {
-                tempConnStr = XmlHelper.Read(modelConfigPath, node, "exportConnString");
-                if (string.IsNullOrEmpty(tempConnStr))
+                tempConnStr = XmlHelper.Read(modelConfigPath, node, export ? "exportConnString" : (read ? "readConnString" : "writeConnString"));
+                if ((!read || export) && string.IsNullOrEmpty(tempConnStr))
                 {
                     tempConnStr = XmlHelper.Read(modelConfigPath, node, "readConnString");
                 }
-            }
-            else //非导出
-            {
-                tempConnStr = XmlHelper.Read(modelConfigPath, node, read ? "readConnString" : "writeConnString");
-                if (!read && string.IsNullOrEmpty(tempConnStr))
+                dbType = XmlHelper.Read(modelConfigPath, node, "dbType");
+                if (string.IsNullOrEmpty(tempConnStr) && modelType.BaseType != null)
                 {
-                    tempConnStr = XmlHelper.Read(modelConfigPath, node, "readConnString");
+                    tempConnStr = GetModelConnString(modelType.BaseType, out dbType, read, export);
+                    if (string.IsNullOrEmpty(tempConnStr) && modelType.BaseType.BaseType != null)
+                    {
+                        tempConnStr = GetModelConnString(modelType.BaseType.BaseType, out dbType, read, export);
+                    }
                 }
             }
-            dbType = XmlHelper.Read(modelConfigPath, node, "dbType");
-            if (string.IsNullOrEmpty(tempConnStr) && modelType.BaseType != null)
+            if (string.IsNullOrEmpty(tempConnStr)) //节点配置中没有配置连接字符串时
             {
-                tempConnStr = GetModelConnString(modelType.BaseType, out dbType, read);
-                if (string.IsNullOrEmpty(tempConnStr) && modelType.BaseType.BaseType != null)
+                string readConnStr = export ? WebConfigHelper.GetConnectionString("exportConnString") : WebConfigHelper.GetConnectionString("DbReadConnString");
+                string writeConnStr = WebConfigHelper.GetConnectionString("DbWriteConnString");
+                if (!read) //写
                 {
-                    tempConnStr = GetModelConnString(modelType.BaseType.BaseType, out dbType, read);
+                    if (!string.IsNullOrEmpty(writeConnStr))
+                        return writeConnStr;
+                    return readConnStr;
+                }
+                else //读
+                {
+                    return readConnStr;
                 }
             }
             return tempConnStr;

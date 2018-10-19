@@ -66,6 +66,8 @@ namespace Rookey.Frame.DAL.Sys
         {
             //将未添加到模块表中的模块也加进来
             List<Type> modelTypes = GetAllModelTypes();
+            if (modelTypes == null)
+                return null;
             Type modelType = modelTypes.Where(x => x.Name == tableName).FirstOrDefault();
             Guid id = Guid.Empty;
             if (!moduleId.HasValue)
@@ -265,32 +267,25 @@ namespace Rookey.Frame.DAL.Sys
             totalCount = 0;
             BaseDAL<Sys_Module> moduleDal = new BaseDAL<Sys_Module>(this.CurrUser);
             int dataSourceType = (int)ModuleDataSourceType.DbTable;
-            List<Sys_Module> modules = expression == null ? moduleDal.GetPageEntities(out totalCount, out errorMsg, permissionValidate, pageIndex, pageSize, null, null, x => x.DataSourceType == dataSourceType) : moduleDal.GetEntities(out errorMsg, x => x.DataSourceType == dataSourceType, null, permissionValidate);
+            List<Sys_Module> modules = expression == null ? moduleDal.GetPageEntities(out totalCount, out errorMsg, false, pageIndex, pageSize, null, null, x => x.DataSourceType == dataSourceType) : moduleDal.GetEntities(out errorMsg, x => x.DataSourceType == dataSourceType, null, false);
             List<Sys_DbConfig> list = modules.Select(x => GetModuleCacheConfig(x.TableName, x.Name, x.Id)).ToList();
+            list = list.Where(x => x != null).ToList();
             //将未添加到模块表中的模块也加进来
             List<Type> modelTypes = GetAllModelTypes();
+            if (modelTypes == null || modelTypes.Count == 0)
+                return new List<Sys_DbConfig>();
             List<string> tables = moduleDal.GetEntities(out errorMsg, x => x.TableName != null && x.TableName != string.Empty).Select(x => x.TableName).ToList();
             list.AddRange(modelTypes.Where(x => !tables.Contains(x.Name)).Select(x => GetModuleCacheConfig(x.Name)));
             if (expression != null)
             {
                 list = list.Where(expression.Compile()).ToList();
-                if (orderFields != null && orderFields.Count > 0)
-                {
-                    for (int i = 0; i < orderFields.Count; i++)
-                    {
-                        string orderField = string.IsNullOrEmpty(orderFields[i]) ? "Id" : orderFields[i];
-                        bool isdesc = isDescs != null && orderFields.Count == isDescs.Count ? isDescs[i] : true;
-                        SortComparer<Sys_DbConfig> reverser = new SortComparer<Sys_DbConfig>(typeof(Sys_DbConfig), orderField, isdesc ? ReverserInfo.Direction.DESC : ReverserInfo.Direction.ASC);
-                        list.Sort(reverser);
-                    }
-                }
                 totalCount = list.Count;
             }
             //页序号
             int index = pageIndex < 1 ? 0 : (pageIndex - 1);
             //每页记录数
             int rows = pageSize < 1 ? 10 : (pageSize > 2000 ? 2000 : pageSize);
-            list = list.Skip<Sys_DbConfig>(rows * index).Take<Sys_DbConfig>(rows).ToList();
+            list = list.Skip<Sys_DbConfig>(rows * index).Take<Sys_DbConfig>(rows).OrderByDescending(x => x.CurrPageDensity).ToList();
             return list;
         }
 
@@ -311,25 +306,18 @@ namespace Rookey.Frame.DAL.Sys
         {
             BaseDAL<Sys_Module> moduleDal = new BaseDAL<Sys_Module>(this.CurrUser);
             int dataSourceType = (int)ModuleDataSourceType.DbTable;
-            List<Sys_Module> modules = expression == null ? moduleDal.GetEntities(out errorMsg, x => x.DataSourceType == dataSourceType, null, permissionFilter) : moduleDal.GetEntities(out errorMsg, x => x.DataSourceType == dataSourceType, null, permissionFilter);
+            List<Sys_Module> modules = moduleDal.GetEntities(out errorMsg, x => x.DataSourceType == dataSourceType, null, false);
             List<Sys_DbConfig> list = modules.Select(x => GetModuleCacheConfig(x.TableName, x.Name, x.Id)).ToList();
+            list = list.Where(x => x != null).ToList();
             //将未添加到模块表中的模块也加进来
             List<Type> modelTypes = GetAllModelTypes();
+            if (modelTypes == null || modelTypes.Count == 0)
+                return new List<Sys_DbConfig>();
             List<string> tables = moduleDal.GetEntities(out errorMsg, x => x.TableName != null && x.TableName != string.Empty).Select(x => x.TableName).ToList();
             list.AddRange(modelTypes.Where(x => !tables.Contains(x.Name)).Select(x => GetModuleCacheConfig(x.Name)));
             if (expression != null)
             {
                 list = list.Where(expression.Compile()).ToList();
-                if (orderFields != null && orderFields.Count > 0)
-                {
-                    for (int i = 0; i < orderFields.Count; i++)
-                    {
-                        string orderField = string.IsNullOrEmpty(orderFields[i]) ? "Id" : orderFields[i];
-                        bool isdesc = isDescs != null && orderFields.Count == isDescs.Count ? isDescs[i] : true;
-                        SortComparer<Sys_DbConfig> reverser = new SortComparer<Sys_DbConfig>(typeof(Sys_DbConfig), orderField, isdesc ? ReverserInfo.Direction.DESC : ReverserInfo.Direction.ASC);
-                        list.Sort(reverser);
-                    }
-                }
             }
             return list;
         }

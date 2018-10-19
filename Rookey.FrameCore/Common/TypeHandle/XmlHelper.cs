@@ -7,11 +7,8 @@
 //----------------------------------------------------------------*/
 
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -31,6 +28,14 @@ namespace Rookey.Frame.Common
         private static XmlDocument XMLLoad(string xmlPath)
         {
             XmlDocument xmldoc = new XmlDocument();
+            object objModel = DataCache.GetCache(xmlPath);
+            if (objModel != null)
+            {
+                xmldoc = objModel as XmlDocument;
+                if (xmldoc != null)
+                    return xmldoc;
+            }
+            xmldoc = new XmlDocument();
             try
             {
                 if (!File.Exists(xmlPath)) //不存在则创建
@@ -38,6 +43,7 @@ namespace Rookey.Frame.Common
                     xmldoc.Save(xmlPath);
                 }
                 xmldoc.Load(xmlPath); //加载文档
+                DataCache.SetCache(xmlPath, xmldoc);
             }
             catch
             { }

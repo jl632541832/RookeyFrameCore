@@ -333,117 +333,6 @@ namespace Rookey.Frame.Controllers
 
         #endregion
 
-        #region 私有方法
-
-        /// <summary>
-        /// 获取文件路径,如果路径不存在就创建
-        /// </summary>
-        /// <param name="pdfSavePath"></param>
-        /// <param name="swfSavePath"></param>
-        private void GetFilePath(out string pdfSavePath, out string swfSavePath)
-        {
-            //yyyyMM
-            string dateFolder = DateTime.Now.ToString("yyyyMM", DateTimeFormatInfo.InvariantInfo);
-
-            //pdf保存文件夹路径
-            string pdfTempFolder = "~/Upload/PdfFile/";
-            //pdf GUID
-            string pdfGid = Guid.NewGuid().ToString("N");
-            //生成pdf文件名
-            string pdfName = pdfGid + ".pdf";
-            //生成pdf相对路径
-            string pdfTempPath = pdfTempFolder + pdfName;
-
-            pdfSavePath = pdfTempPath;
-
-            //swf GUID
-            string swfGuid = Guid.NewGuid().ToString("N");
-            //swf保存文件夹路径
-            string swfFolder = "~/Upload/SwfFile/" + dateFolder + "/";
-            //文件名
-            string swfName = swfGuid + ".swf";
-            //swf保存相对路径
-            string swfPath = swfFolder + swfName;
-
-            swfSavePath = swfPath;
-
-            //保存路径
-            if (!Directory.Exists(WebHelper.MapPath(pdfTempFolder)))
-            {
-                string tempPath = WebHelper.MapPath(pdfTempFolder);
-                Directory.CreateDirectory(tempPath);
-            }
-            if (!Directory.Exists(WebHelper.MapPath(swfFolder)))
-            {
-                string strpath = WebHelper.MapPath(swfFolder);
-                Directory.CreateDirectory(strpath);
-            }
-        }
-
-        /// <summary>
-        /// 生成SWF文件
-        /// </summary>
-        /// <param name="obj">对象</param>
-        /// <param name="isAsync">是否异步方式</param>
-        /// <returns></returns>
-        private bool CreateSwfFile(object obj, bool isAsync = true)
-        {
-            Func<bool> action = () =>
-            {
-                bool flag = false;
-                try
-                {
-                    string[] aa = obj as string[];
-                    string ext = aa[0];
-                    string sourcePath = aa[1];
-                    string pdfSavePath = aa[2];
-                    string swfSavePath = aa[3];
-                    string exePath = aa[4];
-                    string binPath = aa[5];
-                    if (ext.Equals(".doc") || ext.Equals(".docx"))
-                    {
-                        if (OfficeToPdfHelper.Doc2Pdf(sourcePath, pdfSavePath))
-                        {
-                            flag = SwfToolHelper.PDF2SWF(pdfSavePath, swfSavePath, exePath, binPath);
-                        }
-                    }
-                    else if (ext.Equals(".xls") || ext.Equals(".xlsx"))
-                    {
-                        if (OfficeToPdfHelper.Xls2Pdf(sourcePath, pdfSavePath))
-                        {
-                            flag = SwfToolHelper.PDF2SWF(pdfSavePath, swfSavePath, exePath, binPath);
-                        }
-                    }
-                    else if (ext.Equals(".ppt"))
-                    {
-                        if (OfficeToPdfHelper.PPt2Pdf(sourcePath, pdfSavePath))
-                        {
-                            flag = SwfToolHelper.PDF2SWF(pdfSavePath, swfSavePath, exePath, binPath);
-                        }
-                    }
-                    else if (ext.Equals(".pdf"))
-                    {
-                        flag = SwfToolHelper.PDF2SWF(sourcePath, swfSavePath, exePath, binPath);
-                    }
-                }
-                catch { }
-                return flag;
-            };
-            if (isAsync) //异步方式
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    action();
-                });
-                return true;
-            }
-            else //同步方式
-            {
-                return action();
-            }
-        }
-        #endregion
-
         #region UEditor上传
 
         /// <summary>
@@ -737,10 +626,10 @@ namespace Rookey.Frame.Controllers
                             fileType.Equals(".pdf"))
                         {
                             //取pdf和swf路径
-                            GetFilePath(out pdfPath, out swfPath);
+                            SystemOperate.GetSwfFilePath(out pdfPath, out swfPath);
                             //参数
                             string[] obj = new string[] { fileType, WebHelper.MapPath(filePath), WebHelper.MapPath(pdfPath), WebHelper.MapPath(swfPath), exePath, binPath };
-                            CreateSwfFile(obj);
+                            SystemOperate.CreateSwfFile(obj);
                         }
                     }
                     fileMsg.Add(new AttachFileInfo() { AttachFile = filePath, PdfFile = pdfPath, SwfFile = swfPath, FileName = fileName, FileType = fileType, FileSize = fileSize, AttachType = attachType });
@@ -848,7 +737,7 @@ namespace Rookey.Frame.Controllers
                             string exePath = WebHelper.MapPath("~/bin/SWFTools/pdf2swf.exe");
                             string binPath = WebHelper.MapPath("~/bin/");
                             string[] obj = new string[] { info.FileType, newAttachFile, newPdfFile, newSwfFile, exePath, binPath };
-                            CreateSwfFile(obj);
+                            SystemOperate.CreateSwfFile(obj);
                         }
                         //构造文件URL，保存为相对URL地址
                         string fileUrl = string.Format("Upload/Attachment/{0}/{1}/{2}", module.TableName, dateFolder, Path.GetFileName(newAttachFile));
