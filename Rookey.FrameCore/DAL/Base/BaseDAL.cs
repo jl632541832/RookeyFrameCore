@@ -353,13 +353,8 @@ namespace Rookey.Frame.DAL.Base
                 if (permissionModels.Contains(typeof(T).Name)) //权限相关实体
                 {
                     if (cacheList == null) cacheList = new List<T>();
-                    cacheFactory.Set<List<T>>(tempCacheKey, cacheList);
-                    if (!StaticDal.cacheKeyList.Contains(tempCacheKey))
-                        StaticDal.cacheKeyList.Add(tempCacheKey);
-                    if (string.IsNullOrEmpty(whereSql) && isSecondCache)
-                        secondCacheObj.Set<List<T>>(cacheKey, cacheList);
                 }
-                else if (cacheList != null && cacheList.Count > 0)
+                if (cacheList != null && cacheList.Count > 0)
                 {
                     cacheFactory.Set<List<T>>(tempCacheKey, cacheList);
                     if (!StaticDal.cacheKeyList.Contains(tempCacheKey))
