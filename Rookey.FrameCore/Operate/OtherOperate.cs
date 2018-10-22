@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rookey.Frame.Operate.Base
 {
@@ -119,14 +120,17 @@ namespace Rookey.Frame.Operate.Base
         {
             try
             {
-                string dir = AppDomain.CurrentDomain.BaseDirectory + "LockErr";
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
-                string pathFlag = Path.DirectorySeparatorChar.ToString();
-                string path = string.Format("{0}{2}{1}.txt", dir, DateTime.Now.ToString("yyyy-MM-dd"), pathFlag);
-                StreamWriter sw = new StreamWriter(path, true, Encoding.UTF8);
-                sw.WriteLine(string.Format("Date：{0}，ModuleFlag：{1}，Method_Flag：{2}，ErrMsg：{3} \n ", DateTime.Now.ToString(), moduleFlag, method_Flag, errMsg));
-                sw.Close();
+                Task.Factory.StartNew(() =>
+                {
+                    string dir = AppDomain.CurrentDomain.BaseDirectory + "LockErr";
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
+                    string pathFlag = Path.DirectorySeparatorChar.ToString();
+                    string path = string.Format("{0}{2}{1}.txt", dir, DateTime.Now.ToString("yyyy-MM-dd"), pathFlag);
+                    StreamWriter sw = new StreamWriter(path, true, Encoding.UTF8);
+                    sw.WriteLine(string.Format("Date：{0}，ModuleFlag：{1}，Method_Flag：{2}，ErrMsg：{3} \n ", DateTime.Now.ToString(), moduleFlag, method_Flag, errMsg));
+                    sw.Close();
+                });
             }
             catch { }
         }
