@@ -745,6 +745,10 @@ namespace Rookey.Frame.Controllers
                         string swfUrl = string.IsNullOrEmpty(newSwfFile) ? string.Empty : newSwfFile.Replace(Globals.GetWebDir(), string.Empty).Replace(pathFlag, "/");
                         Guid attachiId = Guid.NewGuid();
                         info.Id = attachiId.ToString();
+                        if (string.IsNullOrEmpty(pdfUrl) && !string.IsNullOrEmpty(fileUrl) && info.FileType.Equals(".pdf"))
+                        {
+                            pdfUrl = fileUrl;
+                        }
                         list.Add(new Sys_Attachment()
                         {
                             Id = attachiId,

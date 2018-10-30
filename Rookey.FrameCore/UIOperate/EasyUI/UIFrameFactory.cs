@@ -1853,7 +1853,7 @@ namespace Rookey.Frame.UIOperate
                                 string tempPdfPath = Globals.GetWebDir() + attach.PdfUrl.Replace(Globals.GetBaseUrl(), string.Empty).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
                                 if (System.IO.File.Exists(tempPdfPath))
                                 {
-                                    tempUrl = string.Format("/Page/PdfView.html?file={0}&fn={1}", string.Format("/{0}", attach.PdfUrl), HttpUtility.UrlEncode(attach.FileName).Replace("+", "%20"));
+                                    tempUrl = string.Format("/Page/PdfView.html?file={0}&fn={1}", string.Format("/{0}", attach.PdfUrl.Replace(Globals.GetBaseUrl(), string.Empty)), HttpUtility.UrlEncode(attach.FileName).Replace("+", "%20"));
                                 }
                             }
                             catch { }
