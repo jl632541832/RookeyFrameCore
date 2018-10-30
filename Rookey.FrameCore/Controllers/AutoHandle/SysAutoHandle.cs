@@ -77,7 +77,15 @@ namespace Rookey.Frame.Controllers.AutoHandle
                     {
                         if (DateTime.Now.Hour == 4 && DateTime.Now.Minute == 0)
                         {
-                            SystemOperate.ExecCreateSwfTask();
+                            string attachWeb = WebConfigHelper.GetAppSettingValue("AttachmentWeb");
+                            if (!string.IsNullOrEmpty(attachWeb))
+                            {
+                                if (!attachWeb.EndsWith("/"))
+                                    attachWeb += "/";
+                                string apiUrl = attachWeb + "api/AnnexApi/ExecCreateSwfTask.html";
+                                DataMutual dataMutal = new DataMutual(apiUrl);
+                                dataMutal.Start(null);
+                            }
                         }
                         return true;
                     }, null, false, 45, false);

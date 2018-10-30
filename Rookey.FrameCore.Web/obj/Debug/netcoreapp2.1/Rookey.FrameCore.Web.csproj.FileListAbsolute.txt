@@ -163,3 +163,4 @@ D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Rookey.FrameCore.Web.csproj.CopyComplete
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Rookey.FrameCore.Web.dll
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Rookey.FrameCore.Web.pdb
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Razor\Views\Page\Common\PdfView.g.cshtml.cs

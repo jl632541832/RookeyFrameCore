@@ -55,7 +55,7 @@ using Rookey.Frame.Common;
             WriteLiteral("<!DOCTYPE html>\r\n<html>\r\n");
             EndContext();
             BeginContext(137, 376, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4ea49116512b40afa364bb6a6c685190", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8132e3c0ec4440b4a5ca0adb863e3558", async() => {
                 BeginContext(143, 93, true);
                 WriteLiteral("\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n\r\n    <title>注册 | ");
                 EndContext();
@@ -89,7 +89,7 @@ using Rookey.Frame.Common;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(515, 2328, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "dc94d1948eed4aa6a203cf24706ba22f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "be3629da7fa2408bb88f7a8ccdca887d", async() => {
                 BeginContext(521, 92, true);
                 WriteLiteral("\r\n    <div class=\"page-con\" style=\"margin-top: -215px;\">\r\n        <div><span id=\"logo-text\">");
                 EndContext();

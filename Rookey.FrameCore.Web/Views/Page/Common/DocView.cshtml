@@ -8,10 +8,9 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/FlexPaper/js/flexpaper_flash.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/FlexPaper/js/swfobject/swfobject.js")"></script>
     <script type="text/javascript">
-        <!-- For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. -->
     var swfVersionStr = "10.0.0";
     var xiSwfUrlStr = "playerProductInstall.swf";
-    var swfUrl = decodeURI(GetLocalQueryString("swfUrl"));
+    var swfUrl = unescape(decodeURI(GetLocalQueryString("swfUrl")));
     var flashvars = {
         SwfFile: swfUrl,
         Scale: 0.6,

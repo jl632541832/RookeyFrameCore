@@ -4327,7 +4327,10 @@ namespace Rookey.Frame.Operate.Base
         /// <summary>
         /// 执行创建SWF文件的任务
         /// </summary>
-        public static void ExecCreateSwfTask()
+        /// <param name="attachId">附件ID</param>
+        /// <param name="moduleId">模块ID</param>
+        /// <returns>返回错误信息</returns>
+        public static string ExecCreateSwfTask(Guid? moduleId = null, Guid? attachId = null)
         {
             try
             {
@@ -4335,7 +4338,21 @@ namespace Rookey.Frame.Operate.Base
                 DateTime yesterDay = DateTime.Now.AddDays(-1);
                 DateTime startTime = new DateTime(yesterDay.Year, yesterDay.Month, yesterDay.Day, 0, 0, 0);
                 DateTime endTime = new DateTime(yesterDay.Year, yesterDay.Month, yesterDay.Day, 23, 59, 59);
-                List<Sys_Attachment> attachs = CommonOperate.GetEntities<Sys_Attachment>(out errMsg, x => x.CreateDate >= startTime && x.CreateDate <= endTime && x.FileUrl != null && x.FileUrl != string.Empty && x.FileUrl.StartsWith("~/Upload") && x.PdfUrl != null && x.PdfUrl != string.Empty && x.SwfUrl != null && x.SwfUrl != string.Empty, null, false);
+                List<Sys_Attachment> attachs = new List<Sys_Attachment>();
+                Expression<Func<Sys_Attachment, bool>> expression = x => x.FileUrl != null && x.FileUrl != string.Empty && x.FileUrl.StartsWith("Upload/");
+                if (attachId.HasValue && attachId.Value != Guid.Empty) //按attchId
+                {
+                    expression = ExpressionExtension.And(expression, x => x.Id == attachId.Value);
+                }
+                else if (moduleId.HasValue && moduleId.Value != Guid.Empty) //按模块ID
+                {
+                    expression = ExpressionExtension.And(expression, x => x.Sys_ModuleId == moduleId.Value);
+                }
+                else //默认按昨天的附件
+                {
+                    expression = ExpressionExtension.And(expression, x => x.CreateDate >= startTime && x.CreateDate <= endTime);
+                }
+                attachs = CommonOperate.GetEntities<Sys_Attachment>(out errMsg, expression, null, false);
                 if (attachs != null && attachs.Count > 0)
                 {
                     foreach (Sys_Attachment attachment in attachs)
@@ -4354,7 +4371,7 @@ namespace Rookey.Frame.Operate.Base
                             string exePath = WebHelper.MapPath("~/bin/SWFTools/pdf2swf.exe");
                             //bin路径
                             string binPath = WebHelper.MapPath("~/bin/");
-                            string[] obj = new string[] { attachment.Id.ToString(), fileType, fileUrl, pdfUrl, swfUrl, exePath, binPath };
+                            string[] obj = new string[] { fileType, fileUrl, pdfUrl, swfUrl, exePath, binPath };
                             if (!System.IO.File.Exists(swfUrl)) //如果swf文件不存在
                             {
                                 CreateSwfFile(obj);
@@ -4363,8 +4380,12 @@ namespace Rookey.Frame.Operate.Base
                         catch { }
                     }
                 }
+                return string.Empty;
             }
-            catch { }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion

@@ -1784,10 +1784,40 @@ namespace Rookey.Frame.UIOperate
                         action += string.Format("&nbsp;&nbsp;<a href=\"javascript:DownloadAttach({0})\">下载</a>", attchement.Id.ToString());
                     }
                     //构造链接文件名
-                    string tempUrl = attchement.FileUrl;
-                    if (!string.IsNullOrWhiteSpace(attchement.SwfUrl))
-                        tempUrl = string.Format("/Page/DocView.html?fn={0}&swfUrl={1}", HttpUtility.UrlEncode(attchement.FileName), HttpUtility.UrlEncode(attchement.SwfUrl));
-                    string tempFileName = string.Format("<a target='_blank' href='{0}'>{1}</a>", tempUrl, attchement.FileName);
+                    string tempFileName = string.Empty;
+                    string tempUrl = string.Empty;
+                    if (!string.IsNullOrEmpty(attchement.PdfUrl)) //pdf文件存在时，在线查看PDF
+                    {
+                        try
+                        {
+                            string tempPdfPath = Globals.GetWebDir() + attchement.PdfUrl.Replace(Globals.GetBaseUrl(), string.Empty).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
+                            if (System.IO.File.Exists(tempPdfPath))
+                            {
+                                tempUrl = string.Format("/Page/PdfView.html?file={0}&fn={1}", HttpUtility.UrlEncode(tempPdfPath), HttpUtility.UrlEncode(attchement.FileName).Replace("+", "%20"));
+                            }
+                        }
+                        catch { }
+                    }
+                    if (string.IsNullOrEmpty(tempUrl) && !string.IsNullOrEmpty(attchement.SwfUrl)) //pdf不存在swf存在
+                    {
+                        try
+                        {
+                            string tempSwfPath = Globals.GetWebDir() + attchement.SwfUrl.Replace(Globals.GetBaseUrl(), string.Empty).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
+                            if (System.IO.File.Exists(tempSwfPath))
+                            {
+                                tempUrl = string.Format("/Page/DocView.html?attachId={0}&fn={1}&swfUrl={2}", attchement.Id, HttpUtility.UrlEncode(attchement.FileName).Replace("+", "%20"), HttpUtility.UrlEncode(attchement.SwfUrl).Replace("+", "%20"));
+                            }
+                        }
+                        catch { }
+                    }
+                    if (string.IsNullOrEmpty(tempUrl)) //pdf和swf不存在不可以在线查看则下载
+                    {
+                        tempFileName = string.Format("<a href='javascript:void(0)' onclick=\"window.open( '/Annex/DownloadAttachment.html?attachId={0}')\">{1}</a>", attchement.Id.ToString(), attchement.FileName);
+                    }
+                    else //在线预览
+                    {
+                        tempFileName = string.Format("<a target='_blank' href='{0}'>{1}</a>", tempUrl, attchement.FileName);
+                    }
                     sb.Append("<tr>");
                     sb.AppendFormat("<td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td>",
                                  attchement.Id.ToString(), action, tempFileName, attchement.FileType, attchement.FileSize, attchement.CreateUserName, attchement.CreateDate.HasValue ? attchement.CreateDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : string.Empty);
@@ -1815,12 +1845,39 @@ namespace Rookey.Frame.UIOperate
                 {
                     foreach (Sys_Attachment attach in attachList)
                     {
-                        string tempUrl = attach.FileUrl;
-                        if (!string.IsNullOrEmpty(attach.SwfUrl))
+                        string tempUrl = string.Empty;
+                        if (!string.IsNullOrEmpty(attach.PdfUrl)) //pdf文件存在时，在线查看PDF
                         {
-                            tempUrl = string.Format("/Page/DocView.html?fn={0}&swfUrl={1}", HttpUtility.UrlEncode(attach.FileName).Replace("+", "%20"), HttpUtility.UrlEncode(attach.SwfUrl).Replace("+", "%20"));
+                            try
+                            {
+                                string tempPdfPath = Globals.GetWebDir() + attach.PdfUrl.Replace(Globals.GetBaseUrl(), string.Empty).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
+                                if (System.IO.File.Exists(tempPdfPath))
+                                {
+                                    tempUrl = string.Format("/Page/PdfView.html?file={0}&fn={1}", string.Format("/{0}", attach.PdfUrl), HttpUtility.UrlEncode(attach.FileName).Replace("+", "%20"));
+                                }
+                            }
+                            catch { }
                         }
-                        sb.AppendFormat("<a id='btn_file_{0}' target='_blank' href='{1}'>{2}</a>", attach.Id.ToString(), tempUrl, attach.FileName);
+                        if (string.IsNullOrEmpty(tempUrl) && !string.IsNullOrEmpty(attach.SwfUrl)) //pdf不存在swf存在
+                        {
+                            try
+                            {
+                                string tempSwfPath = Globals.GetWebDir() + attach.SwfUrl.Replace(Globals.GetBaseUrl(), string.Empty).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
+                                if (System.IO.File.Exists(tempSwfPath))
+                                {
+                                    tempUrl = string.Format("/Page/DocView.html?attachId={0}&fn={1}&swfUrl={2}", attach.Id, HttpUtility.UrlEncode(attach.FileName).Replace("+", "%20"), HttpUtility.UrlEncode(attach.SwfUrl).Replace("+", "%20"));
+                                }
+                            }
+                            catch { }
+                        }
+                        if (string.IsNullOrEmpty(tempUrl)) //swf不存在不可以在线查看则下载
+                        {
+                            sb.AppendFormat("<a id='btn_file_{0}' href='javascript:void(0)' onclick=\"window.open( '/Annex/DownloadAttachment.html?attachId={0}')\">{1}</a>", attach.Id.ToString(), attach.FileName);
+                        }
+                        else //在线预览
+                        {
+                            sb.AppendFormat("<a id='btn_file_{0}' target='_blank' href='{1}'>{2}</a>", attach.Id.ToString(), tempUrl, attach.FileName);
+                        }
                         string styleStr = formType == FormTypeEnum.EditForm ? " style=\"margin-right:10px;\"" : string.Empty;
                         string btnAttr = string.Empty;
                         btnAttr = string.Format("AttachId=\"{0}\" FileName=\"{1}\"", attach.Id.ToString(), attach.FileName);

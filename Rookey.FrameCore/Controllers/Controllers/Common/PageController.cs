@@ -193,15 +193,6 @@ namespace Rookey.Frame.Controllers
         }
 
         /// <summary>
-        /// 在线查看文档
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult DocView()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// 通用导入实体页面
         /// </summary>
         /// <returns></returns>
@@ -224,6 +215,28 @@ namespace Rookey.Frame.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult CombDataSourceSet()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region 附件页面
+
+        /// <summary>
+        /// 在线查看文档
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DocView()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 在线查看PDF
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PdfView()
         {
             return View();
         }

@@ -45,7 +45,7 @@ namespace AspNetCore
             WriteLiteral("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\r\n        \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html lang=\"zh\" style=\"height: 100%;\">\r\n");
             EndContext();
             BeginContext(172, 803, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "0447ea312b7e475bb1271b5975b3dee2", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "58aa63bbaf9f4b7b848787540c641eca", async() => {
                 BeginContext(178, 208, true);
                 WriteLiteral("\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />\r\n    <meta name=\"viewport\" content=\"width=device-width\" />\r\n    <title>");
                 EndContext();
@@ -135,7 +135,7 @@ WriteAttributeValue("", 888, Url.Content("~/Scripts/jquery-easyui/locale/easyui-
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(977, 178, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ceb5b3ffc98846a9a33b33c071c53eef", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "14dd944b6f33437fb6ca44569ba36726", async() => {
                 BeginContext(1034, 6, true);
                 WriteLiteral("\r\n    ");
                 EndContext();

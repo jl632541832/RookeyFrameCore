@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -69,10 +70,14 @@ namespace Rookey.FrameCore.Web
             //全局配置
             app.UseWkMvcDI();
             //静态资源
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".properties"] = "application/octet-stream";
+            provider.Mappings[".bcmap"] = "application/octet-stream";
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(env.ContentRootPath),
-                RequestPath = new PathString(string.Empty)
+                RequestPath = new PathString(string.Empty),
+                ContentTypeProvider = provider
             });
             //跨域处理
             app.UseCors(builder => builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());

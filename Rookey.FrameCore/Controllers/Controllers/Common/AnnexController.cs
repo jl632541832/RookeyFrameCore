@@ -843,10 +843,6 @@ namespace Rookey.Frame.Controllers
                     if (fs != null)
                     {
                         string tempfn = attachment.FileName;
-                        if (Request.Headers["http_user_agent"].ObjToStr().IndexOf("firefox") == -1)
-                            tempfn = HttpUtility.UrlEncode(tempfn, Encoding.UTF8);
-                        else
-                            tempfn = string.Format("\"{0}\"{1}", Path.GetFileNameWithoutExtension(tempfn), Path.GetExtension(tempfn));
                         return File(fs, FileOperateHelper.GetHttpMIMEContentType(ext), tempfn);
                     }
                 }
@@ -962,5 +958,54 @@ namespace Rookey.Frame.Controllers
         }
 
         #endregion
+
+        #region 其他
+
+        /// <summary>
+        /// 获取记录附件
+        /// </summary>
+        /// <param name="recordId">记录ID</param>
+        /// <returns></returns>
+        public ActionResult GetAttachments(Guid recordId)
+        {
+            string errMsg = string.Empty;
+            List<Sys_Attachment> attachments = CommonOperate.GetEntities<Sys_Attachment>(out errMsg, x => x.RecordId == recordId, null, false);
+            return Json(attachments);
+        }
+
+        /// <summary>
+        /// 执行生成swf文件的任务
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ExecCreateSwfTask()
+        {
+            Guid? moduleId = Request.QueryEx("moduleId").ObjToGuidNull();
+            Guid? attachId = Request.QueryEx("attachId").ObjToGuidNull();
+            string errMsg = SystemOperate.ExecCreateSwfTask(moduleId, attachId);
+            return Json(new ReturnResult() { Success = string.IsNullOrEmpty(errMsg), Message = errMsg });
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// api控制器
+    /// </summary>
+    [Route("api/[controller]/[action].html")]
+    public class AnnexApiController : BaseApiController
+    {
+        /// <summary>
+        /// 执行生成swf文件的任务
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [HttpPost]
+        public IActionResult ExecCreateSwfTask()
+        {
+            Guid? moduleId = Request.QueryEx("moduleId").ObjToGuidNull();
+            Guid? attachId = Request.QueryEx("attachId").ObjToGuidNull();
+            string errMsg = SystemOperate.ExecCreateSwfTask(moduleId, attachId);
+            return Json(new ReturnResult() { Success = string.IsNullOrEmpty(errMsg), Message = errMsg });
+        }
     }
 }
