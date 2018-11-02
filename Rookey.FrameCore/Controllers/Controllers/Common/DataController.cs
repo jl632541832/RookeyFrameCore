@@ -1002,7 +1002,8 @@ namespace Rookey.Frame.Controllers
             Array arr = ids.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(x => x.ObjToGuid()).ToArray();
             List<ConditionItem> conditions = new List<ConditionItem>() { new ConditionItem() { Field = "Id", Method = QueryMethod.In, Value = arr } };
             object expression = CommonOperate.GetQueryCondition(module.Id, conditions);
-            bool rs = CommonOperate.UpdateRecordsByExpression(module.Id, new { IsDeleted = false, ModifyDate = DateTime.Now, ModifyUserId = currUser.UserId }, expression, out errMsg);
+            DateTime? deleteTime = null;
+            bool rs = CommonOperate.UpdateRecordsByExpression(module.Id, new { IsDeleted = false, DeleteTime = deleteTime, ModifyDate = DateTime.Now, ModifyUserId = currUser.UserId }, expression, out errMsg);
             if (rs)
             {
                 try
