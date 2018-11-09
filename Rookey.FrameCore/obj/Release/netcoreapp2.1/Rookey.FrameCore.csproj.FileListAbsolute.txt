@@ -1,0 +1,9 @@
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Release\netcoreapp2.1\Rookey.FrameCore.deps.json
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Release\netcoreapp2.1\Rookey.FrameCore.runtimeconfig.json
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Release\netcoreapp2.1\Rookey.FrameCore.runtimeconfig.dev.json
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Release\netcoreapp2.1\Rookey.FrameCore.dll
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Release\netcoreapp2.1\Rookey.FrameCore.csprojAssemblyReference.cache
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Release\netcoreapp2.1\Rookey.FrameCore.csproj.CoreCompileInputs.cache
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Release\netcoreapp2.1\Rookey.FrameCore.AssemblyInfoInputs.cache
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Release\netcoreapp2.1\Rookey.FrameCore.AssemblyInfo.cs
+D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Release\netcoreapp2.1\Rookey.FrameCore.dll

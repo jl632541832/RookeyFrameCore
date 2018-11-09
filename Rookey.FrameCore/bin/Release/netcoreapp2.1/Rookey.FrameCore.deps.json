@@ -1,0 +1,330 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "e5ccc98b8af854bfdd691658db95f6c36e3e460b"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "Rookey.FrameCore/1.0.0": {
+        "dependencies": {
+          "DotNetCore.NPOI": "1.2.1",
+          "Microsoft.NETCore.App": "2.1.0",
+          "MySql.Data": "8.0.12"
+        },
+        "runtime": {
+          "Rookey.FrameCore.dll": {}
+        }
+      },
+      "DotNetCore.NPOI/1.2.1": {
+        "dependencies": {
+          "DotNetCore.NPOI.Core": "1.2.1",
+          "DotNetCore.NPOI.OpenXml4Net": "1.2.1",
+          "DotNetCore.NPOI.OpenXmlFormats": "1.2.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NPOI.OOXML.dll": {
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
+          }
+        }
+      },
+      "DotNetCore.NPOI.Core/1.2.1": {
+        "dependencies": {
+          "SharpZipLib": "1.0.0",
+          "System.Drawing.Common": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NPOI.dll": {
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
+          }
+        }
+      },
+      "DotNetCore.NPOI.OpenXml4Net/1.2.1": {
+        "dependencies": {
+          "DotNetCore.NPOI.Core": "1.2.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NPOI.OpenXml4Net.dll": {
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
+          }
+        }
+      },
+      "DotNetCore.NPOI.OpenXmlFormats/1.2.1": {
+        "dependencies": {
+          "DotNetCore.NPOI.OpenXml4Net": "1.2.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NPOI.OpenXmlFormats.dll": {
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
+          }
+        }
+      },
+      "Google.Protobuf/3.5.1": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3"
+        },
+        "runtime": {
+          "lib/netstandard1.0/Google.Protobuf.dll": {
+            "assemblyVersion": "3.5.1.0",
+            "fileVersion": "3.5.1.0"
+          }
+        }
+      },
+      "Microsoft.NETCore.App/2.1.0": {
+        "dependencies": {
+          "Microsoft.NETCore.DotNetHostPolicy": "2.1.0",
+          "Microsoft.NETCore.Platforms": "2.1.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
+          "NETStandard.Library": "2.0.3"
+        }
+      },
+      "Microsoft.NETCore.DotNetAppHost/2.1.0": {},
+      "Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
+        "dependencies": {
+          "Microsoft.NETCore.DotNetHostResolver": "2.1.0"
+        }
+      },
+      "Microsoft.NETCore.DotNetHostResolver/2.1.0": {
+        "dependencies": {
+          "Microsoft.NETCore.DotNetAppHost": "2.1.0"
+        }
+      },
+      "Microsoft.NETCore.Platforms/2.1.0": {},
+      "Microsoft.NETCore.Targets/2.1.0": {},
+      "Microsoft.Win32.SystemEvents/4.5.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.1.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.26515.6"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp2.0/Microsoft.Win32.SystemEvents.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.26515.6"
+          }
+        }
+      },
+      "MySql.Data/8.0.12": {
+        "dependencies": {
+          "Google.Protobuf": "3.5.1",
+          "System.Configuration.ConfigurationManager": "4.4.1"
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/MySql.Data.dll": {
+            "assemblyVersion": "8.0.12.0",
+            "fileVersion": "8.0.12.0"
+          }
+        }
+      },
+      "NETStandard.Library/2.0.3": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.1.0"
+        }
+      },
+      "SharpZipLib/1.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll": {
+            "assemblyVersion": "1.0.0.999",
+            "fileVersion": "1.0.0.999"
+          }
+        }
+      },
+      "System.Configuration.ConfigurationManager/4.4.1": {
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "4.4.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.25921.2"
+          }
+        }
+      },
+      "System.Drawing.Common/4.5.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.1.0",
+          "Microsoft.Win32.SystemEvents": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.26515.6"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll": {
+            "rid": "unix",
+            "assetType": "runtime",
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.26515.6"
+          },
+          "runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.26515.6"
+          }
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/4.4.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.6.25519.3"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.6.25519.3"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Rookey.FrameCore/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DotNetCore.NPOI/1.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5M2x2mt+JOTByhzSH6PtcDOepZswmb6Uu2rjiOx5l3lKc7AP9kbmhN7WLKakGVSNhnOMgXbFXulIRRflPeNb/g==",
+      "path": "dotnetcore.npoi/1.2.1",
+      "hashPath": "dotnetcore.npoi.1.2.1.nupkg.sha512"
+    },
+    "DotNetCore.NPOI.Core/1.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-K8hlUP5yCxCK2JNROBBGAM50EtRshBe+RglFrrJkrbygR3o1HsruvHk6NlEFI+pYV9brDVqRc8xsYz5ZfeLfgQ==",
+      "path": "dotnetcore.npoi.core/1.2.1",
+      "hashPath": "dotnetcore.npoi.core.1.2.1.nupkg.sha512"
+    },
+    "DotNetCore.NPOI.OpenXml4Net/1.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LxHszYfzPwg+ibE70gR7HrLlOtMHhWWEXLOTcW6KkwyJJ9eisCfrSkfbGvJnvfQHxmL9RXfZ+KV+B0/OeZ7kmw==",
+      "path": "dotnetcore.npoi.openxml4net/1.2.1",
+      "hashPath": "dotnetcore.npoi.openxml4net.1.2.1.nupkg.sha512"
+    },
+    "DotNetCore.NPOI.OpenXmlFormats/1.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bim3nwQ5b/6bAoWa7DhHTYwz9w5dmMDwqn27LgcE8Sa/eYh672BOfT6SaKFuxQT1+X0Au3WhTwH1RgO/4aTNtg==",
+      "path": "dotnetcore.npoi.openxmlformats/1.2.1",
+      "hashPath": "dotnetcore.npoi.openxmlformats.1.2.1.nupkg.sha512"
+    },
+    "Google.Protobuf/3.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-f2k1VNaB9bfvEsvARzzEL1TZiIpL33KKK3JMH7UANlPlJVptuvsk4qpBZEnz0pORWZOdUHlVwMQuUzFqjJYCxA==",
+      "path": "google.protobuf/3.5.1",
+      "hashPath": "google.protobuf.3.5.1.nupkg.sha512"
+    },
+    "Microsoft.NETCore.App/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AvT774nTFgU8cYcGO9j1EMwuayKslxqYTurg32HGpWa2hEYNuW2+XgYVVNcZe6Ndbr84QX6fwaOZfd5n+1m2OA==",
+      "path": "microsoft.netcore.app/2.1.0",
+      "hashPath": "microsoft.netcore.app.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.DotNetAppHost/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-f/47I60Wg3SrveTvnecCQhCZCAMYlUujWF15EQ/AZTqF/54qeEJjbCIAxKcZI8ToUYzSg6JdfrHggsgjCyCE9Q==",
+      "path": "microsoft.netcore.dotnetapphost/2.1.0",
+      "hashPath": "microsoft.netcore.dotnetapphost.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-p50yZYKzhH64lmArJgoKjtvsNehECa+/sAuOQzZh5uDNBTbRKxjN8IXP1e517xdVsgrFcSNxSEVDKZIOWVjGcQ==",
+      "path": "microsoft.netcore.dotnethostpolicy/2.1.0",
+      "hashPath": "microsoft.netcore.dotnethostpolicy.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.DotNetHostResolver/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fS9D8a+y55n6mHMbNqgHXaPGkjmpVH9h97OyrBxsCuo3Z8aQaFMJ5xIfmzji2ntUd/3truhMbSgSfIelHOkQpg==",
+      "path": "microsoft.netcore.dotnethostresolver/2.1.0",
+      "hashPath": "microsoft.netcore.dotnethostresolver.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Platforms/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TT+QCi9LcxGTjBssH7S7n5+8DVcwfG4DYgXX7Dk7+BfZ4oVHj8Q0CbYk9glzAlHLsSt3bYzol+fOdra2iu6GOw==",
+      "path": "microsoft.netcore.platforms/2.1.0",
+      "hashPath": "microsoft.netcore.platforms.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Targets/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-etaYwrLZQUS+b3UWTpCnUggd6SQ/ZIkZ5pHnoR7+dIWt/wp2Rv3CvMKOZISsrt7FYCHKwCxfcepuuyEWkQxADg==",
+      "path": "microsoft.netcore.targets/2.1.0",
+      "hashPath": "microsoft.netcore.targets.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-K2TAr07pgl/m/J9ed3cmAzx0SD55kYuVfBG6SPRIH/ELTh/D2qGrjOWDQJo7r+LZl1nO2Nkl0UAQBUt6S2ewqQ==",
+      "path": "microsoft.win32.systemevents/4.5.0",
+      "hashPath": "microsoft.win32.systemevents.4.5.0.nupkg.sha512"
+    },
+    "MySql.Data/8.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-I2jGfuyeomrGJ+N9O+vuV2ucyeayf/tMFREKPdjUcs1/wUF0t+WgUnnzJmJl4sNePNR1fEvAGaGbVAo4uLSF2A==",
+      "path": "mysql.data/8.0.12",
+      "hashPath": "mysql.data.8.0.12.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "path": "netstandard.library/2.0.3",
+      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "SharpZipLib/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-38egGevtPMQn/6olZZUteKUC7+BD47LdCGKo9Vyj17+HWDwiqPXsyJu55q9WSybhwVKwt0q2FLhiuJjZfQpsHw==",
+      "path": "sharpziplib/1.0.0",
+      "hashPath": "sharpziplib.1.0.0.nupkg.sha512"
+    },
+    "System.Configuration.ConfigurationManager/4.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LoSjM/kLDpyLyoGsmwS5oVMRzHf/0XHkRpr3QZu/HuAv6Sfk919usTMLqD9N9VK3S4Q2+bd3tKJ0ko4MYFfq4Q==",
+      "path": "system.configuration.configurationmanager/4.4.1",
+      "hashPath": "system.configuration.configurationmanager.4.4.1.nupkg.sha512"
+    },
+    "System.Drawing.Common/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uYixYbB0vzxSbc9B7jzwwUA8Upodaj3g2ZNnREWW6zoBw9DltzltcEa1g0I4u6ARqVJ0t4E3yJAWw5h2gvJlhQ==",
+      "path": "system.drawing.common/4.5.0",
+      "hashPath": "system.drawing.common.4.5.0.nupkg.sha512"
+    },
+    "System.Security.Cryptography.ProtectedData/4.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cJV7ScGW7EhatRsjehfvvYVBvtiSMKgN8bOVI0bQhnF5bU7vnHVIsH49Kva7i7GWaWYvmEzkYVk1TC+gZYBEog==",
+      "path": "system.security.cryptography.protecteddata/4.4.0",
+      "hashPath": "system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
+    }
+  }
+}

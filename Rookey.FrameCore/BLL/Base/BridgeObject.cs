@@ -272,6 +272,8 @@ namespace Rookey.Frame.Bridge
                     types.AddRange(GetTypesByDLL(dllName, nameSpace));
                 }
             }
+            //添加临时实体类型集合
+            types.AddRange(GetTempModelTypes());
             //取模块类型集合
             foreach (Type type in types)
             {
@@ -285,6 +287,40 @@ namespace Rookey.Frame.Bridge
                 cacheFactory.Set<List<Type>>(cache_modelType, tempTypes);
             }
             return tempTypes;
+        }
+
+        /// <summary>
+        /// 获取临时实体类型集合
+        /// </summary>
+        /// <returns></returns>
+        public static List<Type> GetTempModelTypes()
+        {
+            try
+            {
+                string tempModelPath = WebConfigHelper.GetAppSettingValue("TempModelPath");
+                if (string.IsNullOrEmpty(tempModelPath))
+                    tempModelPath = "TempModel";
+                string dllPath = string.Format(@"{0}{1}", Globals.GetBinPath(), tempModelPath);
+                if (!Directory.Exists(dllPath)) //临时实体dll目录不存在
+                {
+                    return new List<Type>();
+                }
+                List<Type> list = new List<Type>();
+                foreach (string dll in Directory.GetFiles(dllPath, "*.dll"))
+                {
+                    //非程序集类型的关联load时会报错
+                    try
+                    {
+                        var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
+                        list.AddRange(assembly.DefinedTypes.Select(x => x.AsType()).Where(x=>x.Namespace== "Rookey.FrameCore.TempModel"));
+                    }
+                    catch
+                    { }
+                }
+                return list;
+            }
+            catch { }
+            return new List<Type>();
         }
 
         /// <summary>

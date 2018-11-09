@@ -50,7 +50,7 @@ using Rookey.Frame.Common;
             WriteLiteral("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\r\n        \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html lang=\"zh\" style=\"height: 100%;\">\r\n");
             EndContext();
             BeginContext(201, 425, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "edac8c6fb4b04197bb6bb997575b781f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "846363e6a0cc40a096b6763edb0c3b85", async() => {
                 BeginContext(207, 208, true);
                 WriteLiteral("\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />\r\n    <meta name=\"viewport\" content=\"width=device-width\" />\r\n    <title>");
                 EndContext();
@@ -110,7 +110,7 @@ Write(await Html.PartialAsync("~/Views/Shared/BaseScripts.cshtml"));
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(628, 133, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8f2734667b86485aaab5ac1f7371001a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e9521a1b7a2b4378a7d9d8d9825c2d4a", async() => {
                 BeginContext(685, 6, true);
                 WriteLiteral("\r\n    ");
                 EndContext();
