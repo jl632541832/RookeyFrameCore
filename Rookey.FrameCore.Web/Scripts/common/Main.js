@@ -9,6 +9,8 @@ $(function () {
     initSet();
     //初始化其他
     initOther();
+    //加水印
+    //watermark({ watermark_txt: "中电港" });
 });
 
 /*-------------------------私有方法-----------------------------*/
@@ -82,36 +84,77 @@ function initTab() {
     $('#deskIframe').attr('src', $('#deskIframe').attr('url'));
 }
 
+//加载panel菜单
+function loadPanel(panel) {
+    var ul = panel.find("ul:first");
+    var cls = ul.attr("class");
+    if (!!cls == false || cls.indexOf("tree") < 0) {
+        var menuId = ul.attr("menuId");
+        var url = '/System/LoadMenuTree.html?noRoot=1&parentId=' + menuId;
+        var attrUrl = ul.attr("url");
+        if (attrUrl != null && attrUrl != undefined && attrUrl != "" && attrUrl != "null") {
+            url = attrUrl + "?menuId=" + menuId;
+        }
+        LoadTree(ul, url);
+    }
+}
+
 //菜单初始化
 function initMenu() {
     var menuDom = $("#leftMenu");
     if (menuDom.length > 0) {
-        var loadPanel = function (panel) {
-            var ul = panel.find("ul:first");
-            var cls = ul.attr("class");
-            if (!!cls == false || cls.indexOf("tree") < 0) {
-                var menuId = ul.attr("menuId");
-                var url = '/System/LoadMenuTree.html?noRoot=1&parentId=' + menuId;
-                var attrUrl = ul.attr("url");
-                if (attrUrl != null && attrUrl != undefined && attrUrl != "" && attrUrl != "null") {
-                    url = attrUrl + "?menuId=" + menuId;
-                }
-                LoadTree(ul, url);
-            }
-        }
         //加载菜单
         menuDom.accordion({
             onSelect: function (title, index) {
                 var panel = $(this).accordion("getPanel", title);
-                loadPanel(panel);
+                if (panel.find('.left_ul_menu').attr('hasChilds') == 'false') {
+                    panel.panel('collapse');
+                }
+                else {
+                    loadPanel(panel);
+                }
             }
         });
-        //加载第一个菜单面板树
-        var panel = menuDom.accordion("getSelected");
-        if (panel) {
-            loadPanel(panel);
-        }
+        $(".left_ul_menu[hasChilds='false']").each(function () {
+            $(this).parent().prev().find('div.panel-tool').remove();
+        });
     }
+    //点击展开顶部下拉菜单
+    $(".dropDownMenu li").each(function () {
+        var $i = $(this).find('i');
+        if ($i.length > 0) {
+            $(this).html($i.html());
+        }
+    });
+    $(".head-topmenu li").mouseenter(function () {
+        $(this).find('a').addClass('current');
+    }).mouseleave(function () {
+        var currMenuId = $(this).find('a').attr('menuId');
+        if ($('#region_west').attr('menuId') != currMenuId) {
+            $(this).find('a').removeClass('current');
+        }
+    });
+    $(".dropDownMenu_li").hover(
+      function () {
+          $(this).addClass("hover");
+          $(".dropDownMenu").show();
+      },
+      function () {
+          $(this).removeClass("hover");
+          $(".dropDownMenu").hide();
+      }
+    );
+    $('.dropDownMenu').mouseenter(function () {
+        if (!$(".dropDownMenu_li").hasClass("hover")) {
+            $(".dropDownMenu_li").addClass("hover");
+        }
+        $(this).show();
+    }).mouseleave(function () {
+        if ($(".dropDownMenu_li").hasClass("hover")) {
+            $(".dropDownMenu_li").removeClass("hover");
+        }
+        $(this).hide();
+    });
 }
 
 //初始化其他设置
@@ -232,9 +275,8 @@ function initOther() {
         //$(".jsSearch").show();
         var val = $('#input_search_module').val();
         if (val && val.length > 0) {
-            var url = "/" + CommonController.Async_Data_Controller + "/LoadGridData.html";
-            var params = { moduleName: '菜单管理', where: $.base64.encode(encodeURI("Display='" + val + "' AND IsLeaf=1")) };
-            ExecuteCommonAjax(url, params, function (items) {
+            var url = "/" + CommonController.Async_Data_Controller + "/LoadGridData.html?moduleName=菜单管理&where=" + $.base64.encode(encodeURI("Display='" + val + "' AND IsLeaf=1"));
+            ExecuteCommonAjax(url, null, function (items) {
                 if (items == null || items.rows == null || items.rows.length == 0)
                     return;
                 var item = items.rows[0];
@@ -253,12 +295,51 @@ function initOther() {
         var node = { text: item.Name, attribute: { url: item.Url, obj: { moduleId: item.Sys_ModuleId, moduleName: item.Sys_ModuleName, isNewWinOpen: item.IsNewWinOpen == "True" } } };
         TreeNodeOnClick(node, null);
     }, null, 'idf=Id&condition={IsLeaf:true}&of=Sys_ModuleId,Url,IsNewWinOpen');
-    $('#span_logo').click(function () { //点击logo
-        var user = topWin.GetUserInfo();
-        if (user && user.UserName) {
-            ExecuteCommonAjax('/System/RefreshSecondMenuCache.html', { un: user.UserName }, null, false);
+}
+
+//左边菜单panel展开前事件
+function LeftMenuPanelBeforeExpand() {
+    var ul = $(this).find('.left_ul_menu');
+    if (ul.attr('hasChilds') == 'false') {
+        var url = ul.attr('url');
+        var title = ul.attr('name');
+        if (url) {
+            AddTab(null, title, url);
         }
-    });
+        return false;
+    }
+}
+
+//顶部菜单选择事件
+function SelectTopMenu(obj) {
+    var westDom = $('#region_west');
+    var menuId = $(obj).attr('menuId');
+    var west_menuId = westDom.attr('menuId');
+    if (menuId == west_menuId)
+        return;
+    westDom.attr('menuId', menuId);
+    westDom.prev().find('.panel-title').text($(obj).text());
+    $(".head-topmenu a").removeClass('current');
+    $(obj).addClass('current');
+    ExecuteCommonAjax('/System/LoadAccordionMenus.html', { menuId: menuId }, function (result) {
+        if (result && result.html) {
+            westDom.html(result.html);
+            $("#leftMenu").accordion({
+                onSelect: function (title, index) {
+                    var panel = $(this).accordion("getPanel", title);
+                    if (panel.find('.left_ul_menu').attr('hasChilds') == 'false') {
+                        panel.panel('collapse');
+                    }
+                    else {
+                        loadPanel(panel);
+                    }
+                }
+            });
+            $(".left_ul_menu[hasChilds='false']").each(function () {
+                $(this).parent().prev().find('div.panel-tool').remove();
+            });
+        }
+    }, false, true);
 }
 
 //设置快捷菜单
@@ -392,8 +473,8 @@ function ResizeTabGridWH() {
     }
     var tt = top.$("#tabs");
     var tabs = tt.tabs('tabs');
-    var w = GetBodyWidth() - lw - 14 - 2;
-    var h = GetBodyHeight() - tw - 14 - 40;
+    var w = GetBodyWidth() - lw - 28 - 2;
+    var h = GetBodyHeight() - tw - 28 - 40;
     for (var i = 0; i < tabs.length; i++) {
         var tab = tabs[i];
         var index = tt.tabs('getTabIndex', tab);

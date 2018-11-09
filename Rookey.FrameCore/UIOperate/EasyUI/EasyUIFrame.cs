@@ -136,24 +136,9 @@ namespace Rookey.Frame.UIOperate
             //顶部区域
             string northStyle = string.Format("style=\"height:{0}px\"", ConstDefine.TOP_NORTH_REGION_HEIGHT.ToString());
             sb.Append("<div id=\"regionNorth\" data-options=\"region:'north',onExpand:function(){if(typeof(OnNorthExpand)=='function'){OnNorthExpand();}},onCollapse:function(){if(typeof(OnNorthCollapse)=='function'){OnNorthCollapse();}}\"  border=\"false\" class=\"header\" " + northStyle + ">");
-            sb.Append("<span class=\"header-right\">");
-            sb.Append("<a id=\"btnLogout\" href=\"javascript:void(0)\" class=\"easyui-linkbutton\" data-options=\"plain:true,iconCls:'eu-icon-exit_16'\">安全退出</a>");
-            sb.Append("</span>");
-            if (CurrUser.UserName == "admin")
-            {
-                //sb.Append("<span class=\"header-right\">");
-                //sb.Append("<a id=\"btnFileManage\" href=\"javascript:void(0)\" class=\"easyui-linkbutton\" onclick=\"window.open('/FileManage/main.html');\" data-options=\"plain:true,iconCls:'eu-icon-grid'\">系统文件管理</a>");
-                //sb.Append("</span>");
-            }
-            sb.Append("<span class=\"header-right\">");
-            sb.Append("<a id=\"btnDocument\" href=\"javascript:void(0)\" class=\"easyui-linkbutton\" data-options=\"plain:true,iconCls:'eu-p2-icon-ext-doc'\">文档</a>");
-            sb.Append("</span>");
-            sb.Append("<span class=\"header-right\">");
-            sb.Append("<a id=\"btnEmail\" href=\"javascript:void(0)\" class=\"easyui-linkbutton\" data-options=\"plain:true,iconCls:'eu-icon-email'\">邮件</a>");
-            sb.Append("</span>");
             //--员工信息 start--
             sb.Append("<span class=\"header-right\">");
-            sb.AppendFormat("<a id=\"btnUser\" href=\"javascript:void(0)\" class=\"easyui-menubutton\" data-options=\"menu:'#mm_user',iconCls:'eu-p2-icon-user'\">欢迎您，{0}</a>", UserInfo.GetUserAliasName(CurrUser));
+            sb.AppendFormat("<a id=\"btnUser\" href=\"javascript:void(0)\" class=\"easyui-menubutton\" data-options=\"menu:'#mm_user',iconCls:'eu-p2-icon-user'\">{0}</a>", UserInfo.GetUserAliasName(CurrUser));
             sb.Append("<div id=\"mm_user\" style=\"width:100px;\">");
             sb.Append("<div data-options=\"iconCls:'eu-icon-cog'\" id=\"btnPersonalSet\">个人设置</div>");
             sb.Append("<div data-options=\"iconCls:'eu-icon-password'\" id=\"btnChangePwd\">修改密码</div>");
@@ -165,6 +150,7 @@ namespace Rookey.Frame.UIOperate
                 sb.Append("<div data-options=\"iconCls:'eu-icon-user'\" id=\"btnChangeUser\">切换用户</div>");
                 sb.Append("<div data-options=\"iconCls:'eu-p2-icon-drive_web'\" id=\"btnWebConfig\">系统配置</div>");
             }
+            sb.Append("<div data-options=\"iconCls:'eu-icon-exit_16'\" id=\"btnLogout\">安全退出</div>");
             sb.Append("</div>");
             sb.Append("</span>");
             //--员工信息 end--
@@ -182,7 +168,7 @@ namespace Rookey.Frame.UIOperate
             sb.Append("<div id=\"searc_module\" class=\"fl toplefta\" style=\"float:right;\">");
             sb.Append("<a href=\"javascript:;\" class=\"icona jsSearch \"><i class=\"iconspirt icon-search\" style=\"margin-top: 22px;\"></i></a>");
             sb.Append("<div class=\"topleftSearch \">");
-            sb.Append("<input id=\"input_search_module\" type=\"text\" placeholder=\"请输入菜单名称\" class=\"ipt searchInput\" autofocus />");
+            sb.Append("<input id=\"input_search_module\" type=\"text\" style=\"width:120px;\" placeholder=\"请输入菜单名称\" class=\"ipt searchInput\" autofocus />");
             sb.Append("<a href=\"javascript:;\"><i class=\"iconspirt icon-search jsASearch\" style=\"margin-top: 22px;\"></i></a>");
             sb.Append("</div>");
             sb.Append("</div>");
@@ -195,18 +181,50 @@ namespace Rookey.Frame.UIOperate
             sb.AppendFormat("<span>{0}</span>", webLogoName);
             sb.Append("</span>");
             //--系统标题结束---
+            //--顶部菜单开始---
+            sb.Append("<div class=\"head-topmenu\">");
+            sb.Append("<ul class=\"nav-meun fr\">");
+            int maxTopMenus = topMenus.Count > 6 ? 6 : topMenus.Count; //顶部菜单最大个数
+            for (int i = 0; i < maxTopMenus; i++)
+            {
+                Sys_Menu menu = topMenus[i];
+                string menuDisplay = string.IsNullOrEmpty(menu.Display) ? menu.Name : menu.Display;
+                bool isLastMenu = i == maxTopMenus - 1 && topMenus.Count > maxTopMenus;
+                string liClass = isLastMenu ? " class=\"dropDownMenu_li\"" : string.Empty;
+                string downStr = isLastMenu ? "<i class=\"icon-angle-down\">" : string.Empty;
+                string aClass = i == 0 ? " class=\"current\"" : string.Empty;
+                sb.AppendFormat("<li{0}><a href=\"javascript:void(0);\" menuId=\"{1}\" onclick=\"SelectTopMenu(this)\"{4}>{2}{3}</a></li>", liClass, menu.Id, menuDisplay, downStr, aClass);
+                if (i < maxTopMenus - 1)
+                {
+                    sb.Append("<li><span class=\"line\"></span></li>");
+                }
+            }
+            sb.Append("</ul>");
+            sb.Append("</div>");
+            //--顶部菜单结束---
             sb.Append("</div>");
             //左边菜单区域
-            sb.Append("<div data-options=\"region:'west',title:'功能菜单',split:true,onExpand:function(){if(typeof(OnWestExpand)=='function'){OnWestExpand();}},onCollapse:function(){if(typeof(OnWestCollapse)=='function'){OnWestCollapse();}}\" style=\"width:" + ConstDefine.MAIN_LEFT_MENU_WIDTH.ToString() + "px;height:100%;float:left;border:0\">");
-            sb.Append("<div class=\"easyui-accordion\" data-options=\"fit:true,border:false\" id=\"leftMenu\">");
-            foreach (Sys_Menu menu in topMenus)
+            Sys_Menu defaultTopMenu = topMenus.FirstOrDefault();
+            string defaultTitle = defaultTopMenu != null ? (string.IsNullOrEmpty(defaultTopMenu.Display) ? defaultTopMenu.Name : defaultTopMenu.Display) : "功能菜单";
+            string defaultMid = defaultTopMenu != null ? defaultTopMenu.Id.ToString() : string.Empty;
+            sb.Append("<div id=\"region_west\" menuId=\"" + defaultMid + "\" data-options=\"region:'west',title:'" + defaultTitle + "',split:true,onExpand:function(){if(typeof(OnWestExpand)=='function'){OnWestExpand();}},onCollapse:function(){if(typeof(OnWestCollapse)=='function'){OnWestCollapse();}}\" style=\"width:" + ConstDefine.MAIN_LEFT_MENU_WIDTH.ToString() + "px;height:100%;float:left;border:0\">");
+            sb.Append("<div class=\"easyui-accordion\" data-options=\"fit:true,border:false,selected:false\" id=\"leftMenu\">");
+            //默认加载第一个top菜单的子菜单
+            List<Sys_Menu> leftMenus = defaultTopMenu != null ? SystemOperate.GetChildMenus(defaultTopMenu.Id, true, false, true, CurrUser) : new List<Sys_Menu>();
+            foreach (Sys_Menu menu in leftMenus)
             {
+                bool hasChilds = !menu.IsLeaf; //非叶子节点
                 string icon = menu.Icon.ObjToStr().Trim();
-                if (icon == string.Empty)
+                string url = menu.Url.ObjToStr();
+                if (icon == string.Empty && hasChilds)
                     icon = "accordion-icon";
+                if (!hasChilds && string.IsNullOrEmpty(url) && menu.Sys_ModuleId.HasValue && menu.Sys_ModuleId.Value != Guid.Empty)
+                {
+                    url = string.Format("/Page/Grid.html?page=grid&moduleId={0}&moduleName={1}", menu.Sys_ModuleId.Value, SystemOperate.GetModuleNameById(menu.Sys_ModuleId.Value));
+                }
                 string menuDisplay = string.IsNullOrEmpty(menu.Display) ? menu.Name : menu.Display;
-                sb.AppendFormat("<div title=\"{0}\" data-options=\"iconCls:'{1}'\">", menuDisplay, icon);
-                sb.AppendFormat("<ul menuId=\"{0}\" url=\"{1}\" name=\"{2}\"></ul>", menu.Id.ToString(), menu.Url.ObjToStr(), menuDisplay);
+                sb.AppendFormat("<div menuId=\"{0}\" title=\"{1}\" data-options=\"iconCls:'{2}',onBeforeExpand:LeftMenuPanelBeforeExpand\">", menu.Id, menuDisplay, icon);
+                sb.AppendFormat("<ul class=\"left_ul_menu\" menuId=\"{0}\" url=\"{1}\" name=\"{2}\" hasChilds=\"{3}\"></ul>", menu.Id.ToString(), url, menuDisplay, hasChilds.ToString().ToLower());
                 sb.Append("</div>");
             }
             sb.Append("</div>");
@@ -286,6 +304,17 @@ namespace Rookey.Frame.UIOperate
             sb.Append("</div>");
             sb.Append("</div>");
             #endregion
+            if (topMenus.Count > maxTopMenus)
+            {
+                sb.Append("<ul class=\"dropDownMenu\">");
+                for (int i = maxTopMenus; i < topMenus.Count; i++)
+                {
+                    Sys_Menu menu = topMenus[i];
+                    string menuDisplay = string.IsNullOrEmpty(menu.Display) ? menu.Name : menu.Display;
+                    sb.AppendFormat("<li><a href=\"javascript:void(0);\" menuId=\"{0}\" onclick=\"SelectTopMenu(this)\">{1}</a></li>", menu.Id, menuDisplay);
+                }
+                sb.Append("</ul>");
+            }
             sb.AppendFormat("<input id=\"userInfo\" type=\"hidden\" value=\"{0}\" />", HttpUtility.UrlEncode(JsonHelper.Serialize(CurrUser).Replace("\r\n", string.Empty), Encoding.UTF8).Replace("+", "%20"));
             return sb.ToString();
         }

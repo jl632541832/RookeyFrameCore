@@ -2387,6 +2387,39 @@ namespace Rookey.Frame.Controllers.Sys
             return noRoot ? Json(treeNode.children.ToJson().Content) : Json(treeNode);
         }
 
+        /// <summary>
+        /// 加载左侧手风琴菜单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult LoadAccordionMenus()
+        {
+            if (_Request == null) _Request = Request;
+            SetRequest(_Request);
+            UserInfo currUser = GetCurrentUser(_Request);
+            StringBuilder sb = new StringBuilder();
+            Guid menuId = _Request.QueryEx("menuId").ObjToGuid();
+            List<Sys_Menu> leftMenus = SystemOperate.GetChildMenus(menuId, true, false, true, currUser);
+            sb.Append("<div class=\"easyui-accordion\" data-options=\"fit:true,border:false,selected:false\" id=\"leftMenu\">");
+            foreach (Sys_Menu menu in leftMenus)
+            {
+                bool hasChilds = !menu.IsLeaf; //非叶子节点
+                string icon = menu.Icon.ObjToStr().Trim();
+                string url = menu.Url.ObjToStr();
+                if (icon == string.Empty && hasChilds)
+                    icon = "accordion-icon";
+                if (!hasChilds && string.IsNullOrEmpty(url) && menu.Sys_ModuleId.HasValue && menu.Sys_ModuleId.Value != Guid.Empty)
+                {
+                    url = string.Format("/Page/Grid.html?page=grid&moduleId={0}&moduleName={1}", menu.Sys_ModuleId.Value, SystemOperate.GetModuleNameById(menu.Sys_ModuleId.Value));
+                }
+                string menuDisplay = string.IsNullOrEmpty(menu.Display) ? menu.Name : menu.Display;
+                sb.AppendFormat("<div menuId=\"{0}\" title=\"{1}\" data-options=\"iconCls:'{2}',onBeforeExpand:LeftMenuPanelBeforeExpand\">", menu.Id, menuDisplay, icon);
+                sb.AppendFormat("<ul class=\"left_ul_menu\" menuId=\"{0}\" url=\"{1}\" name=\"{2}\" hasChilds=\"{3}\"></ul>", menu.Id.ToString(), url, menuDisplay, hasChilds.ToString().ToLower());
+                sb.Append("</div>");
+            }
+            sb.Append("</div>");
+            return Json(new { html = sb.ToString() });
+        }
+
         #endregion
 
         #region 图标处理
