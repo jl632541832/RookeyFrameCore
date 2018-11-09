@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -592,6 +593,76 @@ namespace Rookey.Frame.Operate.Base
                 dt.Rows.Add(dr);
             }
             return dt;
+        }
+        #endregion
+
+        #region 临时模块处理
+        /// <summary>
+        /// 生成临时实体DLL
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateTempModelDLL()
+        {
+            string tempModelSinPath = WebConfigHelper.GetAppSettingValue("TempModelSinDir");
+            if (string.IsNullOrEmpty(tempModelSinPath))
+                return "临时实体解决方案目录未配置";
+            if (!Directory.Exists(tempModelSinPath))
+                return string.Format("【{0}】临时实体解决方案目录不存在", tempModelSinPath);
+            var psi = new ProcessStartInfo("dotnet", "build") { RedirectStandardOutput = true };
+            psi.WorkingDirectory = tempModelSinPath;
+            try
+            {
+                var proc = Process.Start(psi);
+                if (proc == null)
+                    return "执行编译时返回空进程对象";
+                //开始读取
+                using (var sr = proc.StandardOutput)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    bool success = false;
+                    while (!sr.EndOfStream)
+                    {
+                        string message = sr.ReadLine();
+                        sb.AppendLine(message);
+                        if (message.Contains("成功生成"))
+                            success = true;
+                    }
+                    if (!proc.HasExited)
+                        proc.Kill();
+                    if (success) //编译成功
+                    {
+                        //将DLL拷贝至临时实体目录
+                        string sourcePath = WebConfigHelper.GetAppSettingValue("TempModelDllPath");
+                        if (string.IsNullOrEmpty(sourcePath))
+                            sourcePath = string.Format(@"{0}{1}bin{1}Release{1}netcoreapp2.1{1}Rookey.FrameCore.TempModel.dll", tempModelSinPath, Path.DirectorySeparatorChar);
+                        string tempModelPath = WebConfigHelper.GetAppSettingValue("TempModelPath");
+                        if (string.IsNullOrEmpty(tempModelPath))
+                            tempModelPath = "TempModel";
+                        string dllPath = string.Format(@"{0}{1}{2}Rookey.FrameCore.TempModel.dll", Globals.GetBinPath(), tempModelPath, Path.DirectorySeparatorChar);
+                        if (sourcePath != dllPath)
+                        {
+                            try
+                            {
+                                File.Copy(sourcePath, dllPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                return string.Format("dll编译后复制异常：{0}", ex.Message);
+                            }
+                        }
+                        //返回
+                        return string.Empty;
+                    }
+                    else //编译失败
+                    {
+                        return sb.ToString();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return string.Format("编译临时实体出错，异常信息：{0}", ex.Message);
+            }
         }
         #endregion
 

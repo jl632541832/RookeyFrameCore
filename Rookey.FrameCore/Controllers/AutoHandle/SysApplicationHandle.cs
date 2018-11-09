@@ -56,6 +56,7 @@ namespace Rookey.Frame.Controllers.AutoHandle
                 }
             }
             catch { }
+            //string msg = ToolOperate.CreateTempModelDLL();
         }
     }
 }
