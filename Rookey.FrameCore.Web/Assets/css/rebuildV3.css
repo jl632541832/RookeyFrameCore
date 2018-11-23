@@ -440,9 +440,8 @@ img.img80_80{width:80px;height:80px}
 .eu-icon-arrow_down{background-position: 0px -160px!important}
 .icon-bapprove{background-position:-352px -224px!important}
 .icon-attachment{background-position:0px -160px!important}
-
+.eu-ok-icon-user{background-position:0px 0px!important}
 .eu-p2-icon-transmit_go{background-position:-192px -64px!important}
-
 
 .gaidbtns{ background: #ffffff;  padding: 5px 0;  margin: 0 !important; float: left }
 .gaidbtns .m-btn-downarrow{ position: relative; top: 12px;    margin-left: -5px;}
@@ -868,6 +867,9 @@ img.img80_80{width:80px;height:80px}
 .panelheaderblue .panel-header{ border-width: 0 0 1px 0;border-bottom: 1px solid #8ec0e3;
     background: #d9ebf7;}
 
+
+
+
 .viewContentOld .panel .panel-body,
 .editContentOld .panel .panel-body,
 .viewContentNew .panel .panel-body,
@@ -1199,17 +1201,10 @@ table.thinBorder td,.lowformdetail td{ border-color: #cccccc;padding: 0 5px!impo
     white-space: normal;
     line-height: 20px;
 }
+
 table.thinBorder.seeThinBorder td{ line-height: 36px;}
 
-table.thinBorder .dspan {
-    display: inline-block;
-    word-break: normal;
-    width: auto;
-    display: block;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: hidden;
-}
+table.thinBorder .dspan{display:inline-block;}
 .divImg img{ width: 16px; height: 16px !important; margin-top: 5px;}
 
 table.thinBorder.editThinBorder td{ line-height: 18px;}

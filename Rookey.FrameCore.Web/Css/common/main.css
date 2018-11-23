@@ -77,11 +77,12 @@
             color: #1976d2!important;
         }
 
-.dropDownMenu_li .icon-angle-down {
+.dropDownMenu_li .icon-down-angle {
     background: url(/Assets/images/icon-OA-16-white.png) no-repeat;
     width: 16px;
     height: 16px;
     display: inline-block;
+    background-position: -192px -32px!important;
 }
 
 .dropDownMenu {
@@ -112,10 +113,10 @@
             color: #455a64;
             width: 100%;
             display: inline-block;
-            text-align: center;
+            text-align: left;
             line-height: 30px;
             padding: 0;
-            text-indent: -5px;
+            text-indent: 8px;
         }
 
             .dropDownMenu li a:hover {

@@ -1266,32 +1266,40 @@ namespace Rookey.Frame.UIOperate
                     Dictionary<string, string> dsFields = new Dictionary<string, string>();
                     formFields.ForEach(x =>
                     {
-                        if (x.Sys_FieldId.HasValue)
+                        try
                         {
-                            Sys_Field sysField = x.TempSysField != null ? x.TempSysField : SystemOperate.GetFieldById(x.Sys_FieldId.Value);
-                            if (sysField != null)
+                            if (x.Sys_FieldId.HasValue)
                             {
-                                if (x.TempSysField == null) x.TempSysField = sysField;
-                                bool iscanedit = (x.IsAllowAdd != false || x.IsAllowEdit != false) && x.ControlTypeOfEnum != ControlTypeEnum.LabelBox && (PermissionOperate.CanEditField(currUser.UserId, sysField.Sys_ModuleId.Value, sysField.Name) || PermissionOperate.CanAddField(currUser.UserId, sysField.Sys_ModuleId.Value, sysField.Name));
-                                Sys_GridField field = null;
-                                if (iscanedit) //可编辑时
+                                Sys_Field sysField = x.TempSysField != null ? x.TempSysField : SystemOperate.GetFieldById(x.Sys_FieldId.Value);
+                                if (sysField != null)
                                 {
-                                    field = SystemOperate.GetDefaultGridField(sysField);
+                                    if (x.TempSysField == null) x.TempSysField = sysField;
+                                    bool iscanedit = (x.IsAllowAdd != false || x.IsAllowEdit != false) && x.ControlTypeOfEnum != ControlTypeEnum.LabelBox && (PermissionOperate.CanEditField(currUser.UserId, sysField.Sys_ModuleId.Value, sysField.Name) || PermissionOperate.CanAddField(currUser.UserId, sysField.Sys_ModuleId.Value, sysField.Name));
+                                    Sys_GridField field = null;
+                                    if (iscanedit) //可编辑时
+                                    {
+                                        field = SystemOperate.GetDefaultGridField(sysField);
+                                        if (!dsFields.ContainsKey(x.Sys_FieldName))
+                                            dsFields.Add(x.Sys_FieldName, x.Sys_FieldName);
+                                    }
+                                    else //不可编辑
+                                    {
+                                        field = SystemOperate.GetDefaultGridFieldOfForeinName(sysField);
+                                        if (!dsFields.ContainsKey(x.Sys_FieldName))
+                                            dsFields.Add(x.Sys_FieldName, field.Sys_FieldName);
+                                    }
+                                    if (field != null)
+                                    {
+                                        string editorStr = string.Empty;
+                                        string formatter = GetGridFieldFormatter(module, field, gridType, gridId, editMode, null, out editorStr, currUser.UserId);
+                                        x.FieldFormatter = formatter;
+                                        x.EditorFormatter = (x.IsAllowAdd == false && x.IsAllowEdit == false) || x.ControlTypeOfEnum == ControlTypeEnum.LabelBox ? string.Empty : editorStr.Replace(",editor:", string.Empty);
+                                    }
+                                }
+                                else
+                                {
                                     if (!dsFields.ContainsKey(x.Sys_FieldName))
                                         dsFields.Add(x.Sys_FieldName, x.Sys_FieldName);
-                                }
-                                else //不可编辑
-                                {
-                                    field = SystemOperate.GetDefaultGridFieldOfForeinName(sysField);
-                                    if (!dsFields.ContainsKey(x.Sys_FieldName))
-                                        dsFields.Add(x.Sys_FieldName, field.Sys_FieldName);
-                                }
-                                if (field != null)
-                                {
-                                    string editorStr = string.Empty;
-                                    string formatter = GetGridFieldFormatter(module, field, gridType, gridId, editMode, null, out editorStr, currUser.UserId);
-                                    x.FieldFormatter = formatter;
-                                    x.EditorFormatter = (x.IsAllowAdd == false && x.IsAllowEdit == false) || x.ControlTypeOfEnum == ControlTypeEnum.LabelBox ? string.Empty : editorStr.Replace(",editor:", string.Empty);
                                 }
                             }
                             else
@@ -1300,11 +1308,7 @@ namespace Rookey.Frame.UIOperate
                                     dsFields.Add(x.Sys_FieldName, x.Sys_FieldName);
                             }
                         }
-                        else
-                        {
-                            if (!dsFields.ContainsKey(x.Sys_FieldName))
-                                dsFields.Add(x.Sys_FieldName, x.Sys_FieldName);
-                        }
+                        catch { }
                     });
                     var dic = formFields.GroupBy(x => x.RowEditRowNo).ToDictionary(x => x.Key, y => y.Select(o => new { field = dsFields[o.Sys_FieldName], title = o.Display, ControlType = o.ControlType, width = o.Width, formatter = o.FieldFormatter, editor = o.EditorFormatter }));
                     string dicJson = HttpUtility.UrlEncode(JsonHelper.Serialize(dic).Replace("\r\n", string.Empty), Encoding.UTF8).Replace("+", "%20");
@@ -4130,6 +4134,9 @@ namespace Rookey.Frame.UIOperate
                 sb.Append("<th data-options=\"field:'ModuleName',hidden:true,width:0\">模块</th>");
                 sb.Append("<th data-options=\"field:'FieldId',hidden:true,width:0\"></th>");
             }
+            sb.Append("<th data-options=\"field:'RowNo',hidden:true,width:0\">行</th>");
+            sb.Append("<th data-options=\"field:'ColNo',hidden:true,width:0\">列</th>");
+            sb.Append("<th data-options=\"field:'Width',hidden:true,width:0\">宽度</th>");
             sb.Append("</tr>");
             sb.Append("</thead>");
             //加载字段数据
@@ -4159,6 +4166,9 @@ namespace Rookey.Frame.UIOperate
                         sb.AppendFormat("<td>{0}</td>", currFieldModuleName);
                         sb.AppendFormat("<td>{0}</td>", field.Sys_FieldId.ToString());
                     }
+                    sb.AppendFormat("<td>{0}</td>", field.RowNo);
+                    sb.AppendFormat("<td>{0}</td>", field.ColNo);
+                    sb.AppendFormat("<td>{0}</td>", field.Width.HasValue && field.Width.Value > 0 ? field.Width.Value : 180);
                     sb.Append("</tr>");
                 }
                 sb.Append("</tbody>");

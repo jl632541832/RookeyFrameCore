@@ -49,8 +49,14 @@ namespace Rookey.Frame.DALFactory
         public OrmLiteDalFactory(IOrmLiteDialectProvider DialectProvider)
         {
             _dialectProvider = DialectProvider;
-            OrmLiteConfig.CommandTimeout = 30;
-            OrmLiteConfig.TSCommandTimeout = 60;
+            int commandTimeout = 120;
+            int ts_CommandTimeout = 180;
+            if (ApplicationObject.Sql_CommandTimeout > commandTimeout)
+                commandTimeout = ApplicationObject.Sql_CommandTimeout;
+            if (ApplicationObject.Sql_TSCommandTimeout > ts_CommandTimeout)
+                ts_CommandTimeout = ApplicationObject.Sql_TSCommandTimeout;
+            OrmLiteConfig.CommandTimeout = commandTimeout;
+            OrmLiteConfig.TSCommandTimeout = ts_CommandTimeout;
         }
 
         #endregion

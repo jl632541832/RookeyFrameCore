@@ -11,7 +11,9 @@ function InsertRow(row, index, select) {
     var id = row["Id"];
     var gridObj = $('#rightGrid');
     var rows = gridObj.datagrid("getRows"); //当前的所有行
-    var rowNum = rows.length + 1;
+    var rowNum = row.RowNo != undefined && row.RowNo != null && row.RowNo >= 0 ? row.RowNo : rows.length + 1;
+    var colNum = row.ColNo != undefined && row.ColNo != null && row.ColNo >= 0 ? row.ColNo : 1;
+    var width = row.Width != undefined && row.Width != null && row.Width > 0 ? row.Width : 180;
     if (index >= 0) {
         gridObj.datagrid('insertRow', {
             index: index,	// 索引从0开始
@@ -19,9 +21,9 @@ function InsertRow(row, index, select) {
                 Id: row["Id"],
                 FieldName: row["FieldName"],
                 Display: row["Display"],
-                ControlWidth: 180,
+                ControlWidth: width,
                 RowNum: rowNum,
-                ColNum: 1,
+                ColNum: colNum,
                 CanEdit: '是',
                 FieldId: row["FieldId"]
             }
@@ -32,9 +34,9 @@ function InsertRow(row, index, select) {
             Id: id,
             FieldName: row["FieldName"],
             Display: row["Display"],
-            ControlWidth: 180,
+            ControlWidth: width,
             RowNum: rowNum,
-            ColNum: 1,
+            ColNum: colNum,
             CanEdit: '是',
             FieldId: row["FieldId"]
         });

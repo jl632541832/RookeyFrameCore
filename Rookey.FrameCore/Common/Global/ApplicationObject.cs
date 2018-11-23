@@ -55,5 +55,15 @@ namespace Rookey.Frame.Common
         {
             return System.Threading.Thread.CurrentThread.ManagedThreadId.ToString();
         }
+
+        /// <summary>
+        /// 执行SQL超时时间设置
+        /// </summary>
+        public static int Sql_CommandTimeout = 120;
+
+        /// <summary>
+        /// 执行批处理超时时间设置
+        /// </summary>
+        public static int Sql_TSCommandTimeout = 120;
     }
 }
