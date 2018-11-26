@@ -1274,6 +1274,8 @@ namespace Rookey.Frame.UIOperate
                                 if (sysField != null)
                                 {
                                     if (x.TempSysField == null) x.TempSysField = sysField;
+                                    if (string.IsNullOrEmpty(x.Sys_FieldName))
+                                        x.Sys_FieldName = sysField.Name;
                                     bool iscanedit = (x.IsAllowAdd != false || x.IsAllowEdit != false) && x.ControlTypeOfEnum != ControlTypeEnum.LabelBox && (PermissionOperate.CanEditField(currUser.UserId, sysField.Sys_ModuleId.Value, sysField.Name) || PermissionOperate.CanAddField(currUser.UserId, sysField.Sys_ModuleId.Value, sysField.Name));
                                     Sys_GridField field = null;
                                     if (iscanedit) //可编辑时
@@ -1298,19 +1300,19 @@ namespace Rookey.Frame.UIOperate
                                 }
                                 else
                                 {
-                                    if (!dsFields.ContainsKey(x.Sys_FieldName))
+                                    if (!string.IsNullOrEmpty(x.Sys_FieldName) && !dsFields.ContainsKey(x.Sys_FieldName))
                                         dsFields.Add(x.Sys_FieldName, x.Sys_FieldName);
                                 }
                             }
                             else
                             {
-                                if (!dsFields.ContainsKey(x.Sys_FieldName))
+                                if (!string.IsNullOrEmpty(x.Sys_FieldName) && !dsFields.ContainsKey(x.Sys_FieldName))
                                     dsFields.Add(x.Sys_FieldName, x.Sys_FieldName);
                             }
                         }
                         catch { }
                     });
-                    var dic = formFields.GroupBy(x => x.RowEditRowNo).ToDictionary(x => x.Key, y => y.Select(o => new { field = dsFields[o.Sys_FieldName], title = o.Display, ControlType = o.ControlType, width = o.Width, formatter = o.FieldFormatter, editor = o.EditorFormatter }));
+                    var dic = formFields.GroupBy(x => x.RowEditRowNo).ToDictionary(x => x.Key, y => y.Where(o => !string.IsNullOrEmpty(o.Sys_FieldName)).Select(o => new { field = dsFields[o.Sys_FieldName], title = o.Display, ControlType = o.ControlType, width = o.Width, formatter = o.FieldFormatter, editor = o.EditorFormatter }));
                     string dicJson = HttpUtility.UrlEncode(JsonHelper.Serialize(dic).Replace("\r\n", string.Empty), Encoding.UTF8).Replace("+", "%20");
                     int miniW = 600;
                     int maxW = currUser.ClientBrowserWidth - ConstDefine.MAIN_LEFT_MENU_WIDTH - ConstDefine.GRID_FIX_HEIGHT - ConstDefine.SCROLL_WIDTH - 100;
