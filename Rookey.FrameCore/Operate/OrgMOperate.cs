@@ -1325,8 +1325,8 @@ namespace Rookey.Frame.Operate.Base
                 {
                     foreach (OrgM_EmpDeptDuty empPosition in empPositions)
                     {
-                        OrgM_DeptDuty positionCurr = GetAllPositions(x => x.OrgM_DeptId != null && x.OrgM_DutyId != null && x.OrgM_DeptId == empPosition.OrgM_DeptId && x.OrgM_DutyId == empPosition.OrgM_DutyId).FirstOrDefault();
-                        if (positionCurr != null)
+                        List<OrgM_DeptDuty> positionCurrs = GetAllPositions(x => x.OrgM_DeptId != null && x.OrgM_DutyId != null && x.OrgM_DeptId == empPosition.OrgM_DeptId && x.OrgM_DutyId == empPosition.OrgM_DutyId);
+                        foreach (OrgM_DeptDuty positionCurr in positionCurrs)
                         {
                             List<OrgM_DeptDuty> childPositions = GetChildPositions(positionCurr.Id, isDirect);
                             foreach (OrgM_DeptDuty position in childPositions)
