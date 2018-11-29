@@ -74,11 +74,14 @@ namespace Rookey.Frame.Common
         /// <summary>
         /// 获取客户端IP
         /// </summary>
+        /// <param name="request"></param>
         /// <returns></returns>
-        public static string GetClientIp()
+        public static string GetClientIp(HttpRequest request = null)
         {
             try
             {
+                if (request != null)
+                    return WebHelper.GetClientIP(request);
                 return WebHelper.GetClientIP(ApplicationObject.CurrentOneHttpContext.Request);
             }
             catch { }

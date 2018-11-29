@@ -63,8 +63,16 @@ namespace Rookey.Frame.Base
                             {
                                 //重新加载用户扩展信息
                                 userExtend = UserExtendEventHandler.GetUserExtendInfo(userInfo);
-                                userInfo.ExtendUserObject = userExtend;
                             }
+                            userInfo.ExtendUserObject = userExtend;
+                            try
+                            {
+                                if (string.IsNullOrEmpty(userInfo.ClientIP))
+                                {
+                                    userInfo.ClientIP = Globals.GetClientIp(context.Request);
+                                }
+                            }
+                            catch { }
                             return userInfo;
                         }
                     }

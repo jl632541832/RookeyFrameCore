@@ -958,7 +958,7 @@ namespace Rookey.Frame.Operate.Base
                     MethodCallTypeEnum methodCallType = BridgeObject.GetBLLMethodType(typeof(T), "UpdateFields");
                     if (methodCallType != MethodCallTypeEnum.CommonMethod) //自定义更新字段方法
                     {
-                        object[] args = new object[] { ts, errMsg, new List<string>() { "IsDeleted", "DeleteTime" }, connString, transConn };
+                        object[] args = new object[] { ts, errMsg, new List<string>() { "IsDeleted", "DeleteTime", "ModifyDate", "ModifyUserId" }, connString, transConn };
                         object obj = ReflectExecuteBLLMethod(typeof(T), "UpdateFields", args, dbType, currUser);
                         errMsg = args[1].ObjToStr();
                         rs = obj.ObjToBool();
@@ -966,7 +966,7 @@ namespace Rookey.Frame.Operate.Base
                     else
                     {
                         IBaseBLL<T> bll = BridgeObject.Resolve<IBaseBLL<T>>(currUser, dbType);
-                        rs = bll.UpdateFields(ts, out errMsg, new List<string>() { "IsDeleted", "DeleteTime" }, connString, transConn);
+                        rs = bll.UpdateFields(ts, out errMsg, new List<string>() { "IsDeleted", "DeleteTime", "ModifyDate", "ModifyUserId" }, connString, transConn);
                     }
                 }
                 else //硬删除
