@@ -979,6 +979,25 @@ namespace Rookey.Frame.Operate.Base
         }
 
         /// <summary>
+        /// 获取员工主职岗位名称
+        /// </summary>
+        /// <param name="empId"></param>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
+        public static string GetEmpMainPositionName(Guid empId, Guid? companyId = null)
+        {
+            string deptName = GetEmpMainDeptName(empId, companyId, true);
+            string dutyName = GetEmpMainDutyName(empId, companyId);
+            if (!string.IsNullOrEmpty(deptName))
+            {
+                if (string.IsNullOrEmpty(dutyName))
+                    return deptName;
+                return string.Format("{0}-{1}", deptName, dutyName);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// 获取员工兼职岗位集合
         /// </summary>
         /// <param name="empId">员工ID</param>
@@ -1043,6 +1062,20 @@ namespace Rookey.Frame.Operate.Base
             if (empPosition != null && empPosition.OrgM_DutyId.HasValue && empPosition.OrgM_DutyId.Value != Guid.Empty)
                 return GetDuty(empPosition.OrgM_DutyId.Value);
             return null;
+        }
+
+        /// <summary>
+        /// 获取员工主职职务名称
+        /// </summary>
+        /// <param name="empId">员工ID</param>
+        /// <param name="companyId">公司ID</param>
+        /// <returns></returns>
+        public static string GetEmpMainDutyName(Guid empId, Guid? companyId = null)
+        {
+            OrgM_Duty duty = GetEmpMainDuty(empId, companyId);
+            if (duty != null)
+                return duty.Name;
+            return string.Empty;
         }
 
         /// <summary>
@@ -1155,11 +1188,12 @@ namespace Rookey.Frame.Operate.Base
         /// <param name="deptId">部门根结点ID，为空是加载整棵树</param>
         /// <param name="isAsync">是否异步加载</param>
         /// <param name="expression">过滤表达式</param>
+        /// <param name="companyId">公司ID</param>
         /// <returns></returns>
-        public static TreeNode LoadDeptEmpTree(Guid? deptId, bool isAsync = false, Expression<Func<OrgM_Emp, bool>> expression = null)
+        public static TreeNode LoadDeptEmpTree(Guid? deptId, bool isAsync = false, Expression<Func<OrgM_Emp, bool>> expression = null, Guid? companyId = null)
         {
             TreeNode node = null;
-            OrgM_Dept deptRoot = GetDeptRoot();
+            OrgM_Dept deptRoot = GetDeptRoot(companyId);
             OrgM_Dept root = deptId.HasValue && deptId.Value != Guid.Empty ? GetDeptById(deptId.Value) : deptRoot;
             List<TreeNode> list = new List<TreeNode>();
             if (root != null)
@@ -1181,7 +1215,7 @@ namespace Rookey.Frame.Operate.Base
                         List<TreeNode> empNodes = listEmps.Select(x => new TreeNode()
                         {
                             id = x.Id.ToString(),
-                            text = string.Format("{0} {1}", x.Name, x.Code.ObjToStr()),
+                            text = string.Format("{0} {1} {2}", x.Name, x.Code.ObjToStr(), GetEmpMainPositionName(x.Id)),
                             iconCls = "eu-icon-user",
                         }).ToList();
                         list.AddRange(empNodes);
@@ -1192,7 +1226,7 @@ namespace Rookey.Frame.Operate.Base
                     {
                         foreach (OrgM_Dept dept in listDepts)
                         {
-                            TreeNode tempNode = LoadDeptEmpTree(dept.Id, isAsync, expression);
+                            TreeNode tempNode = LoadDeptEmpTree(dept.Id, isAsync, expression, companyId);
                             if (tempNode != null && tempNode.children != null && tempNode.children.ToList().Count > 0)
                             {
                                 list.Add(tempNode);
@@ -1243,7 +1277,7 @@ namespace Rookey.Frame.Operate.Base
                         List<TreeNode> empNodes = listEmps.Select(x => new TreeNode()
                         {
                             id = x.Id.ToString(),
-                            text = string.Format("{0} {1}", x.Name, x.Code.ObjToStr()),
+                            text = string.Format("{0} {1} {2}", x.Name, x.Code.ObjToStr(), GetEmpMainPositionName(x.Id)),
                             iconCls = "eu-icon-user"
                         }).ToList();
                         list.AddRange(empNodes);
@@ -1266,7 +1300,7 @@ namespace Rookey.Frame.Operate.Base
                     List<TreeNode> empNodes = listEmps.Select(x => new TreeNode()
                     {
                         id = x.Id.ToString(),
-                        text = string.Format("{0} {1}", x.Name, x.Code.ObjToStr()),
+                        text = string.Format("{0} {1} {2}", x.Name, x.Code.ObjToStr(), GetEmpMainPositionName(x.Id)),
                         iconCls = "eu-icon-user"
                     }).ToList();
                     list.AddRange(empNodes);
@@ -1390,6 +1424,40 @@ namespace Rookey.Frame.Operate.Base
             return GetDeptLeader(dept.Id);
         }
 
+        /// <summary>
+        /// 获取当前人对应的部门层级负责人，主要用于流程根据部门层级找人
+        /// </summary>
+        /// <param name="deptLevel">部门层级</param>
+        /// <param name="currDeptId">当前人部门ID</param>
+        /// <returns></returns>
+        public static OrgM_Emp GetDeptHierarchyLeaderFlowFindEmp(int deptLevel, Guid currDeptId)
+        {
+            OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(deptLevel, currDeptId).FirstOrDefault();
+            if (levelDept != null)
+            {
+                OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
+                if (tempEmp != null)
+                    return tempEmp;
+                //当前层级部门负责人不存在，找层级上级部门负责人
+                if (levelDept.ParentId.HasValue && levelDept.ParentId.Value != Guid.Empty)
+                {
+                    OrgM_Emp tempParentEmp = OrgMOperate.GetDeptLeader(levelDept.ParentId.Value);
+                    if (tempParentEmp != null)
+                        return tempParentEmp;
+                    else if (deptLevel > 0) //层级上级部门负责人不存在，再按层级找
+                        return GetDeptHierarchyLeaderFlowFindEmp(deptLevel - 1, currDeptId);
+                }
+                else if (deptLevel > 0) //层级部门上级部门不存在，再按层级找
+                {
+                    return GetDeptHierarchyLeaderFlowFindEmp(deptLevel - 1, currDeptId);
+                }
+            }
+            else if (deptLevel > 0)  //当前层级部门不存在并且部门层级大于0，找上一层级部门负责人
+            {
+                return GetDeptHierarchyLeaderFlowFindEmp(deptLevel - 1, currDeptId);
+            }
+            return null;
+        }
         #endregion
 
         #region 员工用户

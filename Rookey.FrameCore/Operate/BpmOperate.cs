@@ -830,12 +830,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(workFlowInst.OrgM_EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(1, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(1, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -847,12 +844,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(workFlowInst.OrgM_EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(2, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(2, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -864,12 +858,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(workFlowInst.OrgM_EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(3, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(3, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -881,12 +872,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(workFlowInst.OrgM_EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(4, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(4, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -898,12 +886,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(currUser.EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(1, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(1, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -915,12 +900,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(currUser.EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(2, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(2, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -932,12 +914,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(currUser.EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(3, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(3, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
@@ -949,12 +928,9 @@ namespace Rookey.Frame.Operate.Base
                                 OrgM_Dept dept = OrgMOperate.GetEmpMainDept(currUser.EmpId.Value, null, true);
                                 if (dept != null)
                                 {
-                                    OrgM_Dept levelDept = OrgMOperate.GetLevelDepthDepts(4, dept.Id).FirstOrDefault();
-                                    if (levelDept != null)
-                                    {
-                                        OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(levelDept.Id);
-                                        if (tempEmp != null) empIds.Add(tempEmp.Id);
-                                    }
+                                    OrgM_Emp tempEmp = OrgMOperate.GetDeptHierarchyLeaderFlowFindEmp(4, dept.Id);
+                                    if (tempEmp != null)
+                                        empIds.Add(tempEmp.Id);
                                 }
                             }
                         }
