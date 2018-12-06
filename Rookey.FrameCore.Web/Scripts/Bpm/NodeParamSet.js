@@ -189,6 +189,8 @@ $(function () {
         icons: [{
             iconCls: 'eu-icon-search',
             handler: function (e) {
+                var fieldName = null;
+                var noroot = false;
                 var handleType = $('#HandlerType').combobox('getText');
                 var moduleName = null;
                 switch (handleType) {
@@ -197,6 +199,8 @@ $(function () {
                         break;
                     case '职务':
                         moduleName = '职务管理';
+                        fieldName = 'Name';
+                        noroot = true;
                         break;
                     case '岗位':
                         moduleName = '岗位管理';
@@ -221,7 +225,7 @@ $(function () {
                         names = names.substr(0, names.length - 1);
                         $('#HandleRange').attr('v', ids).attr('value', ids);
                         $('#HandleRange').textbox('setValue', ids).textbox('setText', names);
-                    }, true);
+                    }, true, fieldName, noroot);
                 }
             }
         }]

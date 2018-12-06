@@ -4,10 +4,16 @@ var isMutiSelect = GetLocalQueryString("ms") == '1'; //是否多选
 var isAsync = GetLocalQueryString("async") == '1'; //是否为异步加载
 var parentId = GetLocalQueryString("parentId"); //父ID
 var id = GetLocalQueryString("id"); //父ID
+var fieldName = GetLocalQueryString("fieldName"); //字段名
+var noRoot = GetLocalQueryString("noRoot"); //无根节点标识
 var onlyLeaf = GetLocalQueryString("onlyleaf") == '1'; //是否只能选择叶子节点
 var dturl = decodeURI(GetLocalQueryString("dturl")); //数据源URL
 var selectIds = decodeURI(GetLocalQueryString("selectIds")); //已选择项ids
 var baseUrl = '/' + CommonController.Async_Data_Controller + '/GetTreeByNode.html?moduleId=' + moduleId + '&moduleName=' + moduleName;
+if (fieldName)
+    baseUrl += '&fieldName=' + fieldName;
+if (noRoot)
+    baseUrl += '&noRoot=' + noRoot;
 if (dturl && dturl.length > 0) {
     baseUrl = dturl;
 }
@@ -31,6 +37,9 @@ var treeParams = {
         if (typeof (data) == 'string') {
             var tempData = eval("(" + data + ")");
             lastData = tempData;
+        }
+        else if (Array.isArray(data)) {
+            return data;
         }
         else {
             arr = [];

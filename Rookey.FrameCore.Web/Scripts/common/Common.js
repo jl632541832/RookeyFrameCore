@@ -557,7 +557,9 @@ function SelectModuleData(moduleIdOrName, backFun, condition, where, isMutiSelec
 //isMutiSelect:是否多选
 //backFun:回调函数
 //isAsync:是否异步
-function SelectModuleTree(moduleIdOrName, url, isMutiSelect, backFun, isAsync) {
+//fieldName:如果是假树结构时对应的树显示字段
+//noRoot:无根节点标识
+function SelectModuleTree(moduleIdOrName, url, isMutiSelect, backFun, isAsync, fieldName, noRoot) {
     if (!moduleIdOrName) {
         topWin.ShowMsg('提示', "模块Id和模块名称至少要传递一个！");
         return;
@@ -579,7 +581,10 @@ function SelectModuleTree(moduleIdOrName, url, isMutiSelect, backFun, isAsync) {
     if (isAsync && dataUrl.indexOf('async=1') == -1) {
         dataUrl += "&async=1";
     }
-    dataUrl += "&r=" + Math.random(); //弹出框页面url
+    if (fieldName)
+        dataUrl += '&fieldName=' + fieldName;
+    if (noRoot)
+        dataUrl += "&noRoot=1";
     var toolbar = [{
         text: "选择",
         iconCls: "eu-icon-ok",
