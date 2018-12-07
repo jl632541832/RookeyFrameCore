@@ -202,6 +202,16 @@ $(function () {
                         fieldName = 'Name';
                         noroot = true;
                         break;
+                    case '发起者上级职务':
+                        moduleName = '职务管理';
+                        fieldName = 'Name';
+                        noroot = true;
+                        break;
+                    case '发起者上级职级':
+                        moduleName = '职务管理';
+                        fieldName = 'DutyLevel';
+                        noroot = true;
+                        break;
                     case '岗位':
                         moduleName = '岗位管理';
                         break;
@@ -299,7 +309,7 @@ function SetNodeParams(workNode) {
     $('#FormUrl').textbox('setValue', workNode.FormUrl);
     $('#HandlerType').combobox('setValue', workNode.HandlerType);
     $('#HandleRange').attr('v', workNode.HandleRange).attr('value', workNode.HandleRange);
-    $('#HandleRange').textbox('setValue', workNode.HandleRange).textbox('setText', workNode.HandleRangeName);
+    $('#HandleRange').textbox('setValue', workNode.HandleRange).textbox('setText', workNode.HandleRange);
     $('#HandleStrategy').combobox('setValue', workNode.HandleStrategy);
     $('#FormFieldName').combobox('setValue', workNode.FormFieldName);
     $('#BackType').combobox('setValue', workNode.BackType);

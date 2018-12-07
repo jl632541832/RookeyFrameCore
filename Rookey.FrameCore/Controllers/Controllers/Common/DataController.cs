@@ -505,7 +505,7 @@ namespace Rookey.Frame.Controllers
                     list.Add(new TreeNode() { id = "-1", text = "全部" });
                     if (dics != null && dics.Count > 0)
                     {
-                        List<TreeNode> tempList = dics.Select(x => new TreeNode() { id = x.Id.ToString(), text = x.Name }).ToList();
+                        List<TreeNode> tempList = dics.Select(x => new TreeNode() { id = x.Value, text = x.Name }).ToList();
                         if (tempList != null) list.AddRange(tempList);
                     }
                     return Json(list);
@@ -526,7 +526,7 @@ namespace Rookey.Frame.Controllers
                     if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
                     {
                         List<TreeNode> tempList = hasId ? dt.Rows.Cast<DataRow>().Where(x => !string.IsNullOrWhiteSpace(x[0].ObjToStr())).Select(x => new TreeNode() { id = x[0].ObjToStr(), text = x[1].ObjToStr() }).ToList() :
-                                                 dt.Rows.Cast<DataRow>().Where(x => !string.IsNullOrWhiteSpace(x[0].ObjToStr())).Select(x => new TreeNode() { text = x[0].ObjToStr() }).ToList();
+                                                 dt.Rows.Cast<DataRow>().Where(x => !string.IsNullOrWhiteSpace(x[0].ObjToStr())).Select(x => new TreeNode() { id = x[0].ObjToStr(), text = x[0].ObjToStr() }).ToList();
                         if (tempList != null) list.AddRange(tempList);
                     }
                     return Json(list);

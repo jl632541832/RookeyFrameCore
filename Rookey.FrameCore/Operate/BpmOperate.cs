@@ -935,6 +935,60 @@ namespace Rookey.Frame.Operate.Base
                             }
                         }
                         break;
+                    case NodeHandlerTypeEnum.StarterSuperiorDuty: //发起者上级职务
+                        {
+                            //找发起人本级或上级对应职务为选中的职务的负责人
+                            if (workFlowInst.OrgM_EmpId.HasValue && workFlowInst.OrgM_EmpId.Value != Guid.Empty && !string.IsNullOrEmpty(nextNode.HandleRange))
+                            {
+                                OrgM_Dept dept = OrgMOperate.GetEmpMainDept(workFlowInst.OrgM_EmpId.Value, null, true);
+                                if (dept != null)
+                                {
+                                    List<OrgM_Dept> parentDepts = OrgMOperate.GetParentsDepts(dept.Id);
+                                    string[] token = nextNode.HandleRange.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (string dutyName in token)
+                                    {
+                                        foreach (OrgM_Dept tempDept in parentDepts)
+                                        {
+                                            OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(tempDept.Id);
+                                            if (tempEmp != null)
+                                            {
+                                                List<OrgM_Duty> dutys = OrgMOperate.GetEmpDutys(tempEmp.Id);
+                                                if (dutys != null && dutys.Count > 0 && dutys.Where(x => x.Name == dutyName).Count() > 0)
+                                                    empIds.Add(tempEmp.Id);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case NodeHandlerTypeEnum.StarterSuperiorDutyLevel: //发起者上级职级
+                        {
+                            //找发起人本级或上级对应职级为选中的职级的负责人
+                            if (workFlowInst.OrgM_EmpId.HasValue && workFlowInst.OrgM_EmpId.Value != Guid.Empty && !string.IsNullOrEmpty(nextNode.HandleRange))
+                            {
+                                OrgM_Dept dept = OrgMOperate.GetEmpMainDept(workFlowInst.OrgM_EmpId.Value, null, true);
+                                if (dept != null)
+                                {
+                                    List<OrgM_Dept> parentDepts = OrgMOperate.GetParentsDepts(dept.Id);
+                                    string[] token = nextNode.HandleRange.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (string dutyLevel in token)
+                                    {
+                                        foreach (OrgM_Dept tempDept in parentDepts)
+                                        {
+                                            OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(tempDept.Id);
+                                            if (tempEmp != null)
+                                            {
+                                                List<OrgM_Duty> dutys = OrgMOperate.GetEmpDutys(tempEmp.Id);
+                                                if (dutys != null && dutys.Count > 0 && dutys.Where(x => x.DutyLevel == dutyLevel).Count() > 0)
+                                                    empIds.Add(tempEmp.Id);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
                 }
                 #endregion
             }

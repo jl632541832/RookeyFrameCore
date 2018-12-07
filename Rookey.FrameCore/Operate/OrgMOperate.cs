@@ -217,7 +217,7 @@ namespace Rookey.Frame.Operate.Base
         }
 
         /// <summary>
-        /// 获取所有父级部门
+        /// 获取所有父级部门，包含当前部门
         /// </summary>
         /// <param name="deptId">部门ID</param>
         /// <param name="companyId">所属公司ID</param>
@@ -226,13 +226,16 @@ namespace Rookey.Frame.Operate.Base
         {
             List<OrgM_Dept> depts = new List<OrgM_Dept>();
             OrgM_Dept dept = GetDeptById(deptId);
-            bool flag = dept != null && dept.ParentId.HasValue && dept.ParentId.Value != Guid.Empty;
-            if (companyId.HasValue && companyId.Value != Guid.Empty)
-                flag = flag && deptId != companyId.Value;
-            depts.Add(dept); //添加当前部门
-            if (flag) //存在上级部门
+            if (dept != null)
             {
-                depts.AddRange(GetParentsDepts(dept.ParentId.Value));
+                bool flag = dept.ParentId.HasValue && dept.ParentId.Value != Guid.Empty;
+                if (companyId.HasValue && companyId.Value != Guid.Empty)
+                    flag = flag && deptId != companyId.Value;
+                depts.Add(dept); //添加当前部门
+                if (flag) //存在上级部门
+                {
+                    depts.AddRange(GetParentsDepts(dept.ParentId.Value));
+                }
             }
             return depts;
         }

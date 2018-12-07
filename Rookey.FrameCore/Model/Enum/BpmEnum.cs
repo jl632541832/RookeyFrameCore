@@ -361,7 +361,19 @@ namespace Rookey.Frame.Model.EnumSpace
         /// 上一处理者第四层级部门负责人
         /// </summary>
         [Description("上一处理者第四层级部门负责人")]
-        LastHandlerLevel4DeptLeader = 26
+        LastHandlerLevel4DeptLeader = 26,
+
+        /// <summary>
+        /// 发起者上级职务
+        /// </summary>
+        [Description("发起者上级职务")]
+        StarterSuperiorDuty = 27,
+
+        /// <summary>
+        /// 发起者上级职级
+        /// </summary>
+        [Description("发起者上级职级")]
+        StarterSuperiorDutyLevel = 28
     }
 
     /// <summary>
