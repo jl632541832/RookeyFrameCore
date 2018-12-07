@@ -212,6 +212,16 @@ $(function () {
                         fieldName = 'DutyLevel';
                         noroot = true;
                         break;
+                    case '上一处理者上级职务':
+                        moduleName = '职务管理';
+                        fieldName = 'Name';
+                        noroot = true;
+                        break;
+                    case '上一处理者上级职级':
+                        moduleName = '职务管理';
+                        fieldName = 'DutyLevel';
+                        noroot = true;
+                        break;
                     case '岗位':
                         moduleName = '岗位管理';
                         break;

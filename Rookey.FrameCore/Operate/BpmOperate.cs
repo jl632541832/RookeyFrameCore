@@ -989,6 +989,60 @@ namespace Rookey.Frame.Operate.Base
                             }
                         }
                         break;
+                    case NodeHandlerTypeEnum.LastHandlerSuperiorDuty: //上一处理者上级职务
+                        {
+                            //找上一处理者本级或上级对应职务为选中的职务的负责人
+                            if (currUser.EmpId.HasValue && currUser.EmpId.Value != Guid.Empty && !string.IsNullOrEmpty(nextNode.HandleRange))
+                            {
+                                OrgM_Dept dept = OrgMOperate.GetEmpMainDept(currUser.EmpId.Value, null, true);
+                                if (dept != null)
+                                {
+                                    List<OrgM_Dept> parentDepts = OrgMOperate.GetParentsDepts(dept.Id);
+                                    string[] token = nextNode.HandleRange.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (string dutyName in token)
+                                    {
+                                        foreach (OrgM_Dept tempDept in parentDepts)
+                                        {
+                                            OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(tempDept.Id);
+                                            if (tempEmp != null)
+                                            {
+                                                List<OrgM_Duty> dutys = OrgMOperate.GetEmpDutys(tempEmp.Id);
+                                                if (dutys != null && dutys.Count > 0 && dutys.Where(x => x.Name == dutyName).Count() > 0)
+                                                    empIds.Add(tempEmp.Id);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case NodeHandlerTypeEnum.LastHandlerSuperiorDutyLevel: //上一处理者上级职级
+                        {
+                            //找上一处理者本级或上级对应职级为选中的职级的负责人
+                            if (currUser.EmpId.HasValue && currUser.EmpId.Value != Guid.Empty && !string.IsNullOrEmpty(nextNode.HandleRange))
+                            {
+                                OrgM_Dept dept = OrgMOperate.GetEmpMainDept(currUser.EmpId.Value, null, true);
+                                if (dept != null)
+                                {
+                                    List<OrgM_Dept> parentDepts = OrgMOperate.GetParentsDepts(dept.Id);
+                                    string[] token = nextNode.HandleRange.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (string dutyLevel in token)
+                                    {
+                                        foreach (OrgM_Dept tempDept in parentDepts)
+                                        {
+                                            OrgM_Emp tempEmp = OrgMOperate.GetDeptLeader(tempDept.Id);
+                                            if (tempEmp != null)
+                                            {
+                                                List<OrgM_Duty> dutys = OrgMOperate.GetEmpDutys(tempEmp.Id);
+                                                if (dutys != null && dutys.Count > 0 && dutys.Where(x => x.DutyLevel == dutyLevel).Count() > 0)
+                                                    empIds.Add(tempEmp.Id);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
                 }
                 #endregion
             }

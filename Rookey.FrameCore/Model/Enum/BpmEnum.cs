@@ -373,7 +373,19 @@ namespace Rookey.Frame.Model.EnumSpace
         /// 发起者上级职级
         /// </summary>
         [Description("发起者上级职级")]
-        StarterSuperiorDutyLevel = 28
+        StarterSuperiorDutyLevel = 28,
+
+        /// <summary>
+        /// 上一处理者上级职务
+        /// </summary>
+        [Description("上一处理者上级职务")]
+        LastHandlerSuperiorDuty = 29,
+
+        /// <summary>
+        /// 上一处理者上级职级
+        /// </summary>
+        [Description("上一处理者上级职级")]
+        LastHandlerSuperiorDutyLevel = 30
     }
 
     /// <summary>
