@@ -1510,6 +1510,7 @@ function ImportModel(obj) {
         OverImportModel(obj);
         return;
     }
+    var maxcount = $(obj).attr('maxcount'); //限制导入数量
     var moduleId = $(obj).attr("moduleId");
     var moduleName = $(obj).attr("moduleName");
     var moduleDisplay = $(obj).attr("moduleDisplay");
@@ -1525,10 +1526,14 @@ function ImportModel(obj) {
                 //数据文件上传完成后开始导入数据
                 topWin.DisableTopDialogBtn('btnOk'); //禁用确定按钮
                 if (typeof (OverImportModelData) != "function") {
+                    var jsonData = { moduleId: moduleId, fileName: escape(fileName) };
+                    if (maxcount) {
+                        jsonData.maxcount = maxcount;
+                    }
                     $.ajax({
                         type: "post",
                         url: "/" + CommonController.Async_Data_Controller + "/ImportModelData.html",
-                        data: { moduleId: moduleId, fileName: escape(fileName) },
+                        data: jsonData,
                         dataType: "json",
                         beforeSend: function () {
                         },
@@ -2101,7 +2106,14 @@ function UpdateRowFieldValue(gridId, rowIndex, field, value) {
             var row = {};
             row[field] = value;
             var tempRow = row;
-            if (gridObj.hasClass('ddv')) { //行内多行编辑网格
+            var isddv = false;
+            if (gridId != 'mainGrid') {
+                var moduleId = gridId.replace('grid_', '');
+                var divId = "div_" + moduleId + rowIndex;
+                var divDDvObj = $('#' + divId);
+                isddv = divDDvObj.hasClass('ddv');
+            }
+            if (isddv) { //行内多行编辑网格
                 EndEditRow(gridId, rowIndex);
                 var tempRow = GetRow(gridId, rowIndex);
                 tempRow[field] = value;
@@ -2110,7 +2122,7 @@ function UpdateRowFieldValue(gridId, rowIndex, field, value) {
                 index: rowIndex,
                 row: row
             });
-            if (gridObj.hasClass('ddv')) { //行内多行编辑网格
+            if (isddv) { //行内多行编辑网格
                 EditRow(gridId, rowIndex, null, null, true);
                 BindRowDetailControlEvent(gridId, tempRow);
             }
