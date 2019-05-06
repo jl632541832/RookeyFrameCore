@@ -45,7 +45,15 @@ namespace Rookey.Frame.Base.Set
         /// </summary>
         public static UserNameAndEmpConfigRule EmpUserNameConfigRule
         {
-            get { return _empUserNameConfigRule; }
+            get
+            {
+                string empUserNameConfigRule = WebConfigHelper.GetAppSettingValue("UserNameAndEmpConfigRule");
+                if (!string.IsNullOrEmpty(empUserNameConfigRule))
+                {
+                    _empUserNameConfigRule = (UserNameAndEmpConfigRule)Enum.Parse(typeof(UserNameAndEmpConfigRule), empUserNameConfigRule.ToString());
+                }
+                return _empUserNameConfigRule;
+            }
             set { _empUserNameConfigRule = value; }
         }
 

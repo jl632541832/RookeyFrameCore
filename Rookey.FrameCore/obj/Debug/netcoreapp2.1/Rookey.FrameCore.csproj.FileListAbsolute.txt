@@ -20,3 +20,14 @@ D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netc
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.AssemblyInfo.cs
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.dll
 D:\.NET CORE\MyCode\OneDll\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.pdb
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Debug\netcoreapp2.1\Rookey.FrameCore.deps.json
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Debug\netcoreapp2.1\Rookey.FrameCore.runtimeconfig.json
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Debug\netcoreapp2.1\Rookey.FrameCore.runtimeconfig.dev.json
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Debug\netcoreapp2.1\Rookey.FrameCore.dll
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Debug\netcoreapp2.1\Rookey.FrameCore.pdb
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.csprojResolveAssemblyReference.cache
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.csproj.CoreCompileInputs.cache
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.AssemblyInfoInputs.cache
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.AssemblyInfo.cs
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.dll
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.pdb

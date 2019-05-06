@@ -172,9 +172,10 @@ namespace Rookey.Frame.Controllers.OrgM
                 return Json(new ReturnResult() { Success = false, Message = "该部门已存在，请不要重复添加" });
             UserInfo currUser = GetCurrentUser(_Request);
             Guid moduleId = SystemOperate.GetModuleIdByTableName("OrgM_Dept");
+            string code = SystemOperate.GetBillCode(moduleId);
             OrgM_Dept dept = new OrgM_Dept()
             {
-                Code = SystemOperate.GetBillCode(moduleId),
+                Code = code,
                 Name = deptname,
                 Alias = deptname,
                 IsValid = true,
@@ -188,9 +189,14 @@ namespace Rookey.Frame.Controllers.OrgM
             };
             Guid deptId = CommonOperate.OperateRecord<OrgM_Dept>(dept, ModelRecordOperateType.Add, out errMsg, null, false);
             if (deptId != Guid.Empty)
+            {
+                SystemOperate.UpdateBillCode(moduleId, code);
                 return Json(new { Success = true, Message = string.Empty, DeptId = deptId, DeptName = deptname });
+            }
             else
+            {
                 return Json(new ReturnResult() { Success = false, Message = errMsg });
+            }
         }
 
         /// <summary>
@@ -215,9 +221,10 @@ namespace Rookey.Frame.Controllers.OrgM
                 return Json(new ReturnResult() { Success = false, Message = "该职务已存在，请不要重复添加" });
             UserInfo currUser = GetCurrentUser(_Request);
             Guid moduleId = SystemOperate.GetModuleIdByTableName("OrgM_Duty");
+            string code = SystemOperate.GetBillCode(moduleId);
             OrgM_Duty duty = new OrgM_Duty()
             {
-                Code = SystemOperate.GetBillCode(moduleId),
+                Code = code,
                 Name = dutyname,
                 IsValid = true,
                 EffectiveDate = DateTime.Now,
@@ -231,6 +238,7 @@ namespace Rookey.Frame.Controllers.OrgM
             Guid dutyId = CommonOperate.OperateRecord<OrgM_Duty>(duty, ModelRecordOperateType.Add, out errMsg, null, false);
             if (dutyId != Guid.Empty)
             {
+                SystemOperate.UpdateBillCode(moduleId, code);
                 Guid? parentId = null;
                 List<OrgM_DeptDuty> positions = OrgMOperate.GetDeptPositions(deptId);
                 if (positions.Count > 0)
@@ -240,16 +248,19 @@ namespace Rookey.Frame.Controllers.OrgM
                         parentId = leaderPosition.Id;
                 }
                 Guid gwModuleId = SystemOperate.GetModuleIdByTableName("OrgM_DeptDuty");
+                string positionCode = SystemOperate.GetBillCode(gwModuleId);
                 OrgM_DeptDuty position = new OrgM_DeptDuty()
                 {
-                    Code = SystemOperate.GetBillCode(gwModuleId),
+                    Code = positionCode,
                     Name = string.Format("{0}-{1}", string.IsNullOrEmpty(dept.Alias) ? dept.Name : dept.Alias, dutyname),
                     OrgM_DeptId = deptId,
                     OrgM_DutyId = dutyId,
                     ParentId = parentId,
                     IsValid = true
                 };
-                CommonOperate.OperateRecord<OrgM_DeptDuty>(position, ModelRecordOperateType.Add, out errMsg, null, false);
+                Guid positionId = CommonOperate.OperateRecord<OrgM_DeptDuty>(position, ModelRecordOperateType.Add, out errMsg, null, false);
+                if (positionId != Guid.Empty)
+                    SystemOperate.UpdateBillCode(gwModuleId, positionCode);
                 return Json(new { Success = true, Message = string.Empty, DutyId = dutyId });
             }
             else

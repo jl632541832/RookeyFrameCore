@@ -42,7 +42,7 @@ namespace Rookey.Frame.Base
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             currContext.SignInAsync(COOKIE_NAME, claimsPrincipal, new AuthenticationProperties
             {
-                ExpiresUtc = DateTime.UtcNow.AddHours(12),
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(expiration),
                 IsPersistent = false,
                 AllowRefresh = false
             });

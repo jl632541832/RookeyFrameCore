@@ -2950,65 +2950,65 @@ namespace Rookey.Frame.Operate.Base
                             Name = "部门管理编码规则",
                             Sys_ModuleId = SystemOperate.GetModuleIdByTableName("OrgM_Dept"),
                             FieldName = "Code",
-                            Prefix = "BM",
+                            Prefix = string.Empty,
                             IsEnableDate = false,
                             DateFormatOfEnum = DateFormatEnum.yy,
                             SerialNumber = 1,
                             PlaceHolder = 0,
                             SNLength = 5,
-                            RuleFormat = "BM00001"
+                            RuleFormat = "00001"
                         });
                         codeRules.Add(new Sys_BillCodeRule()
                         {
                             Name = "职务管理编码规则",
                             Sys_ModuleId = SystemOperate.GetModuleIdByTableName("OrgM_Duty"),
                             FieldName = "Code",
-                            Prefix = "ZW",
+                            Prefix = string.Empty,
                             IsEnableDate = false,
                             DateFormatOfEnum = DateFormatEnum.yy,
                             SerialNumber = 1,
                             PlaceHolder = 0,
                             SNLength = 5,
-                            RuleFormat = "ZW00001"
+                            RuleFormat = "00001"
                         });
                         codeRules.Add(new Sys_BillCodeRule()
                         {
                             Name = "岗位管理编码规则",
                             Sys_ModuleId = SystemOperate.GetModuleIdByTableName("OrgM_DeptDuty"),
                             FieldName = "Code",
-                            Prefix = "GW",
+                            Prefix = string.Empty,
                             IsEnableDate = false,
                             DateFormatOfEnum = DateFormatEnum.yy,
                             SerialNumber = 1,
                             PlaceHolder = 0,
                             SNLength = 5,
-                            RuleFormat = "GW00001"
+                            RuleFormat = "00001"
                         });
                         codeRules.Add(new Sys_BillCodeRule()
                         {
                             Name = "员工管理编码规则",
                             Sys_ModuleId = SystemOperate.GetModuleIdByTableName("OrgM_Emp"),
                             FieldName = "Code",
-                            Prefix = "YG",
+                            Prefix = string.Empty,
                             IsEnableDate = false,
                             DateFormatOfEnum = DateFormatEnum.yy,
                             SerialNumber = 1,
                             PlaceHolder = 0,
                             SNLength = 5,
-                            RuleFormat = "YG00001"
+                            RuleFormat = "00001"
                         });
                         codeRules.Add(new Sys_BillCodeRule()
                         {
                             Name = "员工岗位编码规则",
                             Sys_ModuleId = SystemOperate.GetModuleIdByTableName("OrgM_EmpDeptDuty"),
                             FieldName = "Code",
-                            Prefix = "YGGW",
+                            Prefix = string.Empty,
                             IsEnableDate = false,
                             DateFormatOfEnum = DateFormatEnum.yy,
                             SerialNumber = 1,
                             PlaceHolder = 0,
                             SNLength = 5,
-                            RuleFormat = "YGGW00001"
+                            RuleFormat = "00001"
                         });
                         codeRules.ForEach(x => 
                         {

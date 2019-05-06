@@ -344,7 +344,11 @@ namespace Rookey.Frame.Controllers
             //缓存用户扩展信息
             UserInfo.CacheUserExtendInfo(userInfo.UserName, userInfo.ExtendUserObject);
             //用户票据保存
-            FormsPrincipal.Login(userInfo.UserName, userInfo, UserInfo.ACCOUNT_EXPIRATION_TIME, GetHttpContext(_Request));
+            int acount_expire_time = UserInfo.ACCOUNT_EXPIRATION_TIME;
+            acount_expire_time = WebConfigHelper.GetAppSettingValue("ACCOUNT_EXPIRATION_TIME").ObjToInt();
+            if (acount_expire_time <= 0)
+                acount_expire_time = UserInfo.ACCOUNT_EXPIRATION_TIME;
+            FormsPrincipal.Login(userInfo.UserName, userInfo, acount_expire_time, GetHttpContext(_Request));
         }
 
         /// <summary>

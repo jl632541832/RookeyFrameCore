@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+    <PackageReference Include="Microsoft.Net.Compilers" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

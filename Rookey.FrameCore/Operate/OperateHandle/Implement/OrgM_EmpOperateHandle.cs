@@ -36,18 +36,25 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
             {
                 string errMsg = string.Empty;
                 string username = OrgMOperate.GetUserNameByEmp(t);
+                string userInitPwd = WebConfigHelper.GetAppSettingValue("UserInitPwd");
+                if (string.IsNullOrEmpty(userInitPwd))
+                    userInitPwd = "123456";
                 if (operateType == ModelRecordOperateType.Add)
                 {
                     if (!string.IsNullOrEmpty(username))
                     {
-                        UserOperate.AddUser(out errMsg, username, string.Format("{0}_123456", username), null, t.Name);
+                        UserOperate.AddUser(out errMsg, username, userInitPwd, null, t.Name);
                     }
                 }
                 else if (operateType == ModelRecordOperateType.Edit)
                 {
                     if (!string.IsNullOrEmpty(username))
                     {
-                        UserOperate.UpdateUserAliasName(username, t.Name);
+                        Sys_User user = UserOperate.GetUser(username);
+                        if (user != null) //用户已存在
+                            UserOperate.UpdateUserAliasName(username, t.Name);
+                        else //用户不存在
+                            UserOperate.AddUser(out errMsg, username, userInitPwd, null, t.Name);
                     }
                 }
                 else if (operateType == ModelRecordOperateType.Del)
@@ -80,8 +87,11 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                                 return;
                             }
                         }
+                        Guid moduleId = SystemOperate.GetModuleIdByModelType(typeof(OrgM_EmpDeptDuty));
+                        string code = SystemOperate.GetBillCode(moduleId);
                         empPosition = new OrgM_EmpDeptDuty()
                         {
+                            Code = code,
                             OrgM_DeptId = t.DeptId.Value,
                             OrgM_DutyId = t.DutyId.Value,
                             OrgM_EmpId = t.Id,
@@ -95,7 +105,9 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
                             ModifyUserId = currUser.UserId,
                             ModifyUserName = currUser.EmpName
                         };
-                        CommonOperate.OperateRecord<OrgM_EmpDeptDuty>(empPosition, ModelRecordOperateType.Add, out errMsg, null, false);
+                        Guid rs = CommonOperate.OperateRecord<OrgM_EmpDeptDuty>(empPosition, ModelRecordOperateType.Add, out errMsg, null, false);
+                        if (rs != Guid.Empty)
+                            SystemOperate.UpdateBillCode(moduleId, code);
                     }
                 }
             }
