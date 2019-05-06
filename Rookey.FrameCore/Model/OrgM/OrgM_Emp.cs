@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------
+/*----------------------------------------------------------------
 // Copyright (C) Rookey
 // 版权所有
 // 开发者：rookey
@@ -86,7 +86,7 @@ namespace Rookey.Frame.Model.OrgM
         /// <summary>
         /// 电子邮箱
         /// </summary>
-        [FieldConfig(Display = "电子邮箱", ControlType = (int)ControlTypeEnum.TextBox, RowNum = 4, ColNum = 3, GroupName = "联系方式", HeadSort = 7)]
+        [FieldConfig(Display = "电子邮箱", ControlType = (int)ControlTypeEnum.TextBox, RowNum = 5, ColNum = 1, GroupName = "联系方式", HeadSort = 7)]
         public string Email { get; set; }
 
         #endregion
@@ -95,7 +95,7 @@ namespace Rookey.Frame.Model.OrgM
         /// <summary>
         /// 员工状态
         /// </summary>
-        [FieldConfig(Display = "员工状态", ControlType = (int)ControlTypeEnum.ComboBox, RowNum = 5, ColNum = 1, GroupName = "状态信息", HeadSort = 8)]
+        [FieldConfig(Display = "员工状态", ControlType = (int)ControlTypeEnum.ComboBox, RowNum = 6, ColNum = 1, GroupName = "状态信息", HeadSort = 8)]
         public int EmpStatus { get; set; }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Rookey.Frame.Model.OrgM
         /// <summary>
         /// 员工类型
         /// </summary>
-        [FieldConfig(Display = "员工类型", ControlType = (int)ControlTypeEnum.ComboBox, RowNum = 5, ColNum = 2, GroupName = "状态信息", HeadSort = 9)]
+        [FieldConfig(Display = "员工类型", ControlType = (int)ControlTypeEnum.ComboBox, RowNum = 6, ColNum = 2, GroupName = "状态信息", HeadSort = 9)]
         public int EmployeeType { get; set; }
 
         /// <summary>
