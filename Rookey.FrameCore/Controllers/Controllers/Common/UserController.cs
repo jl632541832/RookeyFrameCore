@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------
+/*----------------------------------------------------------------
         // Copyright (C) Rookey
         // 版权所有
         // 开发者：rookey
@@ -495,7 +495,7 @@ namespace Rookey.Frame.Controllers
             string subject = string.Format("重置您在{0}的密码", WebConfigHelper.GetCurrWebName());
             Sys_User user = UserOperate.GetUser(username);
             string content = GetForgetPwdSendContent(user);
-            errMsg = SystemOperate.EmailSend(subject, content, dicMail, null, null, null, true, "dingxin.wang@cecport.com", null, "wdx840324");
+            errMsg = SystemOperate.EmailSend(subject, content, dicMail, null, null, null, true);
             return Json(new ReturnResult() { Success = string.IsNullOrEmpty(errMsg), Message = errMsg });
         }
 
