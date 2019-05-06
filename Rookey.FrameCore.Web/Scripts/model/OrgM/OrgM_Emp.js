@@ -1,4 +1,4 @@
-﻿//初始化
+//初始化
 $(function () {
     if (page == 'add' || page == 'edit' || page == 'view') {
         var panelbody = $('div.panel-body');
@@ -46,7 +46,13 @@ $(function () {
             }
         }
     }
+    HideFields();
 });
+
+//加载完成事件
+function OverOnLoadSuccess(data, gridId, moduleId, moduleName) {
+    HideFields();
+}
 
 //上传后重写操作
 function OverAfterUploadFile(obj, attachStr) {
@@ -143,7 +149,12 @@ function AddDuty() {
 //字段值改变事件
 function OnFieldValueChanged(moduleInfo, fieldName, vf, oldValue, obj) {
     if (fieldName == 'OrgM_DeptId') {
+        var dutyId = $('#OrgM_DutyId').combobox('getValue');
+        var dutyName = $('#OrgM_DutyId').combobox('getText');
         $('#OrgM_DutyId').combobox('clear').combobox('reload', '/OrgM/GetDeptDutys.html?deptId=' + vf);
+        if (dutyId) {
+            $('#OrgM_DutyId').combobox('setValue', dutyId);
+        }
     }
 }
 
@@ -171,5 +182,33 @@ function OverMainModuleDataHandleBeforeSaved(data) {
             data.DeptId = deptId;
             data.DutyId = dutyId;
         }
+    }
+}
+
+
+//弹出框时移除敏感字段
+function HideFields() {
+    if (page == 'fdGrid') {
+        $("td[field='Photo']").remove();
+        $("td[field='BirthdayDate']").remove();
+        $("td[field='Height']").remove();
+        $("td[field='BloodType']").remove();
+        $("td[field='Education']").remove();
+        $("td[field='IsMarriage']").remove();
+        $("td[field='StartWorkDate']").remove();
+        $("td[field='EntryDate']").remove();
+        $("td[field='StatusChangeDate']").remove();
+        $("td[field='PositiveDate']").remove();
+        $("td[field='Nationality']").remove();
+        $("td[field='Hometown']").remove();
+        $("td[field='Political']").remove();
+        $("td[field='Religion']").remove();
+        $("td[field='Sort']").remove();
+        $("td[field='CreateUserName']").remove();
+        $("td[field='ModifyUserName']").remove();
+        $("td[field='CreateDate']").remove();
+        $("td[field='ModifyDate']").remove();
+        $('#btn_changeSearch').remove(); //不允许切换搜索
+        $("a[id^='btn_advanceSearch']").remove(); //不允许高级搜索
     }
 }
