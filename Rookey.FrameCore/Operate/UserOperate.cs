@@ -297,7 +297,7 @@ namespace Rookey.Frame.Operate.Base
         /// <returns></returns>
         public static UserInfo GetSuperAdmin()
         {
-            if (_adminUser != null)
+            if (_adminUser != null && _adminUser.UserId != Guid.Empty)
                 return _adminUser;
             string errMsg = string.Empty;
             Sys_User user = CommonOperate.GetEntity<Sys_User>(x => x.UserName == "admin", null, out errMsg);
