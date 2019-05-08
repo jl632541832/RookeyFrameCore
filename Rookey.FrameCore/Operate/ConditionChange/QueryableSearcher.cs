@@ -92,7 +92,7 @@ namespace Rookey.Frame.Operate.Base.ConditionChange
         {
             var list = new List<Expression>();
             //OrGroup为空的情况下，即为And组合
-            var andList = items.Where(c => string.IsNullOrEmpty(c.OrGroup)).ToArray();
+            var andList = items.Where(c => string.IsNullOrEmpty(c.OrGroup) || c.OrGroup.ToLower() == "and").ToArray();
             //将And的子Expression以AndAlso拼接
             if (andList.Count() != 0)
             {

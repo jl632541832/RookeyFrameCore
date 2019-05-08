@@ -31,3 +31,4 @@ D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Roo
 D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.AssemblyInfo.cs
 D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.dll
 D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\obj\Debug\netcoreapp2.1\Rookey.FrameCore.pdb
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore\bin\Debug\netcoreapp2.1\Rookey.StackInterfaces.dll

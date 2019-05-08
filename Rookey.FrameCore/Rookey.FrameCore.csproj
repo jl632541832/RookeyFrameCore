@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Orm\ServiceStackText\Properties\" />
+    <Folder Include="Orm\StackText\Properties\" />
     <Folder Include="Orm\MySql\" />
     <Folder Include="Properties\" />
   </ItemGroup>
@@ -25,6 +25,12 @@
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="MySql.Data" Version="8.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Rookey.StackInterfaces">
+      <HintPath>..\Rookey.FrameCore.Lib\Rookey.StackInterfaces.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

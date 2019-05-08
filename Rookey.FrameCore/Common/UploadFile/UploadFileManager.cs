@@ -123,7 +123,7 @@ namespace Rookey.Frame.Common
             string folder = WebHelper.MapPath(cfg.Folder) + Path.DirectorySeparatorChar.ToString();
             folder = string.Concat(folder, DateTime.Now.ToString("yyyyMM", DateTimeFormatInfo.InvariantInfo)) + Path.DirectorySeparatorChar.ToString();
             string name = customerFileName.ObjToStr().Length > 0 ? customerFileName.ObjToStr() : Guid.NewGuid().ToString("N");
-            var fileName = name.Contains(ext) ? string.Concat(folder, name) : string.Concat(folder, name, ext);
+            var fileName = name.ToUpper().Contains(ext) ? string.Concat(folder, name) : string.Concat(folder, name, ext);
             if (File.Exists(fileName))
             {
                 return CreateFileName(ext, cfg);

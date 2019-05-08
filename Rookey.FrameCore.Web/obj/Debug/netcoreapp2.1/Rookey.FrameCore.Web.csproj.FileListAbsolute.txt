@@ -245,3 +245,4 @@ D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\bin\Debug\netcoreapp2.1
 D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\bin\Debug\netcoreapp2.1\Rookey.FrameCore.pdb
 D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Rookey.FrameCore.Web.Views.pdb
 D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\obj\Debug\netcoreapp2.1\Rookey.FrameCore.Web.csproj.CopyComplete
+D:\wdx\平台\RookeyFrameCoreOneDLL\Rookey.FrameCore.Web\bin\Debug\netcoreapp2.1\Rookey.StackInterfaces.dll

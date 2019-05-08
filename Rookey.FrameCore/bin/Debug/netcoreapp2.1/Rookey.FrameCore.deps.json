@@ -9,7 +9,8 @@
       "Rookey.FrameCore/1.0.0": {
         "dependencies": {
           "DotNetCore.NPOI": "1.2.1",
-          "MySql.Data": "8.0.12"
+          "MySql.Data": "8.0.12",
+          "Rookey.StackInterfaces": "1.0.0.0"
         },
         "runtime": {
           "Rookey.FrameCore.dll": {}
@@ -157,6 +158,14 @@
             "fileVersion": "4.6.25519.3"
           }
         }
+      },
+      "Rookey.StackInterfaces/1.0.0.0": {
+        "runtime": {
+          "Rookey.StackInterfaces.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -242,6 +251,11 @@
       "sha512": "sha512-cJV7ScGW7EhatRsjehfvvYVBvtiSMKgN8bOVI0bQhnF5bU7vnHVIsH49Kva7i7GWaWYvmEzkYVk1TC+gZYBEog==",
       "path": "system.security.cryptography.protecteddata/4.4.0",
       "hashPath": "system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
+    },
+    "Rookey.StackInterfaces/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
