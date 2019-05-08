@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <web>
-  <name>Rookey.FrameCore</name>
-  <!--Rookey.FrameCore v1.0极速开发平台-->
-  <logo></logo>
+  <name>Rookey.FrameCore极速开发平台</name>
+  <logo>/Images/Main/logo.png</logo>
   <logoName>Rookey.FrameCore</logoName>
-  <copyright>Copyright © 2018</copyright>
+  <copyright>Copyright © 2019</copyright>
 </web>
