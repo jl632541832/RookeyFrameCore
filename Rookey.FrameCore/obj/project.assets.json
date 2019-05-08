@@ -14086,11 +14086,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
+      "projectUniqueName": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
       "projectName": "Rookey.FrameCore",
-      "projectPath": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
+      "projectPath": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj",
       "packagesPath": "C:\\Users\\rooke\\.nuget\\packages\\",
-      "outputPath": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\obj\\",
+      "outputPath": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

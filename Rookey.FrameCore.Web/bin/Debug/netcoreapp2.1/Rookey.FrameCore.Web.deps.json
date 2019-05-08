@@ -221,13 +221,22 @@
         "dependencies": {
           "DotNetCore.NPOI": "1.2.1",
           "Microsoft.AspNetCore.All": "2.1.5",
-          "MySql.Data": "8.0.12"
+          "MySql.Data": "8.0.12",
+          "Rookey.StackInterfaces": "1.0.0.0"
         },
         "runtime": {
           "Rookey.FrameCore.dll": {}
         },
         "compile": {
           "Rookey.FrameCore.dll": {}
+        }
+      },
+      "Rookey.StackInterfaces.Reference/1.0.0.0": {
+        "runtime": {
+          "Rookey.StackInterfaces.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Libuv/1.10.0": {
@@ -4006,6 +4015,11 @@
     },
     "Rookey.FrameCore/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Rookey.StackInterfaces.Reference/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },

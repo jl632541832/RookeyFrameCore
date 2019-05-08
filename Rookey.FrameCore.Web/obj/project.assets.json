@@ -14315,11 +14315,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
+      "projectUniqueName": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
       "projectName": "Rookey.FrameCore.Web",
-      "projectPath": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
+      "projectPath": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore.Web\\Rookey.FrameCore.Web.csproj",
       "packagesPath": "C:\\Users\\rooke\\.nuget\\packages\\",
-      "outputPath": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore.Web\\obj\\",
+      "outputPath": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -14338,8 +14338,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj": {
-              "projectPath": "D:\\wdx\\平台\\RookeyFrameCoreOneDLL\\Rookey.FrameCore\\Rookey.FrameCore.csproj"
+            "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj": {
+              "projectPath": "D:\\wdx\\平台\\RookeyFrameCore\\Rookey.FrameCore\\Rookey.FrameCore.csproj"
             }
           }
         }
