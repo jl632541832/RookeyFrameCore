@@ -814,7 +814,7 @@ namespace Rookey.Frame.Operate.Base
                 exp = ExpressionExtension.And(x => x.EmpStatus == empStatus, exp);
             }
             if (expression != null) exp = ExpressionExtension.And<OrgM_Emp>(exp, expression);
-            List<OrgM_Emp> emps = CommonOperate.GetEntities<OrgM_Emp>(out errMsg, exp, null, false, new List<string>() { "Sort" }, new List<bool>() { false });
+            List<OrgM_Emp> emps = CommonOperate.GetEntities<OrgM_Emp>(out errMsg, exp, null, false);
             if (emps == null) emps = new List<OrgM_Emp>();
             return emps;
         }
