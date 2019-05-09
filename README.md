@@ -1,3 +1,5 @@
+ **详细功能列表及示例展示见官方站点** ：[http://www.rookey.top](http://www.rookey.top)
+
 数据库：在Rookey.FrameCore.Web/App_Data/ 下面
 
 Rookey.Frame各版本
