@@ -239,14 +239,13 @@ namespace Rookey.Frame.Operate.Base.OperateHandle.Implement
             {
                 OrgM_Dept root = OrgMOperate.GetDeptRoot();
                 Guid deptId = condition["OrgM_DeptId"].ObjToGuid();
-                if (deptId != root.Id)
-                {
-                    List<Guid> childDeptIds = OrgMOperate.GetChildDepts(deptId).Select(x => x.Id).ToList();
-                    childDeptIds.Add(deptId);
-                    string deptIdStr = string.Join("','", childDeptIds);
-                    where = string.Format("Id IN(SELECT OrgM_EmpId FROM dbo.OrgM_EmpDeptDuty WHERE OrgM_DeptId IN('{0}'))", deptIdStr);
-                    condition.Remove("OrgM_DeptId");
-                }
+                if (deptId == Guid.Empty && root != null && root.Id != Guid.Empty)
+                    deptId = root.Id;
+                List<Guid> childDeptIds = OrgMOperate.GetChildDepts(deptId).Select(x => x.Id).ToList();
+                childDeptIds.Add(deptId);
+                string deptIdStr = string.Join("','", childDeptIds);
+                where = string.Format("Id IN(SELECT OrgM_EmpId FROM dbo.OrgM_EmpDeptDuty WHERE OrgM_DeptId IN('{0}'))", deptIdStr);
+                condition.Remove("OrgM_DeptId");
             }
             return null;
         }

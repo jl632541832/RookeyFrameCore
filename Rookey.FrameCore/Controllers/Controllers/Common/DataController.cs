@@ -482,7 +482,7 @@ namespace Rookey.Frame.Controllers
                     if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
                     {
                         List<TreeNode> list = dt.Rows.Cast<DataRow>().Select(x => new TreeNode() { id = x[0].ObjToGuid().ToString(), text = x[1].ObjToStr() }).ToList();
-                        list.Insert(0, new TreeNode() { id = Guid.Empty.ToString(), text = "全部" });
+                        list.Insert(0, new TreeNode() { id = "-1", text = "全部" });
                         return Json(list);
                     }
                 }
