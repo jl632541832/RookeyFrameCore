@@ -1042,6 +1042,10 @@ namespace Rookey.Frame.UIOperate
                     gridUrl = gridParams.DataOrUrl;
                 }
                 paging = gridParams.IsPaging.ToString().ToLower();
+                if (!gridParams.IsPaging)
+                {
+                    gridUrl += "&rows=" + gridParams.PageSize;
+                }
                 pageInfo = string.Format("pageSize:{0}", gridParams.PageSize.ToString());
                 if (!string.IsNullOrEmpty(gridParams.PageList))
                     pageInfo += string.Format(",pageList:{0}", gridParams.PageList);
@@ -5011,7 +5015,7 @@ namespace Rookey.Frame.UIOperate
                 }
                 if (gridParams != null && gridParams.GridFields != null && gridParams.GridFields.Count > 0)
                 {
-                    fields = gridParams.GridFields.Where(x => !string.IsNullOrEmpty(x.Sys_FieldName)).Select(x => new Desktop_GridField() { FieidName = x.Sys_FieldName, Width = x.Width.HasValue && x.Width.Value > 0 ? x.Width.Value : 120, Sort = x.Sort }).ToList();
+                    fields = gridParams.GridFields.Where(x => !string.IsNullOrEmpty(x.Sys_FieldName)).Select(x => new Desktop_GridField() { FieidName = x.Sys_FieldName, Width = x.Width.HasValue ? x.Width.Value : 120, Sort = x.Sort }).ToList();
                 }
                 sb.AppendFormat("<table id=\"deskgrid_{0}\" class=\"easyui-datagrid\" style=\"height:100%\" data-options=\"{1}\">", moduleId.ToString(), otherParams);
                 sb.Append("<thead>");
