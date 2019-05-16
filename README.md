@@ -4,15 +4,15 @@
 
 Rookey.Frame各版本
 
-Rookey.Frame 2.0 基于.net framework 4.0
+Rookey.Frame 2.0 基于.net framework 4.0：
 
 https://gitee.com/rookey/Rookey.Frame-v2.0
 
-RookeyFrameCore 基于.net core 2.1
+基于Rookey.Frame 2.0的Demo：
 
-https://gitee.com/rookey/RookeyFrameCoreOneDLL
+https://gitee.com/rookey/Rookey.FrameDemo
 
-Rookey.Frame 1.0 基于.net framework 4.0
+Rookey.Frame 1.0 基于.net framework 4.0：
 
 https://gitee.com/rookey/RookeyFrame-v1.0
 
