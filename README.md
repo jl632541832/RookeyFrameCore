@@ -1,3 +1,6 @@
+## 本项目已得到[JetBrains](https://www.jetbrains.com/shop/eform/opensource)的支持！  Powered by [JetBrains](https://www.jetbrains.com/shop/eform/opensource)!
+<img src="https://www.jetbrains.com/shop/static/images/jetbrains-logo-inv.svg" height="100">     
+
 Rookey.Frame 是一套基于.NET的极速开发框架，支持简单逻辑模块零代码编程、支持工作流（BPM）、支持二次开发，具有高性能、高扩展性、高复用性、高伸缩性，支持数据库无限分库。
 
 框架特点
