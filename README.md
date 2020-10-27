@@ -1,21 +1,3 @@
- **示例展示见官方站点** ：[http://www.rookey.top](http://www.rookey.top)
-
-数据库：在Rookey.FrameCore.Web/App_Data/ 下面
-
-Rookey.Frame各版本
-
-Rookey.Frame 2.0 基于.net framework 4.0：
-
-https://gitee.com/rookey/Rookey.Frame-v2.0
-
-基于Rookey.Frame 2.0的Demo：
-
-https://gitee.com/rookey/Rookey.FrameDemo
-
-Rookey.Frame 1.0 基于.net framework 4.0：
-
-https://gitee.com/rookey/RookeyFrame-v1.0
-
 Rookey.Frame 是一套基于.NET的极速开发框架，支持简单逻辑模块零代码编程、支持工作流（BPM）、支持二次开发，具有高性能、高扩展性、高复用性、高伸缩性，支持数据库无限分库。
 
 框架特点
@@ -56,12 +38,8 @@ Rookey.Frame 是一套基于.NET的极速开发框架，支持简单逻辑模块
 
 （18）支持自定义工作桌面，可为不同的角色定制不同的工作桌面
 
-（19）支持IM（即时通迅）功能，支持单聊、群聊，支持图片、文件发送，支持头像设置
+（19）系统任何模块以及后续加入模块均自动支持WebApi接口操作
 
-（20）系统任何模块以及后续加入模块均自动支持WebApi接口操作
+（20）增加对工作流的支持，可在线设计、配置流程，支持单行、并行审批，支持子流程、分流、合流，支持回退、指派
 
-（21）增加对工作流的支持，可在线设计、配置流程，支持单行、并行审批，支持子流程、分流、合流，支持回退、指派
-
-框架整体架构图：
-![](https://git.oschina.net/uploads/images/2017/0415/154046_07183231_883652.png "框架整体架构图")
-
+数据库：在Rookey.FrameCore.Web/App_Data/ 下面
