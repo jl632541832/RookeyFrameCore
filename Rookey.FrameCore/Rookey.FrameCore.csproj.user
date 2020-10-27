@@ -3,4 +3,12 @@
   <PropertyGroup>
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Orm\StackCommon\MiniProfiler\Data\ProfiledCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Orm\StackCommon\MiniProfiler\Data\ProfiledConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

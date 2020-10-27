@@ -11,14 +11,16 @@
 
   <ItemGroup>
     <Compile Remove="Common\System\**" />
+    <Compile Remove="Properties\**" />
     <EmbeddedResource Remove="Common\System\**" />
+    <EmbeddedResource Remove="Properties\**" />
     <None Remove="Common\System\**" />
+    <None Remove="Properties\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Orm\StackText\Properties\" />
     <Folder Include="Orm\MySql\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
